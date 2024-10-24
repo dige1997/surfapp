@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../app/routes/_index.jsx"],
+  "sourcesContent": ["// REMIX HMR BEGIN\nimport * as __hmr__ from \"remix:hmr\";\nif (import.meta) {\nimport.meta.hot = __hmr__.createHotContext(\n//@ts-expect-error\n\"app/routes/_index.jsx\"\n);\nimport.meta.hot.lastModified = \"1729764420050.476\";\n}\n// REMIX HMR END\n\nimport { authenticator } from \"../services/auth.server\";\n\nexport const meta = () => {\n  return [{ title: \"Remix Post App\" }];\n};\n\nexport async function loader({ request }) {\n  // return redirect(\"/posts\");\n  return await authenticator.isAuthenticated(request, {\n    successRedirect: \"/dashboard\",\n    failureRedirect: \"/signin\",\n  });\n}\n"],
+  "mappings": ";;;;;;;;;;;;AAWA,kBAA8B;AAT9B,IAAI,aAAa;AACjB,cAAY,MAAc;AAAA;AAAA,IAE1B;AAAA,EACA;AACA,cAAY,IAAI,eAAe;AAC/B;AAKO,IAAM,OAAO,MAAM;AACxB,SAAO,CAAC,EAAE,OAAO,iBAAiB,CAAC;AACrC;",
+  "names": []
+}
