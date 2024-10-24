@@ -7,10 +7,12 @@ import { sessionStorage } from "../services/session.server";
 export async function loader({ request }) {
   // If the user is already authenticated redirect to /posts directly
   await authenticator.isAuthenticated(request, {
-    successRedirect: "/posts",
+    successRedirect: "/dashboard",
   });
   // Retrieve error message from session if present
-  const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
   // Get the error message from the session
   const error = session.get("sessionErrorKey");
   // Remove the error message from the session after it's been retrieved
@@ -34,7 +36,11 @@ export default function SignUp() {
       className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-80 w-72 ml-auto mr-auto mt-52 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign Up</h1>
-      <Form id="sign-up-form" method="post" className="flex items-center flex-col gap-1 w-full">
+      <Form
+        id="sign-up-form"
+        method="post"
+        className="flex items-center flex-col gap-1 w-full"
+      >
         <label htmlFor="mail">Mail</label>
         <input
           id="mail"

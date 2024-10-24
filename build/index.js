@@ -1185,9 +1185,11 @@ import mongoose9 from "mongoose";
 import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
 async function loader10({ request }) {
   await authenticator.isAuthenticated(request, {
-    successRedirect: "/posts"
+    successRedirect: "/dashboard"
   });
-  let session = await sessionStorage.getSession(request.headers.get("Cookie")), error = session.get("sessionErrorKey");
+  let session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  ), error = session.get("sessionErrorKey");
   session.unset("sessionErrorKey");
   let headers = new Headers({
     "Set-Cookie": await sessionStorage.commitSession(session)
@@ -1204,95 +1206,107 @@ function SignUp() {
       children: [
         /* @__PURE__ */ jsxDEV13("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
           fileName: "app/routes/signup.jsx",
-          lineNumber: 36,
+          lineNumber: 38,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV13(Form6, { id: "sign-up-form", method: "post", className: "flex items-center flex-col gap-1 w-full", children: [
-          /* @__PURE__ */ jsxDEV13("label", { htmlFor: "mail", children: "Mail" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV13(
+          Form6,
+          {
+            id: "sign-up-form",
+            method: "post",
+            className: "flex items-center flex-col gap-1 w-full",
+            children: [
+              /* @__PURE__ */ jsxDEV13("label", { htmlFor: "mail", children: "Mail" }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 44,
+                columnNumber: 9
+              }, this),
+              /* @__PURE__ */ jsxDEV13(
+                "input",
+                {
+                  id: "mail",
+                  type: "email",
+                  name: "mail",
+                  "aria-label": "mail",
+                  placeholder: "Type your mail...",
+                  required: !0,
+                  autoComplete: "off",
+                  className: "p-2 rounded-xl w-full"
+                },
+                void 0,
+                !1,
+                {
+                  fileName: "app/routes/signup.jsx",
+                  lineNumber: 45,
+                  columnNumber: 9
+                },
+                this
+              ),
+              /* @__PURE__ */ jsxDEV13("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 56,
+                columnNumber: 9
+              }, this),
+              /* @__PURE__ */ jsxDEV13(
+                "input",
+                {
+                  id: "password",
+                  type: "password",
+                  name: "password",
+                  "aria-label": "password",
+                  placeholder: "Type your password...",
+                  autoComplete: "current-password",
+                  className: "p-2 rounded-xl w-full"
+                },
+                void 0,
+                !1,
+                {
+                  fileName: "app/routes/signup.jsx",
+                  lineNumber: 58,
+                  columnNumber: 9
+                },
+                this
+              ),
+              /* @__PURE__ */ jsxDEV13("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV13("button", { children: "Sign Up" }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 68,
+                columnNumber: 11
+              }, this) }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 67,
+                columnNumber: 9
+              }, this),
+              loaderData?.error ? /* @__PURE__ */ jsxDEV13("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV13("p", { children: loaderData?.error?.message }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 73,
+                columnNumber: 13
+              }, this) }, void 0, !1, {
+                fileName: "app/routes/signup.jsx",
+                lineNumber: 72,
+                columnNumber: 11
+              }, this) : null
+            ]
+          },
+          void 0,
+          !0,
+          {
             fileName: "app/routes/signup.jsx",
-            lineNumber: 38,
-            columnNumber: 9
-          }, this),
-          /* @__PURE__ */ jsxDEV13(
-            "input",
-            {
-              id: "mail",
-              type: "email",
-              name: "mail",
-              "aria-label": "mail",
-              placeholder: "Type your mail...",
-              required: !0,
-              autoComplete: "off",
-              className: "p-2 rounded-xl w-full"
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/signup.jsx",
-              lineNumber: 39,
-              columnNumber: 9
-            },
-            this
-          ),
-          /* @__PURE__ */ jsxDEV13("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
-            fileName: "app/routes/signup.jsx",
-            lineNumber: 50,
-            columnNumber: 9
-          }, this),
-          /* @__PURE__ */ jsxDEV13(
-            "input",
-            {
-              id: "password",
-              type: "password",
-              name: "password",
-              "aria-label": "password",
-              placeholder: "Type your password...",
-              autoComplete: "current-password",
-              className: "p-2 rounded-xl w-full"
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/signup.jsx",
-              lineNumber: 52,
-              columnNumber: 9
-            },
-            this
-          ),
-          /* @__PURE__ */ jsxDEV13("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV13("button", { children: "Sign Up" }, void 0, !1, {
-            fileName: "app/routes/signup.jsx",
-            lineNumber: 62,
-            columnNumber: 11
-          }, this) }, void 0, !1, {
-            fileName: "app/routes/signup.jsx",
-            lineNumber: 61,
-            columnNumber: 9
-          }, this),
-          loaderData?.error ? /* @__PURE__ */ jsxDEV13("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV13("p", { children: loaderData?.error?.message }, void 0, !1, {
-            fileName: "app/routes/signup.jsx",
-            lineNumber: 67,
-            columnNumber: 13
-          }, this) }, void 0, !1, {
-            fileName: "app/routes/signup.jsx",
-            lineNumber: 66,
-            columnNumber: 11
-          }, this) : null
-        ] }, void 0, !0, {
-          fileName: "app/routes/signup.jsx",
-          lineNumber: 37,
-          columnNumber: 7
-        }, this),
+            lineNumber: 39,
+            columnNumber: 7
+          },
+          this
+        ),
         /* @__PURE__ */ jsxDEV13("p", { children: [
           "Already have an account?",
           " ",
           /* @__PURE__ */ jsxDEV13(NavLink3, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
             fileName: "app/routes/signup.jsx",
-            lineNumber: 73,
+            lineNumber: 79,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/signup.jsx",
-          lineNumber: 71,
+          lineNumber: 77,
           columnNumber: 7
         }, this)
       ]
@@ -1301,7 +1315,7 @@ function SignUp() {
     !0,
     {
       fileName: "app/routes/signup.jsx",
-      lineNumber: 32,
+      lineNumber: 34,
       columnNumber: 5
     },
     this
@@ -1317,7 +1331,7 @@ async function action6({ request }) {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-KRQQFHVH.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-32OR2PNH.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-HBSXKTRY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LUY5FOFR.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-T2SXTML4.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-GXY43BO7.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-W4JSCDNF.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-RL7NDCYO.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-MYSOPDFP.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-FUGNCTYA.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-UM6FE5WO.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "85f7e046", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1729782640818 }, url: "/build/manifest-85F7E046.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-KRQQFHVH.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-32OR2PNH.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-HBSXKTRY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LUY5FOFR.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-T2SXTML4.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-GXY43BO7.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-W4JSCDNF.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-RL7NDCYO.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-MYSOPDFP.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-FUGNCTYA.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-PYAIISVB.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-SARLQUTN.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "264246ec", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1729782812043 }, url: "/build/manifest-264246EC.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
