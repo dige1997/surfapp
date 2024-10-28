@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 const DashboardData = () => {
   const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState("Loading..."); // Default state until location is determined
-  const [inputCity, setInputCity] = useState(""); // State for input field
-  const apiKey = "84c59fa875b07f0e54b6dd1ce011f187"; // Replace with your OpenWeatherMap API key
+  const [city, setCity] = useState("Loading...");
+  const [inputCity, setInputCity] = useState("");
+  const apiKey = "84c59fa875b07f0e54b6dd1ce011f187";
 
   // Function to fetch weather data based on city name
   const fetchWeatherData = async (city) => {
@@ -36,7 +36,7 @@ const DashboardData = () => {
     }
   };
 
-  // Function to get the user's coordinates using the browser's Geolocation API
+  // Geolocation API - get user location
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -74,16 +74,18 @@ const DashboardData = () => {
   };
 
   return (
-    <div>
+    <div className="bg-blue-300 rounded-xl w-1/2 justify-normal p-6">
       <h1>Weather in {city}</h1>
-      <form onSubmit={handleSearch}>
+      <form className="flex flex-row" onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="Enter city name"
           value={inputCity}
           onChange={(e) => setInputCity(e.target.value)}
         />
-        <button type="submit">Search</button>
+        <button className="bg-white " type="submit">
+          <img className="" src="searchIcon" alt="" />
+        </button>
       </form>
       {weatherData ? (
         <div>

@@ -9,7 +9,9 @@ export async function loader({ request }) {
     successRedirect: "/dashboard",
   });
   // Retrieve error message from session if present
-  const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
   // Get the error message from the session
   const error = session.get("sessionErrorKey");
   // Remove the error message from the session after it's been retrieved
@@ -31,7 +33,11 @@ export default function SignIn() {
       className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-80 w-72 ml-auto mr-auto mt-52 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign In</h1>
-      <Form id="sign-in-form" method="post" className="flex items-center flex-col gap-1 w-full">
+      <Form
+        id="sign-in-form"
+        method="post"
+        className="flex items-center flex-col gap-1 w-full"
+      >
         <label htmlFor="mail">Mail</label>
         <input
           id="mail"
@@ -80,7 +86,7 @@ export async function action({ request }) {
   // request object, optionally we pass an object with the URLs we want the user
   // to be redirected to after a success or a failure
   return await authenticator.authenticate("user-pass", request, {
-    successRedirect: "/posts",
+    successRedirect: "/dashboard",
     failureRedirect: "/signin",
   });
 }
