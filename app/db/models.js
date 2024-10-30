@@ -13,18 +13,18 @@ const userSchema = new mongoose.Schema(
       unique: true, // Ensure user emails are unique
     },
     name: String,
-    title: String,
-    educations: [String],
+    lastname: String, // New field for last name
     password: {
       type: String,
       required: true, // Ensure user passwords are required
       select: false, // Automatically exclude from query results
     },
+    hobbies: [String], // Array of strings for hobbies
   },
   { timestamps: true }
 );
 
-// pre save password hook
+// pre-save password hook
 userSchema.pre("save", async function (next) {
   const user = this; // this refers to the user document
 
@@ -87,6 +87,8 @@ async function insertData() {
       "https://www.baaa.dk/media/b5ahrlra/maria-louise-bendixen.jpg?anchor=center&mode=crop&width=800&height=450&rnd=132792921650330000&format=webp",
     mail: "test@test.com",
     name: "Nicolai",
+    lastname: "Doe", // Example last name
     password: "1234",
+    hobbies: ["Surf", "Ski"], // Example hobbies
   });
 }

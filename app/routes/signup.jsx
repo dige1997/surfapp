@@ -3,37 +3,64 @@ import { Form, NavLink, useLoaderData } from "@remix-run/react";
 import mongoose from "mongoose";
 import { authenticator } from "../services/auth.server";
 import { sessionStorage } from "../services/session.server";
+import { useState, useRef, useEffect } from "react";
 
+// Loader function to check if user is authenticated
 export async function loader({ request }) {
-  // If the user is already authenticated redirect to /posts directly
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
   });
-  // Retrieve error message from session if present
+
   const session = await sessionStorage.getSession(
     request.headers.get("Cookie")
   );
-  // Get the error message from the session
   const error = session.get("sessionErrorKey");
-  // Remove the error message from the session after it's been retrieved
   session.unset("sessionErrorKey");
-  // Commit the updated session that no longer contains the error message
   const headers = new Headers({
     "Set-Cookie": await sessionStorage.commitSession(session),
   });
 
-  return json({ error }, { headers }); // return the error message
+  return json({ error }, { headers });
 }
 
+// SignUp Component
 export default function SignUp() {
-  // if i got an error it will come back with the loader data
   const loaderData = useLoaderData();
-  console.log("error:", loaderData?.error);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Declare ref here
+
+  const sportsOptions = ["Surf", "Ski", "Kite"];
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedHobbies((prev) =>
+      checked ? [...prev, value] : prev.filter((hobby) => hobby !== value)
+    );
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
     <div
       id="sign-up-page"
-      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-80 w-72 ml-auto mr-auto mt-52 p-4 gap-3"
+      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-32 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign Up</h1>
       <Form
@@ -41,7 +68,7 @@ export default function SignUp() {
         method="post"
         className="flex items-center flex-col gap-1 w-full"
       >
-        <label htmlFor="mail">Mail</label>
+        <label htmlFor="mail">Email</label>
         <input
           id="mail"
           type="email"
@@ -54,7 +81,6 @@ export default function SignUp() {
         />
 
         <label htmlFor="password">Password</label>
-
         <input
           id="password"
           type="password"
@@ -64,6 +90,69 @@ export default function SignUp() {
           autoComplete="current-password"
           className="p-2 rounded-xl w-full"
         />
+
+        <label htmlFor="firstName">First name</label>
+        <input
+          id="firstName"
+          type="text"
+          name="name"
+          aria-label="first name"
+          placeholder="Type your first name.."
+          className="p-2 rounded-xl w-full"
+        />
+
+        <label htmlFor="lastName">Last name</label>
+        <input
+          id="lastName"
+          type="text"
+          name="lastName"
+          aria-label="last name"
+          placeholder="Type your last name..."
+          className="p-2 rounded-xl w-full"
+        />
+
+        <label>Select your hobbies:</label>
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={toggleDropdown}
+            className="bg-white p-2 w-full rounded-xl border"
+          >
+            Choose your hobbies
+          </button>
+          {dropdownOpen && (
+            <div className="absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10">
+              {sportsOptions.map((sport) => (
+                <label key={sport} className="block p-2">
+                  <input
+                    type="checkbox"
+                    value={sport}
+                    checked={selectedHobbies.includes(sport)}
+                    onChange={handleCheckboxChange}
+                  />
+                  {sport}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Display selected hobbies in a separate div */}
+        <div className="mt-2">
+          {selectedHobbies.length > 0 && (
+            <div className="p-2 bg-gray-100 border rounded-lg">
+              <strong>Selected Hobbies:</strong>
+              <p>{selectedHobbies.join(", ")}</p>
+            </div>
+          )}
+        </div>
+
+        <input
+          type="hidden"
+          name="selectedHobbies"
+          value={JSON.stringify(selectedHobbies)}
+        />
+
         <div className="bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center">
           <button>Sign Up</button>
         </div>
@@ -84,13 +173,25 @@ export default function SignUp() {
   );
 }
 
+// Action function to handle form submission
 export async function action({ request }) {
   try {
-    const formData = await request.formData(); // get the form data
-    const newUser = Object.fromEntries(formData); // convert the form data to an object
-    await mongoose.models.User.create(newUser); // create the user
+    const formData = await request.formData();
+    const newUser = Object.fromEntries(formData);
 
-    return redirect("/signin"); // redirect to the sign-in page
+    // Parse selectedHobbies from JSON string to array
+    newUser.selectedHobbies = JSON.parse(newUser.selectedHobbies || "[]");
+
+    // Create the user in MongoDB with all fields
+    await mongoose.models.User.create({
+      mail: newUser.mail,
+      password: newUser.password,
+      name: newUser.name,
+      lastname: newUser.lastName, // Capturing lastname here
+      hobbies: newUser.selectedHobbies, // Optional, based on schema
+    });
+
+    return redirect("/signin");
   } catch (error) {
     console.log(error);
     return redirect("/signup");

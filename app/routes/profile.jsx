@@ -3,7 +3,7 @@ import { authenticator } from "../services/auth.server";
 
 export async function loader({ request }) {
   const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin"
+    failureRedirect: "/signin",
   });
   return user;
 }
@@ -13,9 +13,13 @@ export default function Profile() {
   return (
     <div className="page">
       <h1>Profile</h1>
-      <p>Name: {user.name}</p>
+      <p>
+        Name: {user.name} &nbsp;
+        {user.lastname}
+      </p>
       <p>Title: {user.title}</p>
       <p>Mail: {user.mail}</p>
+      <p>Your sports: {user.hobbies.join("&")}</p>
       <Form method="post">
         <button>Logout</button>
       </Form>
