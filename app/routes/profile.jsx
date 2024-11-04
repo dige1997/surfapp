@@ -12,14 +12,12 @@ export default function Profile() {
   const user = useLoaderData();
   return (
     <div className="page">
-      <h1>Profile</h1>
       <p>
         Name: {user.name} &nbsp;
         {user.lastname}
       </p>
-      <p>Title: {user.title}</p>
       <p>Mail: {user.mail}</p>
-      <p>Your sports: {user.hobbies.join("&")}</p>
+      <p>Your sports: {user.hobbies.join(", ")}</p>
       <Form method="post">
         <button>Logout</button>
       </Form>

@@ -60,7 +60,7 @@ export default function SignUp() {
   return (
     <div
       id="sign-up-page"
-      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-32 p-4 gap-3"
+      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-32 mb-32 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign Up</h1>
       <Form
@@ -74,7 +74,7 @@ export default function SignUp() {
           type="email"
           name="mail"
           aria-label="mail"
-          placeholder="Type your mail..."
+          placeholder="Type your email..."
           required
           autoComplete="off"
           className="p-2 rounded-xl w-full"

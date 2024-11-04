@@ -30,7 +30,7 @@ export default function SignIn() {
   return (
     <div
       id="sign-in-page"
-      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-80 w-72 ml-auto mr-auto mt-52 p-4 gap-3"
+      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-32 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign In</h1>
       <Form
@@ -38,13 +38,13 @@ export default function SignIn() {
         method="post"
         className="flex items-center flex-col gap-1 w-full"
       >
-        <label htmlFor="mail">Mail</label>
+        <label htmlFor="mail">Email</label>
         <input
           id="mail"
           type="email"
           name="mail"
           aria-label="mail"
-          placeholder="Type your mail..."
+          placeholder="Type your email..."
           required
           className="p-2 rounded-xl w-full"
         />
