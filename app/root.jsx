@@ -26,7 +26,7 @@ export default function App() {
   return (
     <html
       lang="en"
-      className="bg-gradient-to-t from-blue-50 to-cyan-200 bg-no-repeat h-screen"
+      className="bg-gradient-to-t from-blue-50 to-cyan-200 bg-no-repeat h-full"
     >
       <head>
         <meta charSet="utf-8" />
