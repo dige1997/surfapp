@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import stylesheet from "./tailwind.css";
 import Nav from "./components/Nav";
+import NavAll from "./components/NavAll";
 import { authenticator } from "./services/auth.server";
 
 export function links() {
@@ -35,7 +36,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {user ? <Nav /> : null}
+        {user ? <Nav user={user} /> : <NavAll />}
 
         <Outlet />
         <ScrollRestoration />

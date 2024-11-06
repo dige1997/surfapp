@@ -30,7 +30,7 @@ export default function SignIn() {
   return (
     <div
       id="sign-in-page"
-      className="bg-slate-200 flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-32 p-4 gap-3"
+      className=" flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign In</h1>
       <Form

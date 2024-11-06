@@ -10,7 +10,7 @@ export const meta = () => {
 
 export async function loader({ request }) {
   await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
+    failureRedirect: "/main-dashboard",
   });
 
   const posts = await mongoose.models.Post.find()
