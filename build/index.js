@@ -206,58 +206,69 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-EMO6P6BJ.css";
+var tailwind_default = "/build/_assets/tailwind-TIUGHYBZ.css";
 
 // app/components/Nav.jsx
 import { NavLink } from "@remix-run/react";
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
 function Nav() {
-  return /* @__PURE__ */ jsxDEV2("div", { className: " min-h-screen  fixed bg-cyan-500 ", children: /* @__PURE__ */ jsxDEV2("nav", { className: " flex flex-col mt-5", children: [
-    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/dashboard", className: "hover:bg-cyan-300 p-2", children: [
-      /* @__PURE__ */ jsxDEV2(
-        "svg",
-        {
-          width: "40px",
-          height: "40px",
-          viewBox: "0 -0.5 25 25",
-          fill: "none",
-          xmlns: "http://www.w3.org/2000/svg",
-          children: /* @__PURE__ */ jsxDEV2(
-            "path",
+  return /* @__PURE__ */ jsxDEV2("div", { className: " min-h-screen  fixed bg-cyan-50 ", children: /* @__PURE__ */ jsxDEV2("nav", { className: " flex flex-col mt-5 ", children: [
+    /* @__PURE__ */ jsxDEV2(
+      NavLink,
+      {
+        to: "/dashboard",
+        className: "hover:bg-cyan-100 p-2 justify-center ",
+        children: [
+          /* @__PURE__ */ jsxDEV2(
+            "svg",
             {
-              d: "M12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11C13.25 10.5858 12.9142 10.25 12.5 10.25V11.75ZM5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75V10.25ZM12.5 10.25C12.0858 10.25 11.75 10.5858 11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75V10.25ZM19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25V11.75ZM11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11H11.75ZM13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5H13.25ZM6.25 11C6.25 10.5858 5.91421 10.25 5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11H6.25ZM20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25C19.0858 10.25 18.75 10.5858 18.75 11H20.25ZM4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75C5.91421 11.75 6.25 11.4142 6.25 11H4.75ZM12.5 5.75C12.9142 5.75 13.25 5.41421 13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25V5.75ZM18.75 11C18.75 11.4142 19.0858 11.75 19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11H18.75ZM12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5C11.75 5.41421 12.0858 5.75 12.5 5.75V4.25ZM12.5 10.25H5.5V11.75H12.5V10.25ZM12.5 11.75H19.5V10.25H12.5V11.75ZM13.25 11V5H11.75V11H13.25ZM4.75 11V15H6.25V11H4.75ZM4.75 15C4.75 17.6234 6.87665 19.75 9.5 19.75V18.25C7.70507 18.25 6.25 16.7949 6.25 15H4.75ZM9.5 19.75H15.5V18.25H9.5V19.75ZM15.5 19.75C18.1234 19.75 20.25 17.6234 20.25 15H18.75C18.75 16.7949 17.2949 18.25 15.5 18.25V19.75ZM20.25 15V11H18.75V15H20.25ZM6.25 11V9H4.75V11H6.25ZM6.25 9C6.25 7.20507 7.70507 5.75 9.5 5.75V4.25C6.87665 4.25 4.75 6.37665 4.75 9H6.25ZM9.5 5.75H12.5V4.25H9.5V5.75ZM20.25 11V9H18.75V11H20.25ZM20.25 9C20.25 6.37665 18.1234 4.25 15.5 4.25V5.75C17.2949 5.75 18.75 7.20507 18.75 9H20.25ZM15.5 4.25H12.5V5.75H15.5V4.25Z",
-              fill: "#000000"
+              width: "40px",
+              height: "40px",
+              viewBox: "0 -0.5 25 25",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+              children: /* @__PURE__ */ jsxDEV2(
+                "path",
+                {
+                  d: "M12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11C13.25 10.5858 12.9142 10.25 12.5 10.25V11.75ZM5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75V10.25ZM12.5 10.25C12.0858 10.25 11.75 10.5858 11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75V10.25ZM19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25V11.75ZM11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11H11.75ZM13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5H13.25ZM6.25 11C6.25 10.5858 5.91421 10.25 5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11H6.25ZM20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25C19.0858 10.25 18.75 10.5858 18.75 11H20.25ZM4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75C5.91421 11.75 6.25 11.4142 6.25 11H4.75ZM12.5 5.75C12.9142 5.75 13.25 5.41421 13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25V5.75ZM18.75 11C18.75 11.4142 19.0858 11.75 19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11H18.75ZM12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5C11.75 5.41421 12.0858 5.75 12.5 5.75V4.25ZM12.5 10.25H5.5V11.75H12.5V10.25ZM12.5 11.75H19.5V10.25H12.5V11.75ZM13.25 11V5H11.75V11H13.25ZM4.75 11V15H6.25V11H4.75ZM4.75 15C4.75 17.6234 6.87665 19.75 9.5 19.75V18.25C7.70507 18.25 6.25 16.7949 6.25 15H4.75ZM9.5 19.75H15.5V18.25H9.5V19.75ZM15.5 19.75C18.1234 19.75 20.25 17.6234 20.25 15H18.75C18.75 16.7949 17.2949 18.25 15.5 18.25V19.75ZM20.25 15V11H18.75V15H20.25ZM6.25 11V9H4.75V11H6.25ZM6.25 9C6.25 7.20507 7.70507 5.75 9.5 5.75V4.25C6.87665 4.25 4.75 6.37665 4.75 9H6.25ZM9.5 5.75H12.5V4.25H9.5V5.75ZM20.25 11V9H18.75V11H20.25ZM20.25 9C20.25 6.37665 18.1234 4.25 15.5 4.25V5.75C17.2949 5.75 18.75 7.20507 18.75 9H20.25ZM15.5 4.25H12.5V5.75H15.5V4.25Z",
+                  fill: "#000000"
+                },
+                void 0,
+                !1,
+                {
+                  fileName: "app/components/Nav.jsx",
+                  lineNumber: 18,
+                  columnNumber: 13
+                },
+                this
+              )
             },
             void 0,
             !1,
             {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 15,
-              columnNumber: 13
+              lineNumber: 11,
+              columnNumber: 11
             },
             this
-          )
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/components/Nav.jsx",
-          lineNumber: 8,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Dashboard" }, void 0, !1, {
+          ),
+          /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Dashboard" }, void 0, !1, {
+            fileName: "app/components/Nav.jsx",
+            lineNumber: 23,
+            columnNumber: 11
+          }, this)
+        ]
+      },
+      void 0,
+      !0,
+      {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 20,
-        columnNumber: 11
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/components/Nav.jsx",
-      lineNumber: 7,
-      columnNumber: 9
-    }, this),
-    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/add-post", className: "hover:bg-cyan-300 p-2", children: [
+        lineNumber: 7,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/add-post", className: "hover:bg-cyan-100 p-2", children: [
       /* @__PURE__ */ jsxDEV2(
         "svg",
         {
@@ -282,7 +293,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 30,
+                lineNumber: 33,
                 columnNumber: 13
               },
               this
@@ -302,7 +313,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 39,
+                lineNumber: 42,
                 columnNumber: 13
               },
               this
@@ -317,7 +328,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 48,
+                lineNumber: 51,
                 columnNumber: 13
               },
               this
@@ -328,22 +339,22 @@ function Nav() {
         !0,
         {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 23,
+          lineNumber: 26,
           columnNumber: 11
         },
         this
       ),
       /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Add post" }, void 0, !1, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 53,
+        lineNumber: 56,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 22,
+      lineNumber: 25,
       columnNumber: 9
     }, this),
-    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/profile", className: "hover:bg-cyan-300 p-2", children: [
+    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/profile", className: "hover:bg-cyan-100 p-2", children: [
       /* @__PURE__ */ jsxDEV2(
         "svg",
         {
@@ -368,7 +379,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 63,
+                lineNumber: 66,
                 columnNumber: 13
               },
               this
@@ -388,7 +399,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 72,
+                lineNumber: 75,
                 columnNumber: 13
               },
               this
@@ -399,19 +410,19 @@ function Nav() {
         !0,
         {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 56,
+          lineNumber: 59,
           columnNumber: 11
         },
         this
       ),
       /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Profile" }, void 0, !1, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 82,
+        lineNumber: 85,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 55,
+      lineNumber: 58,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
@@ -853,7 +864,7 @@ var DashboardData = () => {
   }, []), useEffect(() => {
     city !== "Loading..." && fetchWeatherData(city);
   }, [city]), /* @__PURE__ */ jsxDEV6("div", { className: "flex flex-row p-4 ", children: [
-    /* @__PURE__ */ jsxDEV6("div", { className: "w-auto", children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: "w-60 ml-16", children: [
       /* @__PURE__ */ jsxDEV6("div", { className: "mt-4 flex justify-center flex-col", children: [
         /* @__PURE__ */ jsxDEV6("form", { className: "flex justify-center", onSubmit: (e) => {
           e.preventDefault(), inputCity && (setCity(inputCity), setInputCity(""));
@@ -995,7 +1006,7 @@ var DashboardData = () => {
         {
           title: "Windy Map",
           src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
-          className: "w-full lg:w-1/2 h-96 mt-4 mx-auto border-0 rounded-xl"
+          className: " w-4/6 h-96 mt-4 mx-auto border-0 rounded-xl"
         },
         void 0,
         !1,
@@ -1010,7 +1021,7 @@ var DashboardData = () => {
         {
           title: "Windy Map Swell",
           src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`,
-          className: "w-full lg:w-1/2 h-96 mt-4 mx-auto border-0 rounded-xl"
+          className: "w-4/6  h-96 mt-4 mx-auto border-0 rounded-xl"
         },
         void 0,
         !1,
@@ -1877,7 +1888,7 @@ async function action6({ request }) {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-RGXJUQGB.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-B5CRAOAI.js", imports: ["/build/_shared/chunk-HGRUEWAW.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-RDSCQKCS.js", imports: ["/build/_shared/chunk-HGRUEWAW.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "4b452ec7", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1731319760297 }, url: "/build/manifest-4B452EC7.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-4YUGVTUK.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-JBJW3CDA.js", imports: ["/build/_shared/chunk-36ODWHMZ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-AA2FRI7K.js", imports: ["/build/_shared/chunk-36ODWHMZ.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "6f6078fd", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1731406534536 }, url: "/build/manifest-6F6078FD.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

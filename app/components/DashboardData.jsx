@@ -76,7 +76,7 @@ const DashboardData = () => {
 
   return (
     <div className="flex flex-row p-4 ">
-      <div className="w-auto">
+      <div className="w-60 ml-16">
         <div className="mt-4 flex justify-center flex-col">
           <form className="flex justify-center" onSubmit={handleSearch}>
             <input
@@ -144,7 +144,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=wind&metricTemp=°C&metricWind=m/s`}
-            className="w-full lg:w-1/2 h-96 mt-4 mx-auto border-0 rounded-xl"
+            className=" w-4/6 h-96 mt-4 mx-auto border-0 rounded-xl"
           ></iframe>
         ) : (
           <iframe
@@ -154,7 +154,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`}
-            className="w-full lg:w-1/2 h-96 mt-4 mx-auto border-0 rounded-xl"
+            className="w-4/6  h-96 mt-4 mx-auto border-0 rounded-xl"
           ></iframe>
         )}
       </div>
