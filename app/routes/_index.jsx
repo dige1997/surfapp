@@ -1,7 +1,7 @@
 import { authenticator } from "../services/auth.server";
 
 export const meta = () => {
-  return [{ title: "Remix Post App" }];
+  return [{ title: "Elevation" }];
 };
 
 export async function loader({ request }) {

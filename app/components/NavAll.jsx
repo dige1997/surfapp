@@ -10,9 +10,9 @@ export async function loader({ request }) {
 export default function Nav() {
   return (
     <nav className="flex shadow-md justify-between md:justify-items-end items-center">
-      <NavLink to={authenticator ? "/event" : "/all-events"}>
+      <NavLink to={authenticator ? "/dashboard" : "/main-dashboard"}>
         <h1 className="font-mono text-2xl font-bold m-auto p-2 mx-2">
-          TrailBlaze
+          Elevation
         </h1>
       </NavLink>
       <div className="flex ml-auto p-2 font-semibold mr-4">
