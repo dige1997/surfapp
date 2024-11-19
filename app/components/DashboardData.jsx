@@ -75,8 +75,8 @@ const DashboardData = () => {
   };
 
   return (
-    <div className="flex flex-row p-4 ">
-      <div className="w-60 ml-16">
+    <div className="flex md:flex-row flex-col p-4 ">
+      <div className=" md:w-3/6 md:justify-center md:mx-auto ">
         <div className="mt-4 flex justify-center flex-col">
           <form className="flex justify-center" onSubmit={handleSearch}>
             <input
@@ -84,19 +84,21 @@ const DashboardData = () => {
               placeholder="Enter city name"
               value={inputCity}
               onChange={(e) => setInputCity(e.target.value)}
-              className="bg-slate-50 p-2 rounded-l-2xl focus:outline-none"
+              className="bg-slate-50 p-2 rounded-l-2xl focus:outline-none "
             />
             <button className="bg-slate-50 rounded-r-2xl p-2" type="submit">
               🔍
             </button>
           </form>
-          <h1 className="text-3xl font-bold text-center mt-2">{city}</h1>
+          <h1 className="text-3xl font-bold text-center mt-2 capitalize">
+            {city}
+          </h1>
         </div>
 
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         {weatherData ? (
-          <div className="bg-s-100 rounded-xl w-full  p-6 mt-4 mx-auto">
+          <div className="bg-s-100 rounded-xl w-full p-6 mt-4 mx-auto">
             <p className="text-3xl flex items-center gap-3">
               🌡 {weatherData.list[0].main.temp} °C
             </p>
@@ -112,7 +114,7 @@ const DashboardData = () => {
           <p className="text-center mt-4">Loading weather data...</p>
         )}
       </div>
-      <div className="w-full">
+      <div className="w-full px-4">
         <div className="flex justify-center mt-4">
           <button
             className={`p-2 mx-2 rounded-xl shadow-md ${
@@ -144,7 +146,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=wind&metricTemp=°C&metricWind=m/s`}
-            className=" w-4/6 h-96 mt-4 mx-auto border-0 rounded-xl"
+            className=" w-full h-96 m-4 mx-auto border-0 rounded-xl"
           ></iframe>
         ) : (
           <iframe
@@ -154,7 +156,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`}
-            className="w-4/6  h-96 mt-4 mx-auto border-0 rounded-xl"
+            className="w-full h-96 m-4 mx-auto border-0 rounded-xl"
           ></iframe>
         )}
       </div>

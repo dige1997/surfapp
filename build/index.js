@@ -206,13 +206,13 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-TIUGHYBZ.css";
+var tailwind_default = "/build/_assets/tailwind-YS64KHFM.css";
 
 // app/components/Nav.jsx
 import { NavLink } from "@remix-run/react";
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
 function Nav() {
-  return /* @__PURE__ */ jsxDEV2("div", { className: " min-h-screen  fixed bg-cyan-50 ", children: /* @__PURE__ */ jsxDEV2("nav", { className: " flex flex-col mt-5 ", children: [
+  return /* @__PURE__ */ jsxDEV2("div", { className: "  bg-cyan-50 ", children: /* @__PURE__ */ jsxDEV2("nav", { className: " flex justify-evenly", children: [
     /* @__PURE__ */ jsxDEV2(
       NavLink,
       {
@@ -268,92 +268,103 @@ function Nav() {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV2(NavLink, { to: "/add-post", className: "hover:bg-cyan-100 p-2", children: [
-      /* @__PURE__ */ jsxDEV2(
-        "svg",
-        {
-          width: "40px",
-          height: "40px",
-          viewBox: "0 -0.5 25 25",
-          fill: "none",
-          xmlns: "http://www.w3.org/2000/svg",
-          children: [
-            /* @__PURE__ */ jsxDEV2(
-              "path",
-              {
-                "fill-rule": "evenodd",
-                "clip-rule": "evenodd",
-                d: "M9.808 4.00001H15.329C15.3863 4.00001 15.4433 4.00367 15.5 4.01101C17.7473 4.16817 19.4924 6.0332 19.5 8.28601V14.715C19.4917 17.0871 17.5641 19.0044 15.192 19H9.808C7.43551 19.0044 5.50772 17.0865 5.5 14.714V8.28601C5.50772 5.91353 7.43551 3.99558 9.808 4.00001Z",
-                stroke: "#000000",
-                "stroke-width": "1.5",
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/Nav.jsx",
-                lineNumber: 33,
-                columnNumber: 13
-              },
-              this
-            ),
-            /* @__PURE__ */ jsxDEV2(
-              "path",
-              {
-                "fill-rule": "evenodd",
-                "clip-rule": "evenodd",
-                d: "M10.214 7.12902L8.72301 8.32902C8.57898 8.46627 8.49798 8.65687 8.49911 8.85582C8.50025 9.05476 8.58343 9.24442 8.72901 9.38002L9.69201 10.539L13.718 15.38C13.7851 15.458 13.875 15.5129 13.975 15.537L15.975 15.994C16.2395 16.009 16.4697 15.8152 16.5 15.552L16.407 13.606C16.4001 13.5061 16.36 13.4114 16.293 13.337L12.36 8.60702L11.3 7.33402C11.0448 6.99622 10.5748 6.90749 10.214 7.12902Z",
-                stroke: "#000000",
-                "stroke-width": "1.5",
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/Nav.jsx",
-                lineNumber: 42,
-                columnNumber: 13
-              },
-              this
-            ),
-            /* @__PURE__ */ jsxDEV2(
-              "path",
-              {
-                d: "M19.5 9.07599C19.9142 9.07599 20.25 8.7402 20.25 8.32599C20.25 7.91177 19.9142 7.57599 19.5 7.57599V9.07599ZM15.5 8.32599H14.75C14.75 8.7402 15.0858 9.07599 15.5 9.07599V8.32599ZM16.25 4.01099C16.25 3.59677 15.9142 3.26099 15.5 3.26099C15.0858 3.26099 14.75 3.59677 14.75 4.01099H16.25ZM13.0989 8.7397C13.17 8.33163 12.8968 7.9432 12.4887 7.87211C12.0806 7.80103 11.6922 8.07421 11.6211 8.48227L13.0989 8.7397ZM9.80281 9.79422C9.39314 9.73302 9.01143 10.0155 8.95023 10.4252C8.88903 10.8348 9.17152 11.2166 9.58119 11.2778L9.80281 9.79422ZM19.5 7.57599H15.5V9.07599H19.5V7.57599ZM16.25 8.32599V4.01099H14.75V8.32599H16.25ZM11.6211 8.48227C11.4716 9.34065 10.6645 9.92295 9.80281 9.79422L9.58119 11.2778C11.2483 11.5268 12.8096 10.4003 13.0989 8.7397L11.6211 8.48227Z",
-                fill: "#000000"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/Nav.jsx",
-                lineNumber: 51,
-                columnNumber: 13
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/components/Nav.jsx",
-          lineNumber: 26,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Add post" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV2(
+      NavLink,
+      {
+        to: "/add-post",
+        className: "hover:bg-cyan-100 p-2 justify-center",
+        children: [
+          /* @__PURE__ */ jsxDEV2(
+            "svg",
+            {
+              width: "40px",
+              height: "40px",
+              viewBox: "0 -0.5 25 25",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+              children: [
+                /* @__PURE__ */ jsxDEV2(
+                  "path",
+                  {
+                    "fill-rule": "evenodd",
+                    "clip-rule": "evenodd",
+                    d: "M9.808 4.00001H15.329C15.3863 4.00001 15.4433 4.00367 15.5 4.01101C17.7473 4.16817 19.4924 6.0332 19.5 8.28601V14.715C19.4917 17.0871 17.5641 19.0044 15.192 19H9.808C7.43551 19.0044 5.50772 17.0865 5.5 14.714V8.28601C5.50772 5.91353 7.43551 3.99558 9.808 4.00001Z",
+                    stroke: "#000000",
+                    "stroke-width": "1.5",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/Nav.jsx",
+                    lineNumber: 36,
+                    columnNumber: 13
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV2(
+                  "path",
+                  {
+                    "fill-rule": "evenodd",
+                    "clip-rule": "evenodd",
+                    d: "M10.214 7.12902L8.72301 8.32902C8.57898 8.46627 8.49798 8.65687 8.49911 8.85582C8.50025 9.05476 8.58343 9.24442 8.72901 9.38002L9.69201 10.539L13.718 15.38C13.7851 15.458 13.875 15.5129 13.975 15.537L15.975 15.994C16.2395 16.009 16.4697 15.8152 16.5 15.552L16.407 13.606C16.4001 13.5061 16.36 13.4114 16.293 13.337L12.36 8.60702L11.3 7.33402C11.0448 6.99622 10.5748 6.90749 10.214 7.12902Z",
+                    stroke: "#000000",
+                    "stroke-width": "1.5",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/Nav.jsx",
+                    lineNumber: 45,
+                    columnNumber: 13
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV2(
+                  "path",
+                  {
+                    d: "M19.5 9.07599C19.9142 9.07599 20.25 8.7402 20.25 8.32599C20.25 7.91177 19.9142 7.57599 19.5 7.57599V9.07599ZM15.5 8.32599H14.75C14.75 8.7402 15.0858 9.07599 15.5 9.07599V8.32599ZM16.25 4.01099C16.25 3.59677 15.9142 3.26099 15.5 3.26099C15.0858 3.26099 14.75 3.59677 14.75 4.01099H16.25ZM13.0989 8.7397C13.17 8.33163 12.8968 7.9432 12.4887 7.87211C12.0806 7.80103 11.6922 8.07421 11.6211 8.48227L13.0989 8.7397ZM9.80281 9.79422C9.39314 9.73302 9.01143 10.0155 8.95023 10.4252C8.88903 10.8348 9.17152 11.2166 9.58119 11.2778L9.80281 9.79422ZM19.5 7.57599H15.5V9.07599H19.5V7.57599ZM16.25 8.32599V4.01099H14.75V8.32599H16.25ZM11.6211 8.48227C11.4716 9.34065 10.6645 9.92295 9.80281 9.79422L9.58119 11.2778C11.2483 11.5268 12.8096 10.4003 13.0989 8.7397L11.6211 8.48227Z",
+                    fill: "#000000"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/Nav.jsx",
+                    lineNumber: 54,
+                    columnNumber: 13
+                  },
+                  this
+                )
+              ]
+            },
+            void 0,
+            !0,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 29,
+              columnNumber: 11
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Add post" }, void 0, !1, {
+            fileName: "app/components/Nav.jsx",
+            lineNumber: 59,
+            columnNumber: 11
+          }, this)
+        ]
+      },
+      void 0,
+      !0,
+      {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 56,
-        columnNumber: 11
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/components/Nav.jsx",
-      lineNumber: 25,
-      columnNumber: 9
-    }, this),
+        lineNumber: 25,
+        columnNumber: 9
+      },
+      this
+    ),
     /* @__PURE__ */ jsxDEV2(NavLink, { to: "/profile", className: "hover:bg-cyan-100 p-2", children: [
       /* @__PURE__ */ jsxDEV2(
         "svg",
@@ -379,7 +390,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 66,
+                lineNumber: 69,
                 columnNumber: 13
               },
               this
@@ -399,7 +410,7 @@ function Nav() {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 75,
+                lineNumber: 78,
                 columnNumber: 13
               },
               this
@@ -410,19 +421,19 @@ function Nav() {
         !0,
         {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 59,
+          lineNumber: 62,
           columnNumber: 11
         },
         this
       ),
       /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Profile" }, void 0, !1, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 85,
+        lineNumber: 88,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 58,
+      lineNumber: 61,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
@@ -628,6 +639,11 @@ function App() {
         ] }, void 0, !0, {
           fileName: "app/root.jsx",
           lineNumber: 38,
+          columnNumber: 7
+        }, this),
+        /* @__PURE__ */ jsxDEV4("footer", {}, void 0, !1, {
+          fileName: "app/root.jsx",
+          lineNumber: 46,
           columnNumber: 7
         }, this)
       ]
@@ -863,8 +879,8 @@ var DashboardData = () => {
     getUserLocation();
   }, []), useEffect(() => {
     city !== "Loading..." && fetchWeatherData(city);
-  }, [city]), /* @__PURE__ */ jsxDEV6("div", { className: "flex flex-row p-4 ", children: [
-    /* @__PURE__ */ jsxDEV6("div", { className: "w-60 ml-16", children: [
+  }, [city]), /* @__PURE__ */ jsxDEV6("div", { className: "flex md:flex-row flex-col p-4 ", children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: " md:w-3/6 md:justify-center md:mx-auto ", children: [
       /* @__PURE__ */ jsxDEV6("div", { className: "mt-4 flex justify-center flex-col", children: [
         /* @__PURE__ */ jsxDEV6("form", { className: "flex justify-center", onSubmit: (e) => {
           e.preventDefault(), inputCity && (setCity(inputCity), setInputCity(""));
@@ -876,7 +892,7 @@ var DashboardData = () => {
               placeholder: "Enter city name",
               value: inputCity,
               onChange: (e) => setInputCity(e.target.value),
-              className: "bg-slate-50 p-2 rounded-l-2xl focus:outline-none"
+              className: "bg-slate-50 p-2 rounded-l-2xl focus:outline-none "
             },
             void 0,
             !1,
@@ -897,7 +913,7 @@ var DashboardData = () => {
           lineNumber: 81,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV6("h1", { className: "text-3xl font-bold text-center mt-2", children: city }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV6("h1", { className: "text-3xl font-bold text-center mt-2 capitalize", children: city }, void 0, !1, {
           fileName: "app/components/DashboardData.jsx",
           lineNumber: 93,
           columnNumber: 11
@@ -909,17 +925,17 @@ var DashboardData = () => {
       }, this),
       error && /* @__PURE__ */ jsxDEV6("p", { className: "text-red-500 text-center", children: error }, void 0, !1, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 96,
+        lineNumber: 98,
         columnNumber: 19
       }, this),
-      weatherData ? /* @__PURE__ */ jsxDEV6("div", { className: "bg-s-100 rounded-xl w-full  p-6 mt-4 mx-auto", children: [
+      weatherData ? /* @__PURE__ */ jsxDEV6("div", { className: "bg-s-100 rounded-xl w-full p-6 mt-4 mx-auto", children: [
         /* @__PURE__ */ jsxDEV6("p", { className: "text-3xl flex items-center gap-3", children: [
           "\u{1F321} ",
           weatherData.list[0].main.temp,
           " \xB0C"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 100,
+          lineNumber: 102,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { children: [
@@ -928,7 +944,7 @@ var DashboardData = () => {
           " \xB0C"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 103,
+          lineNumber: 105,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { className: "text-3xl flex items-center gap-3", children: [
@@ -936,7 +952,7 @@ var DashboardData = () => {
           weatherData.list[0].weather[0].description
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 104,
+          lineNumber: 106,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { className: "text-3xl flex items-center gap-3", children: [
@@ -945,16 +961,16 @@ var DashboardData = () => {
           " m/s"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 107,
+          lineNumber: 109,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 99,
+        lineNumber: 101,
         columnNumber: 11
       }, this) : /* @__PURE__ */ jsxDEV6("p", { className: "text-center mt-4", children: "Loading weather data..." }, void 0, !1, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 112,
+        lineNumber: 114,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
@@ -962,7 +978,7 @@ var DashboardData = () => {
       lineNumber: 79,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV6("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: "w-full px-4", children: [
       /* @__PURE__ */ jsxDEV6("div", { className: "flex justify-center mt-4", children: [
         /* @__PURE__ */ jsxDEV6(
           "button",
@@ -975,7 +991,7 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 117,
+            lineNumber: 119,
             columnNumber: 11
           },
           this
@@ -991,14 +1007,14 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 127,
+            lineNumber: 129,
             columnNumber: 11
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 116,
+        lineNumber: 118,
         columnNumber: 9
       }, this),
       activeTab === "wind" ? /* @__PURE__ */ jsxDEV6(
@@ -1006,13 +1022,13 @@ var DashboardData = () => {
         {
           title: "Windy Map",
           src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
-          className: " w-4/6 h-96 mt-4 mx-auto border-0 rounded-xl"
+          className: " w-full h-96 m-4 mx-auto border-0 rounded-xl"
         },
         void 0,
         !1,
         {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 140,
+          lineNumber: 142,
           columnNumber: 11
         },
         this
@@ -1021,20 +1037,20 @@ var DashboardData = () => {
         {
           title: "Windy Map Swell",
           src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`,
-          className: "w-4/6  h-96 mt-4 mx-auto border-0 rounded-xl"
+          className: "w-full h-96 m-4 mx-auto border-0 rounded-xl"
         },
         void 0,
         !1,
         {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 150,
+          lineNumber: 152,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/components/DashboardData.jsx",
-      lineNumber: 115,
+      lineNumber: 117,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
@@ -1888,7 +1904,7 @@ async function action6({ request }) {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-4YUGVTUK.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-JBJW3CDA.js", imports: ["/build/_shared/chunk-36ODWHMZ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-AA2FRI7K.js", imports: ["/build/_shared/chunk-36ODWHMZ.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "6f6078fd", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1731406534536 }, url: "/build/manifest-6F6078FD.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-26BZEVPT.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-2B4GRPDG.js", imports: ["/build/_shared/chunk-XVRUWACE.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-5ESXZTG2.js", imports: ["/build/_shared/chunk-XVRUWACE.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "2f7ea079", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732013824127 }, url: "/build/manifest-2F7EA079.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

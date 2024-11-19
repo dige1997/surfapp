@@ -43,6 +43,7 @@ export default function App() {
         <Scripts />
         <LiveReload />
       </body>
+      <footer></footer>
     </html>
   );
 }

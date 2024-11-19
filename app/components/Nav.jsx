@@ -2,8 +2,8 @@ import { NavLink } from "@remix-run/react";
 
 export default function Nav() {
   return (
-    <div className=" min-h-screen  fixed bg-cyan-50 ">
-      <nav className=" flex flex-col mt-5 ">
+    <div className="  bg-cyan-50 ">
+      <nav className=" flex justify-evenly">
         <NavLink
           to="/dashboard"
           className={"hover:bg-cyan-100 p-2 justify-center "}
@@ -22,7 +22,10 @@ export default function Nav() {
           </svg>
           <p className="text-xs">Dashboard</p>
         </NavLink>
-        <NavLink to="/add-post" className={"hover:bg-cyan-100 p-2"}>
+        <NavLink
+          to="/add-post"
+          className={"hover:bg-cyan-100 p-2 justify-center"}
+        >
           <svg
             width="40px"
             height="40px"
