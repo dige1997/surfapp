@@ -90,7 +90,7 @@ const DashboardData = () => {
               🔍
             </button>
           </form>
-          <h1 className="text-3xl font-bold text-center mt-2 capitalize">
+          <h1 className="text-7xl font-bold text-center mt-2 capitalize">
             {city}
           </h1>
         </div>
@@ -146,7 +146,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=wind&metricTemp=°C&metricWind=m/s`}
-            className=" w-full h-96 m-4 mx-auto border-0 rounded-xl"
+            className=" w-full h-full m-4 mx-auto border-0 rounded-xl"
           ></iframe>
         ) : (
           <iframe
@@ -156,7 +156,7 @@ const DashboardData = () => {
             }&lon=${
               weatherData?.city?.coord?.lon || 12.347
             }&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`}
-            className="w-full h-96 m-4 mx-auto border-0 rounded-xl"
+            className="w-full h-full m-4 mx-auto border-0 rounded-xl"
           ></iframe>
         )}
       </div>

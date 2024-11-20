@@ -14,6 +14,7 @@
     "format-code": "npm run prettier:fix & npm run lint:fix"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.3",
     "@remix-run/css-bundle": "2.7.1",
     "@remix-run/node": "2.7.1",
     "@remix-run/react": "2.7.1",
