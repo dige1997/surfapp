@@ -206,7 +206,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-X2AEJW3T.css";
+var tailwind_default = "/build/_assets/tailwind-SEJ7LZSZ.css";
 
 // app/components/Nav.jsx
 import { NavLink } from "@remix-run/react";
@@ -844,7 +844,7 @@ import mongoose6 from "mongoose";
 import { useEffect, useState as useState2 } from "react";
 import { jsxDEV as jsxDEV6 } from "react/jsx-dev-runtime";
 var DashboardData = () => {
-  let [weatherData, setWeatherData] = useState2(null), [city, setCity] = useState2("Loading..."), [inputCity, setInputCity] = useState2(""), [error, setError] = useState2(""), [activeTab, setActiveTab] = useState2("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
+  let [weatherData, setWeatherData] = useState2(null), [city, setCity] = useState2("Loading..."), [country, setCountry] = useState2(""), [inputCity, setInputCity] = useState2(""), [error, setError] = useState2(""), [activeTab, setActiveTab] = useState2("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
     let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city2}&appid=${apiKey}&units=metric`;
     try {
       let response = await fetch(apiUrl);
@@ -853,7 +853,7 @@ var DashboardData = () => {
         throw new Error(`Error: ${errorText}`);
       }
       let data = await response.json();
-      setWeatherData(data), setError("");
+      setWeatherData(data), setError(""), setCountry(data.city.country);
     } catch (error2) {
       console.error("Error fetching weather data:", error2), setError("Could not fetch weather data. Please try another city.");
     }
@@ -861,9 +861,9 @@ var DashboardData = () => {
     let reverseGeoUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
     try {
       let data = await (await fetch(reverseGeoUrl)).json();
-      data && data.length > 0 && setCity(data[0].name);
+      data && data.length > 0 && (setCity(data[0].name), setCountry(data[0].country));
     } catch (error2) {
-      console.error("Error fetching city by coordinates:", error2), setCity("Copenhagen");
+      console.error("Error fetching city by coordinates:", error2), setCity("Copenhagen"), setCountry("DK");
     }
   }, getUserLocation = () => {
     navigator.geolocation ? navigator.geolocation.getCurrentPosition(
@@ -871,20 +871,43 @@ var DashboardData = () => {
         let { latitude, longitude } = position.coords;
         fetchCityByCoordinates(latitude, longitude);
       },
-      () => setCity("Copenhagen")
-      // Fallback city if location fails
-    ) : setCity("Copenhagen");
+      () => {
+        setCity("Copenhagen"), setCountry("DK");
+      }
+    ) : (setCity("Copenhagen"), setCountry("DK"));
   };
-  return useEffect(() => {
+  useEffect(() => {
     getUserLocation();
   }, []), useEffect(() => {
     city !== "Loading..." && fetchWeatherData(city);
-  }, [city]), /* @__PURE__ */ jsxDEV6("div", { className: "flex md:flex-row flex-col p-4 ", children: [
-    /* @__PURE__ */ jsxDEV6("div", { className: " md:w-3/6 md:justify-center md:mx-auto ", children: [
+  }, [city]);
+  let handleSearch = (e) => {
+    e.preventDefault(), inputCity && (setCity(inputCity), setInputCity(""));
+  }, getWindDirection = (degrees) => {
+    if (degrees >= 337.5 || degrees < 22.5)
+      return "N";
+    if (degrees >= 22.5 && degrees < 67.5)
+      return "NE";
+    if (degrees >= 67.5 && degrees < 112.5)
+      return "E";
+    if (degrees >= 112.5 && degrees < 157.5)
+      return "SE";
+    if (degrees >= 157.5 && degrees < 202.5)
+      return "S";
+    if (degrees >= 202.5 && degrees < 247.5)
+      return "SW";
+    if (degrees >= 247.5 && degrees < 292.5)
+      return "W";
+    if (degrees >= 292.5 && degrees < 337.5)
+      return "NW";
+  }, getWeatherEmoji = (description) => {
+    let lowerCaseDescription = description.toLowerCase();
+    return lowerCaseDescription.includes("clear") ? "\u2600\uFE0F" : lowerCaseDescription.includes("clouds") ? "\u2601\uFE0F" : lowerCaseDescription.includes("rain") ? "\u{1F327}\uFE0F" : lowerCaseDescription.includes("thunderstorm") ? "\u26C8\uFE0F" : lowerCaseDescription.includes("snow") ? "\u2744\uFE0F" : lowerCaseDescription.includes("mist") || lowerCaseDescription.includes("fog") ? "\u{1F32B}\uFE0F" : "\u{1F324}\uFE0F";
+  };
+  return /* @__PURE__ */ jsxDEV6("div", { className: "flex md:flex-row flex-col p-4", children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: "md:w-3/6 md:justify-center md:mx-auto", children: [
       /* @__PURE__ */ jsxDEV6("div", { className: "mt-4 flex justify-center flex-col", children: [
-        /* @__PURE__ */ jsxDEV6("form", { className: "flex justify-center", onSubmit: (e) => {
-          e.preventDefault(), inputCity && (setCity(inputCity), setInputCity(""));
-        }, children: [
+        /* @__PURE__ */ jsxDEV6("form", { className: "flex justify-center", onSubmit: handleSearch, children: [
           /* @__PURE__ */ jsxDEV6(
             "input",
             {
@@ -892,40 +915,54 @@ var DashboardData = () => {
               placeholder: "Enter city name",
               value: inputCity,
               onChange: (e) => setInputCity(e.target.value),
-              className: "bg-slate-50 p-2 rounded-l-2xl focus:outline-none "
+              className: "bg-slate-50 p-2 rounded-l-2xl focus:outline-none"
             },
             void 0,
             !1,
             {
               fileName: "app/components/DashboardData.jsx",
-              lineNumber: 82,
+              lineNumber: 125,
               columnNumber: 13
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("button", { className: "bg-slate-50 rounded-r-2xl p-2", type: "submit", children: "\u{1F50D}" }, void 0, !1, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 89,
+            lineNumber: 132,
             columnNumber: 13
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 81,
+          lineNumber: 124,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV6("h1", { className: "text-7xl font-bold text-center mt-2 capitalize", children: city }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV6("div", { children: [
+          /* @__PURE__ */ jsxDEV6("h1", { className: "text-7xl font-bold text-center mt-2 capitalize", children: city }, void 0, !1, {
+            fileName: "app/components/DashboardData.jsx",
+            lineNumber: 137,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV6("p", { className: "text-4xl font-semibold text-center", children: [
+            " ",
+            country
+          ] }, void 0, !0, {
+            fileName: "app/components/DashboardData.jsx",
+            lineNumber: 140,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 93,
+          lineNumber: 136,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 80,
+        lineNumber: 123,
         columnNumber: 9
       }, this),
       error && /* @__PURE__ */ jsxDEV6("p", { className: "text-red-500 text-center", children: error }, void 0, !1, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 98,
+        lineNumber: 144,
         columnNumber: 19
       }, this),
       weatherData ? /* @__PURE__ */ jsxDEV6("div", { className: "bg-s-100 rounded-xl w-full p-6 mt-4 mx-auto", children: [
@@ -935,7 +972,7 @@ var DashboardData = () => {
           " \xB0C"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 102,
+          lineNumber: 148,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { children: [
@@ -944,15 +981,44 @@ var DashboardData = () => {
           " \xB0C"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 105,
+          lineNumber: 151,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV6("p", { children: [
+          "Min Temp: ",
+          weatherData.list[0].main.temp_min,
+          " \xB0C"
+        ] }, void 0, !0, {
+          fileName: "app/components/DashboardData.jsx",
+          lineNumber: 152,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV6("p", { children: [
+          "Max Temp: ",
+          weatherData.list[0].main.temp_max,
+          " \xB0C"
+        ] }, void 0, !0, {
+          fileName: "app/components/DashboardData.jsx",
+          lineNumber: 153,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { className: "text-3xl flex items-center gap-3", children: [
-          "\u{1F324} ",
+          getWeatherEmoji(weatherData.list[0].weather[0].description),
+          " ",
           weatherData.list[0].weather[0].description
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 106,
+          lineNumber: 154,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV6("p", { children: [
+          "Rain:",
+          " ",
+          weatherData.list[0].rain ? weatherData.list[0].rain["3h"] : 0,
+          " mm"
+        ] }, void 0, !0, {
+          fileName: "app/components/DashboardData.jsx",
+          lineNumber: 158,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ jsxDEV6("p", { className: "text-3xl flex items-center gap-3", children: [
@@ -961,29 +1027,40 @@ var DashboardData = () => {
           " m/s"
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 109,
+          lineNumber: 162,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV6("p", { children: [
+          "Wind Direction: ",
+          getWindDirection(weatherData.list[0].wind.deg),
+          " (",
+          weatherData.list[0].wind.deg,
+          "\xB0)"
+        ] }, void 0, !0, {
+          fileName: "app/components/DashboardData.jsx",
+          lineNumber: 165,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 101,
+        lineNumber: 147,
         columnNumber: 11
       }, this) : /* @__PURE__ */ jsxDEV6("p", { className: "text-center mt-4", children: "Loading weather data..." }, void 0, !1, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 114,
+        lineNumber: 171,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/DashboardData.jsx",
-      lineNumber: 79,
+      lineNumber: 122,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV6("div", { className: "w-full px-4", children: [
-      /* @__PURE__ */ jsxDEV6("div", { className: "flex justify-center mt-4", children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: "w-full h-96 px-4", children: [
+      /* @__PURE__ */ jsxDEV6("div", { className: "flex mt-4", children: [
         /* @__PURE__ */ jsxDEV6(
           "button",
           {
-            className: `p-2 mx-2 rounded-xl shadow-md ${activeTab === "wind" ? "bg-blue-500 text-white" : "bg-slate-100 hover:bg-slate-400"}`,
+            className: `p-2 rounded-t-md shadow-md ${activeTab === "wind" ? "bg-blue-500 text-white" : "bg-slate-100 hover:bg-slate-400"}`,
             onClick: () => setActiveTab("wind"),
             children: "Wind Map"
           },
@@ -991,7 +1068,7 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 119,
+            lineNumber: 177,
             columnNumber: 11
           },
           this
@@ -999,7 +1076,7 @@ var DashboardData = () => {
         /* @__PURE__ */ jsxDEV6(
           "button",
           {
-            className: `p-2 mx-2 rounded-xl shadow-md ${activeTab === "swell" ? "bg-blue-500 text-white" : "bg-slate-100 hover:bg-slate-400"}`,
+            className: `p-2 rounded-t-md shadow-md ${activeTab === "swell" ? "bg-blue-500 text-white" : "bg-slate-100 hover:bg-slate-400"}`,
             onClick: () => setActiveTab("swell"),
             children: "Swell Map"
           },
@@ -1007,55 +1084,91 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 129,
+            lineNumber: 187,
+            columnNumber: 11
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV6(
+          "button",
+          {
+            className: `p-2 rounded-t-md shadow-md ${activeTab === "temp" ? "bg-slate-500 text-white" : "bg-slate-100 hover:bg-slate-400"}`,
+            onClick: () => setActiveTab("temp"),
+            children: "Sea Temp"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/DashboardData.jsx",
+            lineNumber: 197,
             columnNumber: 11
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 118,
+        lineNumber: 176,
         columnNumber: 9
       }, this),
-      activeTab === "wind" ? /* @__PURE__ */ jsxDEV6(
+      activeTab === "wind" && weatherData && /* @__PURE__ */ jsxDEV6(
         "iframe",
         {
           title: "Windy Map",
-          src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
-          className: " w-full h-full m-4 mx-auto border-0 rounded-xl"
+          src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
+          className: "w-full h-full rounded-md",
+          frameBorder: "0"
         },
         void 0,
         !1,
         {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 142,
+          lineNumber: 210,
           columnNumber: 11
         },
         this
-      ) : /* @__PURE__ */ jsxDEV6(
+      ),
+      activeTab === "swell" && weatherData && /* @__PURE__ */ jsxDEV6(
         "iframe",
         {
-          title: "Windy Map Swell",
-          src: `https://embed.windy.com/embed.html?lat=${weatherData?.city?.coord?.lat || 55.615}&lon=${weatherData?.city?.coord?.lon || 12.347}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`,
-          className: "w-full h-full m-4 mx-auto border-0 rounded-xl"
+          title: "Swell Map",
+          src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell&metricTemp=\xB0C&metricWind=m/s`,
+          className: "w-full h-full rounded-md",
+          frameBorder: "0"
         },
         void 0,
         !1,
         {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 152,
+          lineNumber: 218,
+          columnNumber: 11
+        },
+        this
+      ),
+      activeTab === "temp" && weatherData && /* @__PURE__ */ jsxDEV6(
+        "iframe",
+        {
+          title: "Sea Temperature",
+          src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sea&metricTemp=\xB0C&metricWind=m/s`,
+          className: "w-full h-full rounded-md",
+          frameBorder: "0"
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/components/DashboardData.jsx",
+          lineNumber: 226,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/components/DashboardData.jsx",
-      lineNumber: 117,
+      lineNumber: 175,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/DashboardData.jsx",
-    lineNumber: 78,
+    lineNumber: 121,
     columnNumber: 5
   }, this);
 }, DashboardData_default = DashboardData;
@@ -1904,7 +2017,7 @@ async function action6({ request }) {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-BLC7ECVK.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-PP3VBD4P.js", imports: ["/build/_shared/chunk-IVAYFWNE.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-TTCGKHU2.js", imports: ["/build/_shared/chunk-IVAYFWNE.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "e5b70b9e", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732102283312 }, url: "/build/manifest-E5B70B9E.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-ECTEVU5Z.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-MK64LYZB.js", imports: ["/build/_shared/chunk-SV63GPJL.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-Q7WYX7GV.js", imports: ["/build/_shared/chunk-SV63GPJL.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-LXCHMBVT.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "fa66520a", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732182498464 }, url: "/build/manifest-FA66520A.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
