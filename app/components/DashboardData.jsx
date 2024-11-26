@@ -219,7 +219,7 @@ const DashboardData = () => {
           {activeTab === "swell" && weatherData && (
             <iframe
               title="Swell Map"
-              src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell&metricTemp=°C&metricWind=m/s`}
+              src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`}
               className="w-full h-full rounded-md"
               frameBorder="0"
             ></iframe>
@@ -227,7 +227,7 @@ const DashboardData = () => {
           {activeTab === "temp" && weatherData && (
             <iframe
               title="Sea Temperature"
-              src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sea&metricTemp=°C&metricWind=m/s`}
+              src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sst&product=ecmwfAnalysis&level=surface`}
               className="w-full h-full rounded-md"
               frameBorder="0"
             ></iframe>

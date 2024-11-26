@@ -33,7 +33,7 @@ var userSchema = new mongoose.Schema(
     },
     name: String,
     lastname: String,
-    // New field for last name
+    // Field for last name
     password: {
       type: String,
       required: !0,
@@ -61,21 +61,18 @@ var postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
-    likes: Number,
+    likes: { type: Number, default: 0 },
+    // Default likes to 0
     tags: [String]
   },
   { timestamps: !0 }
-), models = [
-  { name: "User", schema: userSchema, collection: "users" },
-  { name: "Post", schema: postSchema, collection: "posts" }
-];
+), User = mongoose.model("User", userSchema), Post = mongoose.model("Post", postSchema);
 async function initData() {
-  let userCount = await mongoose.models.User.countDocuments(), postCount = await mongoose.models.Post.countDocuments();
+  let userCount = await User.countDocuments(), postCount = await Post.countDocuments();
   (userCount === 0 || postCount === 0) && await insertData();
 }
 async function insertData() {
-  let User = mongoose.models.User, Post2 = mongoose.models.Post;
-  console.log("Dropping collections..."), await User.collection.drop(), await Post2.collection.drop(), console.log("Inserting data...");
+  console.log("Dropping collections..."), await User.collection.drop().catch(() => console.log("User collection does not exist.")), await Post.collection.drop().catch(() => console.log("Post collection does not exist.")), console.log("Inserting data...");
   let nicolai = await User.create({
     image: "https://www.baaa.dk/media/b5ahrlra/maria-louise-bendixen.jpg?anchor=center&mode=crop&width=800&height=450&rnd=132792921650330000&format=webp",
     mail: "test@test.com",
@@ -83,10 +80,16 @@ async function insertData() {
     lastname: "Doe",
     // Example last name
     password: "1234",
+    // Plain text password (hashed by the pre-save hook)
     hobbies: ["Surf", "Ski"]
     // Example hobbies
   });
+  console.log("Inserted user:", nicolai);
 }
+var models = [
+  { name: "User", schema: userSchema, collection: "users" },
+  { name: "Post", schema: postSchema, collection: "posts" }
+], models_default = models;
 
 // app/db/db-connect.server.js
 var { MONGODB_URL, NODE_ENV } = process.env;
@@ -100,15 +103,18 @@ function connectDb() {
     // E.g. "Mongoose: Creating 2 models (Book, Author)"
     "Mongoose: %s %d %s (%s)",
     modelCreationType,
-    models.length,
-    models.length === 1 ? "model" : "models",
-    models.map((model) => model.name).join(", ")
+    models_default.length,
+    models_default.length === 1 ? "model" : "models",
+    models_default.map((model) => model.name).join(", ")
   );
-  for (let model of models)
+  for (let model of models_default)
     mongoose2.model(model.name, model.schema, model.collection);
   let readyState = mongoose2.connection.readyState;
   if (readyState > 0) {
-    console.log("Mongoose: Re-using existing connection (readyState: %d)", readyState);
+    console.log(
+      "Mongoose: Re-using existing connection (readyState: %d)",
+      readyState
+    );
     return;
   }
   mongoose2.connection.on("error", (error) => {
@@ -206,164 +212,241 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-L4ODKNEV.css";
+var tailwind_default = "/build/_assets/tailwind-HKD6J3FY.css";
 
 // app/components/Nav.jsx
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "@remix-run/react";
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
-function Nav({ user }) {
-  return user ? /* @__PURE__ */ jsxDEV2("div", { className: "bg-gray-800 fixed w-full top-0", children: [
-    /* @__PURE__ */ jsxDEV2("nav", { className: "md:flex hidden h-16 items-center justify-between px-4", children: [
-      /* @__PURE__ */ jsxDEV2("div", { className: "flex", children: [
-        /* @__PURE__ */ jsxDEV2(
+function Nav() {
+  let [isMobileMenuOpen, setIsMobileMenuOpen] = useState(!1), mobileMenuRef = useRef(null), toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+  useEffect(() => {
+    let handleClickOutside = (event) => {
+      mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && setIsMobileMenuOpen(!1);
+    };
+    return document.addEventListener("mousedown", handleClickOutside), () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  let handleLinkClick = () => {
+    setIsMobileMenuOpen(!1);
+  };
+  return /* @__PURE__ */ jsxDEV2("div", { className: "min-h-full", children: [
+    /* @__PURE__ */ jsxDEV2("nav", { className: "bg-gray-800", children: /* @__PURE__ */ jsxDEV2("div", { className: "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxDEV2("div", { className: "flex w-full h-16 items-center ", children: [
+      /* @__PURE__ */ jsxDEV2("div", { className: "flex w-full items-center", children: /* @__PURE__ */ jsxDEV2("div", { className: "flex w-full justify-between", children: [
+        /* @__PURE__ */ jsxDEV2("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV2("div", { className: "ml-10 flex items-baseline space-x-4", children: [
+          /* @__PURE__ */ jsxDEV2("div", { className: "shrink-0" }, void 0, !1, {
+            fileName: "app/components/Nav.jsx",
+            lineNumber: 48,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/dashboard",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "Dashboard"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 49,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/add-post",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "Add Post"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 60,
+              columnNumber: 21
+            },
+            this
+          )
+        ] }, void 0, !0, {
+          fileName: "app/components/Nav.jsx",
+          lineNumber: 47,
+          columnNumber: 19
+        }, this) }, void 0, !1, {
+          fileName: "app/components/Nav.jsx",
+          lineNumber: 46,
+          columnNumber: 17
+        }, this),
+        /* @__PURE__ */ jsxDEV2("div", { className: " items-center hidden md:flex", children: /* @__PURE__ */ jsxDEV2(
           NavLink,
           {
-            to: "/dashboard",
-            className: ({ isActive }) => `p-2 justify-center text-gray-300 hover:bg-gray-700 hover:text-white hover:rounded-md px-3 py-2 ${isActive ? "bg-gray-900 text-white rounded-md " : ""}`,
-            children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Dashboard" }, void 0, !1, {
-              fileName: "app/components/Nav.jsx",
-              lineNumber: 21,
-              columnNumber: 13
-            }, this)
+            to: "/profile",
+            className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+            onClick: handleLinkClick,
+            children: "Profile"
           },
           void 0,
           !1,
           {
             fileName: "app/components/Nav.jsx",
-            lineNumber: 13,
-            columnNumber: 11
+            lineNumber: 74,
+            columnNumber: 19
           },
           this
-        ),
-        /* @__PURE__ */ jsxDEV2(
-          NavLink,
-          {
-            to: "/add-post",
-            className: ({ isActive }) => `p-2 justify-center text-sm text-gray-300 hover:bg-gray-700 hover:text-white hover:rounded-md px-3 py-2 ${isActive ? "bg-gray-900 text-white rounded-md " : ""}`,
-            children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Add post" }, void 0, !1, {
-              fileName: "app/components/Nav.jsx",
-              lineNumber: 31,
-              columnNumber: 13
-            }, this)
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/components/Nav.jsx",
-            lineNumber: 23,
-            columnNumber: 11
-          },
-          this
-        )
+        ) }, void 0, !1, {
+          fileName: "app/components/Nav.jsx",
+          lineNumber: 73,
+          columnNumber: 17
+        }, this)
       ] }, void 0, !0, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 12,
-        columnNumber: 9
+        lineNumber: 45,
+        columnNumber: 15
+      }, this) }, void 0, !1, {
+        fileName: "app/components/Nav.jsx",
+        lineNumber: 44,
+        columnNumber: 13
       }, this),
-      /* @__PURE__ */ jsxDEV2("div", { className: "flex", children: /* @__PURE__ */ jsxDEV2(
-        NavLink,
+      /* @__PURE__ */ jsxDEV2("div", { className: "-mr-2 flex md:hidden", children: /* @__PURE__ */ jsxDEV2(
+        "button",
         {
-          to: `/profile/${user?._id}`,
-          className: ({ isActive }) => `p-2 text-gray-300 hover:bg-gray-700 hover:text-white hover:rounded-md px-3 py-2 ${isActive ? "bg-gray-900 text-white rounded-md " : ""}`,
-          children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Profile" }, void 0, !1, {
-            fileName: "app/components/Nav.jsx",
-            lineNumber: 43,
-            columnNumber: 13
-          }, this)
+          onClick: toggleMobileMenu,
+          className: "inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800",
+          children: [
+            /* @__PURE__ */ jsxDEV2("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 95,
+              columnNumber: 17
+            }, this),
+            isMobileMenuOpen ? /* @__PURE__ */ jsxDEV2(
+              "span",
+              {
+                className: "block",
+                onClick: (event) => {
+                  event.stopPropagation(), setIsMobileMenuOpen(!1);
+                },
+                children: "\u2716"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/Nav.jsx",
+                lineNumber: 99,
+                columnNumber: 19
+              },
+              this
+            ) : /* @__PURE__ */ jsxDEV2("span", { className: "block", children: "\u2630" }, void 0, !1, {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 97,
+              columnNumber: 19
+            }, this)
+          ]
         },
         void 0,
-        !1,
+        !0,
         {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 35,
-          columnNumber: 11
+          lineNumber: 91,
+          columnNumber: 15
         },
         this
       ) }, void 0, !1, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 34,
-        columnNumber: 9
+        lineNumber: 90,
+        columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 11,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ jsxDEV2("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV2("nav", { children: [
-      /* @__PURE__ */ jsxDEV2(
-        NavLink,
-        {
-          to: "/dashboard",
-          className: ({ isActive }) => `p-2 justify-center text-cyan-50 hover:bg-cyan-100 ${isActive ? "bg-gray-900 text-white" : ""}`,
-          children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Dashboard" }, void 0, !1, {
-            fileName: "app/components/Nav.jsx",
-            lineNumber: 59,
-            columnNumber: 13
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/components/Nav.jsx",
-          lineNumber: 51,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ jsxDEV2(
-        NavLink,
-        {
-          to: "/add-post",
-          className: ({ isActive }) => `p-2 justify-center text-cyan-50 hover:bg-cyan-100 ${isActive ? "bg-gray-900 text-white" : ""}`,
-          children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Add post" }, void 0, !1, {
-            fileName: "app/components/Nav.jsx",
-            lineNumber: 69,
-            columnNumber: 13
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/components/Nav.jsx",
-          lineNumber: 61,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ jsxDEV2(
-        NavLink,
-        {
-          to: `/profile/${user?._id}`,
-          className: ({ isActive }) => `p-2 text-cyan-50 hover:bg-cyan-100 ${isActive ? "bg-gray-900 text-white" : ""}`,
-          children: /* @__PURE__ */ jsxDEV2("p", { className: "text-xs", children: "Profile" }, void 0, !1, {
-            fileName: "app/components/Nav.jsx",
-            lineNumber: 79,
-            columnNumber: 13
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/components/Nav.jsx",
-          lineNumber: 71,
-          columnNumber: 11
-        },
-        this
-      )
-    ] }, void 0, !0, {
+      lineNumber: 43,
+      columnNumber: 11
+    }, this) }, void 0, !1, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 50,
+      lineNumber: 42,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/components/Nav.jsx",
-      lineNumber: 49,
+      lineNumber: 41,
       columnNumber: 7
-    }, this)
+    }, this),
+    isMobileMenuOpen && /* @__PURE__ */ jsxDEV2(
+      "div",
+      {
+        ref: mobileMenuRef,
+        className: "md:hidden bg-gray-800 px-2 pt-2 pb-3 space-y-1 sm:px-3",
+        children: [
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/dashboard",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "Dashboard"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 118,
+              columnNumber: 11
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/add-post",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "Add Post"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 129,
+              columnNumber: 11
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/profile",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "Profile"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 140,
+              columnNumber: 11
+            },
+            this
+          )
+        ]
+      },
+      void 0,
+      !0,
+      {
+        fileName: "app/components/Nav.jsx",
+        lineNumber: 114,
+        columnNumber: 9
+      },
+      this
+    )
   ] }, void 0, !0, {
     fileName: "app/components/Nav.jsx",
-    lineNumber: 9,
+    lineNumber: 40,
     columnNumber: 5
-  }, this) : null;
+  }, this);
 }
 
 // app/components/NavAll.jsx
@@ -608,7 +691,7 @@ __export(posts_postId_update_exports, {
 import { json, redirect as redirect2 } from "@remix-run/node";
 import { Form, useLoaderData as useLoaderData2, useNavigate } from "@remix-run/react";
 import mongoose5 from "mongoose";
-import { useState } from "react";
+import { useState as useState2 } from "react";
 import { jsxDEV as jsxDEV5 } from "react/jsx-dev-runtime";
 function meta() {
   return [
@@ -625,7 +708,7 @@ async function loader3({ request, params }) {
   return json({ post });
 }
 function UpdatePost() {
-  let { post } = useLoaderData2(), [image, setImage] = useState(post.image), navigate = useNavigate();
+  let { post } = useLoaderData2(), [image, setImage] = useState2(post.image), navigate = useNavigate();
   function handleCancel() {
     navigate(-1);
   }
@@ -760,10 +843,10 @@ import { useLoaderData as useLoaderData3 } from "@remix-run/react";
 import mongoose6 from "mongoose";
 
 // app/components/DashboardData.jsx
-import { useEffect, useState as useState2 } from "react";
+import { useEffect as useEffect2, useState as useState3 } from "react";
 import { jsxDEV as jsxDEV6 } from "react/jsx-dev-runtime";
 var DashboardData = () => {
-  let [weatherData, setWeatherData] = useState2(null), [city, setCity] = useState2("Loading..."), [country, setCountry] = useState2(""), [inputCity, setInputCity] = useState2(""), [error, setError] = useState2(""), [activeTab, setActiveTab] = useState2("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
+  let [weatherData, setWeatherData] = useState3(null), [city, setCity] = useState3("Loading..."), [country, setCountry] = useState3(""), [inputCity, setInputCity] = useState3(""), [error, setError] = useState3(""), [activeTab, setActiveTab] = useState3("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
     let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city2}&appid=${apiKey}&units=metric`;
     try {
       let response = await fetch(apiUrl);
@@ -795,9 +878,9 @@ var DashboardData = () => {
       }
     ) : (setCity("Copenhagen"), setCountry("DK"));
   };
-  useEffect(() => {
+  useEffect2(() => {
     getUserLocation();
-  }, []), useEffect(() => {
+  }, []), useEffect2(() => {
     city !== "Loading..." && fetchWeatherData(city);
   }, [city]);
   let handleSearch = (e) => {
@@ -1051,7 +1134,7 @@ var DashboardData = () => {
           "iframe",
           {
             title: "Swell Map",
-            src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell&metricTemp=\xB0C&metricWind=m/s`,
+            src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`,
             className: "w-full h-full rounded-md",
             frameBorder: "0"
           },
@@ -1068,7 +1151,7 @@ var DashboardData = () => {
           "iframe",
           {
             title: "Sea Temperature",
-            src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sea&metricTemp=\xB0C&metricWind=m/s`,
+            src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sst&product=ecmwfAnalysis&level=surface`,
             className: "w-full h-full rounded-md",
             frameBorder: "0"
           },
@@ -1149,7 +1232,7 @@ function MainDashboard() {
 // app/routes/posts.$postId.jsx
 var posts_postId_exports = {};
 __export(posts_postId_exports, {
-  default: () => Post,
+  default: () => Post2,
   loader: () => loader5,
   meta: () => meta4
 });
@@ -1230,7 +1313,7 @@ async function loader5({ request, params }) {
   }), post = await mongoose7.models.Post.findById(params.postId).populate("user");
   return json3({ post, authUser });
 }
-function Post() {
+function Post2() {
   let { post, authUser } = useLoaderData4();
   function confirmDelete(event) {
     confirm("Please confirm you want to delete this post.") || event.preventDefault();
@@ -1291,7 +1374,7 @@ __export(add_post_exports, {
 import { redirect as redirect3 } from "@remix-run/node";
 import { Form as Form3, useNavigate as useNavigate2 } from "@remix-run/react";
 import mongoose8 from "mongoose";
-import { useState as useState3 } from "react";
+import { useState as useState4 } from "react";
 import { jsxDEV as jsxDEV12 } from "react/jsx-dev-runtime";
 var meta5 = () => [{ title: "Remix Post App - Add New Post" }];
 async function loader6({ request }) {
@@ -1300,7 +1383,7 @@ async function loader6({ request }) {
   });
 }
 function AddPost() {
-  let [image, setImage] = useState3("https://placehold.co/600x400?text=Add+your+amazing+image"), navigate = useNavigate2();
+  let [image, setImage] = useState4("https://placehold.co/600x400?text=Add+your+amazing+image"), navigate = useNavigate2();
   function handleCancel() {
     navigate(-1);
   }
@@ -1398,358 +1481,82 @@ __export(profile_exports, {
   loader: () => loader7
 });
 import { Form as Form4, useLoaderData as useLoaderData5 } from "@remix-run/react";
-import { useState as useState5 } from "react";
-
-// app/components/UpdateProfilePopup.jsx
-import { useState as useState4 } from "react";
+import "@remix-run/react";
 import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
-var UpdateProfilePopup = ({ user, onUpdate, onClose }) => {
-  let [name, setName] = useState4(user.name), [lastname, setLastname] = useState4(user.lastname), [avatar, setAvatar] = useState4(user.avatar || ""), [hobbies, setHobbies] = useState4(user.hobbies.join(", ")), handleSave = async () => {
-    let updatedData = {
-      name,
-      lastname,
-      avatar,
-      hobbies: hobbies.split(",").map((hobby) => hobby.trim())
-    };
-    try {
-      if (console.log("Sending updated data:", updatedData), onUpdate) {
-        let response = await onUpdate(updatedData);
-        if (!response.ok)
-          throw new Error("Failed to update profile");
-        console.log("Profile updated successfully:", await response.json()), onClose();
-      } else
-        console.error("onUpdate is not defined!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
-  };
-  return /* @__PURE__ */ jsxDEV13("div", { className: "fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50", children: /* @__PURE__ */ jsxDEV13("div", { className: "bg-white p-6 rounded-lg shadow-lg w-80 md:w-96", children: [
-    /* @__PURE__ */ jsxDEV13("h2", { className: "text-2xl font-bold mb-4", children: "Edit Profile" }, void 0, !1, {
-      fileName: "app/components/UpdateProfilePopup.jsx",
-      lineNumber: 43,
-      columnNumber: 9
-    }, this),
-    /* @__PURE__ */ jsxDEV13(
-      "form",
-      {
-        onSubmit: (e) => {
-          e.preventDefault(), handleSave();
-        },
-        children: [
-          /* @__PURE__ */ jsxDEV13("div", { className: "mb-4", children: [
-            /* @__PURE__ */ jsxDEV13("label", { className: "block text-sm font-medium text-gray-700", children: "Name:" }, void 0, !1, {
-              fileName: "app/components/UpdateProfilePopup.jsx",
-              lineNumber: 51,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ jsxDEV13(
-              "input",
-              {
-                type: "text",
-                value: name,
-                onChange: (e) => setName(e.target.value),
-                className: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 54,
-                columnNumber: 13
-              },
-              this
-            )
-          ] }, void 0, !0, {
-            fileName: "app/components/UpdateProfilePopup.jsx",
-            lineNumber: 50,
-            columnNumber: 11
-          }, this),
-          /* @__PURE__ */ jsxDEV13("div", { className: "mb-4", children: [
-            /* @__PURE__ */ jsxDEV13("label", { className: "block text-sm font-medium text-gray-700", children: "Last Name:" }, void 0, !1, {
-              fileName: "app/components/UpdateProfilePopup.jsx",
-              lineNumber: 62,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ jsxDEV13(
-              "input",
-              {
-                type: "text",
-                value: lastname,
-                onChange: (e) => setLastname(e.target.value),
-                className: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 65,
-                columnNumber: 13
-              },
-              this
-            )
-          ] }, void 0, !0, {
-            fileName: "app/components/UpdateProfilePopup.jsx",
-            lineNumber: 61,
-            columnNumber: 11
-          }, this),
-          /* @__PURE__ */ jsxDEV13("div", { className: "mb-4", children: [
-            /* @__PURE__ */ jsxDEV13("label", { className: "block text-sm font-medium text-gray-700", children: "Avatar URL:" }, void 0, !1, {
-              fileName: "app/components/UpdateProfilePopup.jsx",
-              lineNumber: 73,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ jsxDEV13(
-              "input",
-              {
-                type: "text",
-                value: avatar,
-                onChange: (e) => setAvatar(e.target.value),
-                className: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 76,
-                columnNumber: 13
-              },
-              this
-            )
-          ] }, void 0, !0, {
-            fileName: "app/components/UpdateProfilePopup.jsx",
-            lineNumber: 72,
-            columnNumber: 11
-          }, this),
-          /* @__PURE__ */ jsxDEV13("div", { className: "mb-4", children: [
-            /* @__PURE__ */ jsxDEV13("label", { className: "block text-sm font-medium text-gray-700", children: "Hobbies (comma separated):" }, void 0, !1, {
-              fileName: "app/components/UpdateProfilePopup.jsx",
-              lineNumber: 84,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ jsxDEV13(
-              "input",
-              {
-                type: "text",
-                value: hobbies,
-                onChange: (e) => setHobbies(e.target.value),
-                className: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 87,
-                columnNumber: 13
-              },
-              this
-            )
-          ] }, void 0, !0, {
-            fileName: "app/components/UpdateProfilePopup.jsx",
-            lineNumber: 83,
-            columnNumber: 11
-          }, this),
-          /* @__PURE__ */ jsxDEV13("div", { className: "flex justify-between items-center", children: [
-            /* @__PURE__ */ jsxDEV13(
-              "button",
-              {
-                type: "submit",
-                className: "inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500",
-                children: "Save"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 96,
-                columnNumber: 13
-              },
-              this
-            ),
-            /* @__PURE__ */ jsxDEV13(
-              "button",
-              {
-                type: "button",
-                onClick: onClose,
-                className: "inline-block bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500",
-                children: "Close"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/components/UpdateProfilePopup.jsx",
-                lineNumber: 102,
-                columnNumber: 13
-              },
-              this
-            )
-          ] }, void 0, !0, {
-            fileName: "app/components/UpdateProfilePopup.jsx",
-            lineNumber: 95,
-            columnNumber: 11
-          }, this)
-        ]
-      },
-      void 0,
-      !0,
-      {
-        fileName: "app/components/UpdateProfilePopup.jsx",
-        lineNumber: 44,
-        columnNumber: 9
-      },
-      this
-    )
-  ] }, void 0, !0, {
-    fileName: "app/components/UpdateProfilePopup.jsx",
-    lineNumber: 42,
-    columnNumber: 7
-  }, this) }, void 0, !1, {
-    fileName: "app/components/UpdateProfilePopup.jsx",
-    lineNumber: 41,
-    columnNumber: 5
-  }, this);
-}, UpdateProfilePopup_default = UpdateProfilePopup;
-
-// app/routes/profile.jsx
-import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 async function loader7({ request }) {
   return await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
   });
 }
 function Profile() {
-  let user = useLoaderData5(), [isPopupOpen, setIsPopupOpen] = useState5(!1), handleEditClick = () => {
-    setIsPopupOpen(!0);
-  }, handleClosePopup = () => {
-    setIsPopupOpen(!1);
-  }, handleUpdate = async (updatedProfile) => {
-    try {
-      console.log("Updated Profile:", updatedProfile);
-      let response = await fetch("/api/update-profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ...updatedProfile,
-          userId: user.id
-          // Include user ID in the request
-        })
-      });
-      if (!response.ok) {
-        let errorText = await response.text();
-        throw console.error("Failed to update profile:", errorText), new Error(errorText);
-      }
-      let updatedUser = await response.json();
-      console.log("Profile updated successfully:", updatedUser), setIsPopupOpen(!1);
-    } catch (error) {
-      console.error("Error updating profile:", error), alert(`Failed to update profile: ${error.message}`);
-    }
-  };
-  return /* @__PURE__ */ jsxDEV14("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV14("div", { className: "bg-slate-800 p-8", children: [
-      /* @__PURE__ */ jsxDEV14("div", { className: "flex justify-center items-center space-x-4", children: [
-        /* @__PURE__ */ jsxDEV14(
-          "img",
-          {
-            src: user.avatar,
-            alt: "Profile",
-            className: "rounded-full h-24 w-24 border-4 border-white"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/profile.jsx",
-            lineNumber: 64,
-            columnNumber: 11
-          },
-          this
-        ),
-        /* @__PURE__ */ jsxDEV14("div", { children: [
-          /* @__PURE__ */ jsxDEV14("p", { className: "text-white font-bold text-3xl", children: [
-            user.name,
-            " ",
-            user.lastname
-          ] }, void 0, !0, {
-            fileName: "app/routes/profile.jsx",
-            lineNumber: 70,
-            columnNumber: 13
-          }, this),
-          /* @__PURE__ */ jsxDEV14("p", { className: "text-white text-lg", children: user.mail }, void 0, !1, {
-            fileName: "app/routes/profile.jsx",
-            lineNumber: 73,
-            columnNumber: 13
-          }, this),
-          /* @__PURE__ */ jsxDEV14("p", { className: "text-white", children: [
-            "Your sports: ",
-            user.hobbies.join(", ")
-          ] }, void 0, !0, {
-            fileName: "app/routes/profile.jsx",
-            lineNumber: 74,
-            columnNumber: 13
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/profile.jsx",
-          lineNumber: 69,
-          columnNumber: 11
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/profile.jsx",
-        lineNumber: 63,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV14("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxDEV14(
-        "button",
+  let user = useLoaderData5();
+  return /* @__PURE__ */ jsxDEV13("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV13("div", { className: "bg-slate-800 p-8", children: /* @__PURE__ */ jsxDEV13("div", { className: "flex justify-center items-center space-x-4", children: [
+      /* @__PURE__ */ jsxDEV13(
+        "img",
         {
-          onClick: handleEditClick,
-          className: "bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700",
-          children: "Edit Profile"
+          src: user.avatar,
+          alt: "Profile",
+          className: "rounded-full h-24 w-24 border-4 border-white"
         },
         void 0,
         !1,
         {
           fileName: "app/routes/profile.jsx",
-          lineNumber: 78,
+          lineNumber: 20,
           columnNumber: 11
         },
         this
-      ) }, void 0, !1, {
+      ),
+      /* @__PURE__ */ jsxDEV13("div", { children: [
+        /* @__PURE__ */ jsxDEV13("p", { className: "text-white font-bold text-3xl", children: [
+          user.name,
+          " ",
+          user.lastname
+        ] }, void 0, !0, {
+          fileName: "app/routes/profile.jsx",
+          lineNumber: 26,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV13("p", { className: "text-white text-lg", children: user.mail }, void 0, !1, {
+          fileName: "app/routes/profile.jsx",
+          lineNumber: 29,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV13("p", { className: "text-white", children: [
+          "Your sports: ",
+          user.hobbies.join(", ")
+        ] }, void 0, !0, {
+          fileName: "app/routes/profile.jsx",
+          lineNumber: 30,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, !0, {
         fileName: "app/routes/profile.jsx",
-        lineNumber: 77,
-        columnNumber: 9
+        lineNumber: 25,
+        columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.jsx",
-      lineNumber: 62,
-      columnNumber: 7
-    }, this),
-    isPopupOpen && /* @__PURE__ */ jsxDEV14(
-      UpdateProfilePopup_default,
-      {
-        user,
-        onUpdate: handleUpdate,
-        onClose: handleClosePopup
-      },
-      void 0,
-      !1,
-      {
-        fileName: "app/routes/profile.jsx",
-        lineNumber: 89,
-        columnNumber: 9
-      },
-      this
-    ),
-    /* @__PURE__ */ jsxDEV14(Form4, { method: "post", className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxDEV14("button", { className: "bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700", children: "Logout" }, void 0, !1, {
-      fileName: "app/routes/profile.jsx",
-      lineNumber: 97,
+      lineNumber: 19,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.jsx",
-      lineNumber: 96,
+      lineNumber: 18,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV13(Form4, { method: "post", className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxDEV13("button", { className: "bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700", children: "Logout" }, void 0, !1, {
+      fileName: "app/routes/profile.jsx",
+      lineNumber: 36,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/profile.jsx",
+      lineNumber: 35,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/profile.jsx",
-    lineNumber: 61,
+    lineNumber: 17,
     columnNumber: 5
   }, this);
 }
@@ -1780,7 +1587,7 @@ __export(signin_exports, {
 });
 import { json as json4 } from "@remix-run/node";
 import { Form as Form5, NavLink as NavLink3, useLoaderData as useLoaderData6 } from "@remix-run/react";
-import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 async function loader9({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
@@ -1796,30 +1603,30 @@ async function loader9({ request }) {
 }
 function SignIn() {
   let loaderData = useLoaderData6();
-  return /* @__PURE__ */ jsxDEV15(
+  return /* @__PURE__ */ jsxDEV14(
     "div",
     {
       id: "sign-in-page",
       className: " flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV15("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV14("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
           fileName: "app/routes/signin.jsx",
           lineNumber: 35,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14(
           Form5,
           {
             id: "sign-in-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV14("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 41,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV15(
+              /* @__PURE__ */ jsxDEV14(
                 "input",
                 {
                   id: "mail",
@@ -1839,12 +1646,12 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV14("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 52,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV15(
+              /* @__PURE__ */ jsxDEV14(
                 "input",
                 {
                   id: "password",
@@ -1864,7 +1671,7 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV15("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV15("button", { children: "Sign In" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV14("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV14("button", { children: "Sign In" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 65,
                 columnNumber: 11
@@ -1873,7 +1680,7 @@ function SignIn() {
                 lineNumber: 64,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV15("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV15("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV14("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV14("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 70,
                 columnNumber: 13
@@ -1893,10 +1700,10 @@ function SignIn() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV15("p", { className: "flex", children: [
+        /* @__PURE__ */ jsxDEV14("p", { className: "flex", children: [
           "No account?",
           " ",
-          /* @__PURE__ */ jsxDEV15(NavLink3, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14(NavLink3, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
             fileName: "app/routes/signin.jsx",
             lineNumber: 76,
             columnNumber: 9
@@ -1935,8 +1742,8 @@ __export(signup_exports, {
 import { json as json5, redirect as redirect4 } from "@remix-run/node";
 import { Form as Form6, NavLink as NavLink4, useLoaderData as useLoaderData7 } from "@remix-run/react";
 import mongoose9 from "mongoose";
-import { useState as useState6, useRef, useEffect as useEffect2 } from "react";
-import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
+import { useState as useState5, useRef as useRef2, useEffect as useEffect3 } from "react";
+import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
 async function loader10({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
@@ -1951,7 +1758,7 @@ async function loader10({ request }) {
   return json5({ error }, { headers });
 }
 function SignUp() {
-  let loaderData = useLoaderData7(), [selectedHobbies, setSelectedHobbies] = useState6([]), [dropdownOpen, setDropdownOpen] = useState6(!1), dropdownRef = useRef(null), sportsOptions = ["Surf", "Ski", "Kite"], toggleDropdown = () => {
+  let loaderData = useLoaderData7(), [selectedHobbies, setSelectedHobbies] = useState5([]), [dropdownOpen, setDropdownOpen] = useState5(!1), dropdownRef = useRef2(null), sportsOptions = ["Surf", "Ski", "Kite"], toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   }, handleCheckboxChange = (event) => {
     let { value, checked } = event.target;
@@ -1959,37 +1766,37 @@ function SignUp() {
       (prev) => checked ? [...prev, value] : prev.filter((hobby) => hobby !== value)
     );
   };
-  return useEffect2(() => {
+  return useEffect3(() => {
     let handleClickOutside = (event) => {
       dropdownRef.current && !dropdownRef.current.contains(event.target) && setDropdownOpen(!1);
     };
     return document.addEventListener("mousedown", handleClickOutside), () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]), /* @__PURE__ */ jsxDEV16(
+  }, [dropdownRef]), /* @__PURE__ */ jsxDEV15(
     "div",
     {
       id: "sign-up-page",
       className: "flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 mb-32 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV16("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV15("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
           fileName: "app/routes/signup.jsx",
           lineNumber: 65,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV16(
+        /* @__PURE__ */ jsxDEV15(
           Form6,
           {
             id: "sign-up-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV16("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 71,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15(
                 "input",
                 {
                   id: "mail",
@@ -2010,12 +1817,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV16("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 83,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15(
                 "input",
                 {
                   id: "password",
@@ -2035,12 +1842,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV16("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 94,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15(
                 "input",
                 {
                   id: "firstName",
@@ -2059,12 +1866,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV16("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 104,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15(
                 "input",
                 {
                   id: "lastName",
@@ -2083,13 +1890,13 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV16("label", { children: "Select your hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("label", { children: "Select your hobbies:" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 114,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16("div", { className: "relative", ref: dropdownRef, children: [
-                /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15("div", { className: "relative", ref: dropdownRef, children: [
+                /* @__PURE__ */ jsxDEV15(
                   "button",
                   {
                     type: "button",
@@ -2106,8 +1913,8 @@ function SignUp() {
                   },
                   this
                 ),
-                dropdownOpen && /* @__PURE__ */ jsxDEV16("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV16("label", { className: "block p-2", children: [
-                  /* @__PURE__ */ jsxDEV16(
+                dropdownOpen && /* @__PURE__ */ jsxDEV15("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV15("label", { className: "block p-2", children: [
+                  /* @__PURE__ */ jsxDEV15(
                     "input",
                     {
                       type: "checkbox",
@@ -2139,13 +1946,13 @@ function SignUp() {
                 lineNumber: 115,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV16("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
-                /* @__PURE__ */ jsxDEV16("strong", { children: "Selected Hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV15("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
+                /* @__PURE__ */ jsxDEV15("strong", { children: "Selected Hobbies:" }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 144,
                   columnNumber: 15
                 }, this),
-                /* @__PURE__ */ jsxDEV16("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV15("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 145,
                   columnNumber: 15
@@ -2159,7 +1966,7 @@ function SignUp() {
                 lineNumber: 141,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV16(
+              /* @__PURE__ */ jsxDEV15(
                 "input",
                 {
                   type: "hidden",
@@ -2175,7 +1982,7 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV16("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV16("button", { children: "Sign Up" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV15("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV15("button", { children: "Sign Up" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 157,
                 columnNumber: 11
@@ -2184,7 +1991,7 @@ function SignUp() {
                 lineNumber: 156,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV16("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV16("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV15("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV15("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 162,
                 columnNumber: 13
@@ -2204,10 +2011,10 @@ function SignUp() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV16("p", { children: [
+        /* @__PURE__ */ jsxDEV15("p", { children: [
           "Already have an account?",
           " ",
-          /* @__PURE__ */ jsxDEV16(NavLink4, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV15(NavLink4, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
             fileName: "app/routes/signup.jsx",
             lineNumber: 168,
             columnNumber: 9
@@ -2247,7 +2054,7 @@ async function action6({ request }) {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-UHFIKL6X.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-RQHBDQFA.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-TKKBA6F3.js", imports: ["/build/_shared/chunk-UDI2OCEY.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-RJL2U3B4.js", imports: ["/build/_shared/chunk-UDI2OCEY.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-ZADLDLNQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "93863b96", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732363103561 }, url: "/build/manifest-93863B96.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-HCYC4TVW.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-6CCLUK2Q.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-WCTWWKGD.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-YBNG2UBP.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-GSATLGJD.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-BKDLEUVS.js", imports: ["/build/_shared/chunk-Y5YAR7JF.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-3Z7EBUDG.js", imports: ["/build/_shared/chunk-Y5YAR7JF.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-GEVDNPHB.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-YDXDBDK3.js", imports: ["/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile": { id: "routes/profile", parentId: "root", path: "profile", index: void 0, caseSensitive: void 0, module: "/build/routes/profile-S36GYSDU.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-TTPXRYMS.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SKUY376W.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-GMSPC5K3.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "24d3d6b3", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732603477017 }, url: "/build/manifest-24D3D6B3.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

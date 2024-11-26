@@ -1,93 +1,155 @@
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "@remix-run/react";
 
 export default function Nav() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Close mobile menu if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close menu when a link is clicked
+  const handleLinkClick = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Close menu when the close button (✖) is clicked
+  const closeMobileMenu = (event) => {
+    // Prevent the button's onClick from triggering when the close icon is clicked
+    event.stopPropagation();
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <div className="  bg-cyan-50 ">
-      <nav className=" flex justify-evenly">
-        <NavLink
-          to="/dashboard"
-          className={"hover:bg-cyan-100 p-2 justify-center "}
-        >
-          <svg
-            width="40px"
-            height="40px"
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11C13.25 10.5858 12.9142 10.25 12.5 10.25V11.75ZM5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75V10.25ZM12.5 10.25C12.0858 10.25 11.75 10.5858 11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75V10.25ZM19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25V11.75ZM11.75 11C11.75 11.4142 12.0858 11.75 12.5 11.75C12.9142 11.75 13.25 11.4142 13.25 11H11.75ZM13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5H13.25ZM6.25 11C6.25 10.5858 5.91421 10.25 5.5 10.25C5.08579 10.25 4.75 10.5858 4.75 11H6.25ZM20.25 11C20.25 10.5858 19.9142 10.25 19.5 10.25C19.0858 10.25 18.75 10.5858 18.75 11H20.25ZM4.75 11C4.75 11.4142 5.08579 11.75 5.5 11.75C5.91421 11.75 6.25 11.4142 6.25 11H4.75ZM12.5 5.75C12.9142 5.75 13.25 5.41421 13.25 5C13.25 4.58579 12.9142 4.25 12.5 4.25V5.75ZM18.75 11C18.75 11.4142 19.0858 11.75 19.5 11.75C19.9142 11.75 20.25 11.4142 20.25 11H18.75ZM12.5 4.25C12.0858 4.25 11.75 4.58579 11.75 5C11.75 5.41421 12.0858 5.75 12.5 5.75V4.25ZM12.5 10.25H5.5V11.75H12.5V10.25ZM12.5 11.75H19.5V10.25H12.5V11.75ZM13.25 11V5H11.75V11H13.25ZM4.75 11V15H6.25V11H4.75ZM4.75 15C4.75 17.6234 6.87665 19.75 9.5 19.75V18.25C7.70507 18.25 6.25 16.7949 6.25 15H4.75ZM9.5 19.75H15.5V18.25H9.5V19.75ZM15.5 19.75C18.1234 19.75 20.25 17.6234 20.25 15H18.75C18.75 16.7949 17.2949 18.25 15.5 18.25V19.75ZM20.25 15V11H18.75V15H20.25ZM6.25 11V9H4.75V11H6.25ZM6.25 9C6.25 7.20507 7.70507 5.75 9.5 5.75V4.25C6.87665 4.25 4.75 6.37665 4.75 9H6.25ZM9.5 5.75H12.5V4.25H9.5V5.75ZM20.25 11V9H18.75V11H20.25ZM20.25 9C20.25 6.37665 18.1234 4.25 15.5 4.25V5.75C17.2949 5.75 18.75 7.20507 18.75 9H20.25ZM15.5 4.25H12.5V5.75H15.5V4.25Z"
-              fill="#000000"
-            />
-          </svg>
-          <p className="text-xs">Dashboard</p>
-        </NavLink>
-        <NavLink
-          to="/add-post"
-          className={"hover:bg-cyan-100 p-2 justify-center"}
-        >
-          <svg
-            width="40px"
-            height="40px"
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M9.808 4.00001H15.329C15.3863 4.00001 15.4433 4.00367 15.5 4.01101C17.7473 4.16817 19.4924 6.0332 19.5 8.28601V14.715C19.4917 17.0871 17.5641 19.0044 15.192 19H9.808C7.43551 19.0044 5.50772 17.0865 5.5 14.714V8.28601C5.50772 5.91353 7.43551 3.99558 9.808 4.00001Z"
-              stroke="#000000"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M10.214 7.12902L8.72301 8.32902C8.57898 8.46627 8.49798 8.65687 8.49911 8.85582C8.50025 9.05476 8.58343 9.24442 8.72901 9.38002L9.69201 10.539L13.718 15.38C13.7851 15.458 13.875 15.5129 13.975 15.537L15.975 15.994C16.2395 16.009 16.4697 15.8152 16.5 15.552L16.407 13.606C16.4001 13.5061 16.36 13.4114 16.293 13.337L12.36 8.60702L11.3 7.33402C11.0448 6.99622 10.5748 6.90749 10.214 7.12902Z"
-              stroke="#000000"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M19.5 9.07599C19.9142 9.07599 20.25 8.7402 20.25 8.32599C20.25 7.91177 19.9142 7.57599 19.5 7.57599V9.07599ZM15.5 8.32599H14.75C14.75 8.7402 15.0858 9.07599 15.5 9.07599V8.32599ZM16.25 4.01099C16.25 3.59677 15.9142 3.26099 15.5 3.26099C15.0858 3.26099 14.75 3.59677 14.75 4.01099H16.25ZM13.0989 8.7397C13.17 8.33163 12.8968 7.9432 12.4887 7.87211C12.0806 7.80103 11.6922 8.07421 11.6211 8.48227L13.0989 8.7397ZM9.80281 9.79422C9.39314 9.73302 9.01143 10.0155 8.95023 10.4252C8.88903 10.8348 9.17152 11.2166 9.58119 11.2778L9.80281 9.79422ZM19.5 7.57599H15.5V9.07599H19.5V7.57599ZM16.25 8.32599V4.01099H14.75V8.32599H16.25ZM11.6211 8.48227C11.4716 9.34065 10.6645 9.92295 9.80281 9.79422L9.58119 11.2778C11.2483 11.5268 12.8096 10.4003 13.0989 8.7397L11.6211 8.48227Z"
-              fill="#000000"
-            />
-          </svg>
-          <p className="text-xs">Add post</p>
-        </NavLink>
-        <NavLink to="/profile" className={"hover:bg-cyan-100 p-2"}>
-          <svg
-            width="40px"
-            height="40px"
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M15.5 8C15.5 9.65685 14.1569 11 12.5 11C10.8431 11 9.5 9.65685 9.5 8C9.5 6.34315 10.8431 5 12.5 5C13.2956 5 14.0587 5.31607 14.6213 5.87868C15.1839 6.44129 15.5 7.20435 15.5 8Z"
-              stroke="#000000"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M16 14H9C7.61929 14 6.5 15.1193 6.5 16.5C6.5 17.8807 7.61929 19 9 19H16C17.3807 19 18.5 17.8807 18.5 16.5C18.5 15.1193 17.3807 14 16 14V14Z"
-              stroke="#000000"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <p className="text-xs">Profile</p>
-        </NavLink>
+    <div className="min-h-full">
+      <nav className="bg-gray-800">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex w-full h-16 items-center ">
+            <div className="flex w-full items-center">
+              <div className="flex w-full justify-between">
+                <div className="hidden md:block">
+                  <div className="ml-10 flex items-baseline space-x-4">
+                    <div className="shrink-0">{/* Logo */}</div>
+                    <NavLink
+                      to="/dashboard"
+                      className={({ isActive }) =>
+                        `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${
+                          isActive ? "bg-gray-900 text-white" : ""
+                        }`
+                      }
+                      onClick={handleLinkClick} // Close the menu on link click
+                    >
+                      Dashboard
+                    </NavLink>
+                    <NavLink
+                      to="/add-post"
+                      className={({ isActive }) =>
+                        `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${
+                          isActive ? "bg-gray-900 text-white" : ""
+                        }`
+                      }
+                      onClick={handleLinkClick} // Close the menu on link click
+                    >
+                      Add Post
+                    </NavLink>
+                  </div>
+                </div>
+                <div className=" items-center hidden md:flex">
+                  <NavLink
+                    to="/profile"
+                    className={({ isActive }) =>
+                      `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${
+                        isActive ? "bg-gray-900 text-white" : ""
+                      }`
+                    }
+                    onClick={handleLinkClick} // Close the menu on link click
+                  >
+                    Profile
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="-mr-2 flex md:hidden">
+              <button
+                onClick={toggleMobileMenu} // Toggle menu visibility
+                className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="sr-only">Open main menu</span>
+                {!isMobileMenuOpen ? (
+                  <span className="block">☰</span> // Open icon when menu is closed
+                ) : (
+                  <span
+                    className="block"
+                    onClick={closeMobileMenu} // Close the menu when close button (✖) is clicked
+                  >
+                    ✖
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       </nav>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div
+          ref={mobileMenuRef} // Reference for detecting clicks outside the menu
+          className="md:hidden bg-gray-800 px-2 pt-2 pb-3 space-y-1 sm:px-3"
+        >
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${
+                isActive ? "bg-gray-900 text-white" : ""
+              }`
+            }
+            onClick={handleLinkClick} // Close the menu on link click
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/add-post"
+            className={({ isActive }) =>
+              `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${
+                isActive ? "bg-gray-900 text-white" : ""
+              }`
+            }
+            onClick={handleLinkClick} // Close the menu on link click
+          >
+            Add Post
+          </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${
+                isActive ? "bg-gray-900 text-white" : ""
+              }`
+            }
+            onClick={handleLinkClick} // Close the menu on link click
+          >
+            Profile
+          </NavLink>
+        </div>
+      )}
     </div>
   );
 }

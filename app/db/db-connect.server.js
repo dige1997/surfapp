@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { models } from "./models.js";
+import models from "./models.js";
 
 const { MONGODB_URL, NODE_ENV } = process.env;
 
@@ -34,7 +34,7 @@ export default function connectDb() {
     modelCreationType,
     models.length,
     models.length === 1 ? "model" : "models",
-    models.map(model => model.name).join(", ")
+    models.map((model) => model.name).join(", ")
   );
 
   // Create or overwrite the models exported from ./models.js:
@@ -46,13 +46,16 @@ export default function connectDb() {
   // https://mongoosejs.com/docs/api/connection.html#connection_Connection-readyState
   const readyState = mongoose.connection.readyState;
   if (readyState > 0) {
-    console.log("Mongoose: Re-using existing connection (readyState: %d)", readyState);
+    console.log(
+      "Mongoose: Re-using existing connection (readyState: %d)",
+      readyState
+    );
     return;
   }
 
   // If no connection exists yet, set up event logging...
   // https://mongoosejs.com/docs/connections.html#connection-events
-  mongoose.connection.on("error", error => {
+  mongoose.connection.on("error", (error) => {
     console.error("Mongoose: error %s", error);
   });
 
@@ -61,7 +64,7 @@ export default function connectDb() {
   }
 
   // ...and create a new connection:
-  mongoose.connect(MONGODB_URL).catch(error => {
+  mongoose.connect(MONGODB_URL).catch((error) => {
     console.error(error);
   });
 }

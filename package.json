@@ -20,6 +20,7 @@
     "@remix-run/react": "2.7.1",
     "@remix-run/serve": "2.7.1",
     "bcrypt": "^5.1.1",
+    "framer-motion": "^11.11.17",
     "isbot": "^3.6.8",
     "iso-3166-1": "^2.1.1",
     "leaflet": "^1.9.4",
