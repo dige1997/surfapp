@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
 export let authenticator = new Authenticator(sessionStorage, {
-  sessionErrorKey: "sessionErrorKey" // keep in sync
+  sessionErrorKey: "sessionErrorKey", // keep in sync
 });
 
 // Tell the Authenticator to use the form strategy
@@ -50,4 +50,10 @@ async function verifyUser({ mail, password }) {
   // Remove the password from the user object before returning it
   user.password = undefined;
   return user;
+}
+
+export async function hashPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  return hash;
 }

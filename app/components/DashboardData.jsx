@@ -174,7 +174,7 @@ const DashboardData = () => {
           )}
         </div>
 
-        <div className="w-full h-96 px-4">
+        <div className="w-full h-96 pl-4">
           <div className="flex mt-4">
             <button
               className={`p-2 rounded-t-md shadow-md ${

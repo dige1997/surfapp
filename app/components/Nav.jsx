@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "@remix-run/react";
 
-export default function Nav() {
+export default function Nav({ user }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef(null);
 
@@ -58,7 +58,7 @@ export default function Nav() {
                       Dashboard
                     </NavLink>
                     <NavLink
-                      to="/add-post"
+                      to="/add-event"
                       className={({ isActive }) =>
                         `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${
                           isActive ? "bg-gray-900 text-white" : ""
@@ -72,7 +72,7 @@ export default function Nav() {
                 </div>
                 <div className=" items-center hidden md:flex">
                   <NavLink
-                    to="/profile"
+                    to={`/profile/${user?._id}`}
                     className={({ isActive }) =>
                       `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${
                         isActive ? "bg-gray-900 text-white" : ""
@@ -138,7 +138,7 @@ export default function Nav() {
             Add Post
           </NavLink>
           <NavLink
-            to="/profile"
+            to={`/profile/${user?._id}`}
             className={({ isActive }) =>
               `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${
                 isActive ? "bg-gray-900 text-white" : ""

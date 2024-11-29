@@ -9,8 +9,9 @@ import {
 } from "@remix-run/react";
 import stylesheet from "./tailwind.css";
 import Nav from "./components/Nav";
-import NavAll from "./components/NavAll";
 import { authenticator } from "./services/auth.server";
+import NavAll from "./components/NavAll";
+import Footer from "./components/footer";
 
 export function links() {
   return [
@@ -35,15 +36,15 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="">
         {user ? <Nav user={user} /> : <NavAll />}
 
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Footer />
       </body>
-      <footer></footer>
     </html>
   );
 }
