@@ -34,35 +34,8 @@ export default function AddEvent() {
   const handleCancel = () => navigate("/dashboard");
 
   useEffect(() => {
-    if (location && mapRef.current && window.google) {
-      const map = mapRef.current;
-
-      // Check if AdvancedMarkerElement is available
-      if (
-        window.google &&
-        window.google.maps &&
-        window.google.maps.marker &&
-        google.maps.marker.AdvancedMarkerElement
-      ) {
-        const markerContent = document.createElement("div");
-        markerContent.style.fontSize = "24px";
-
-        new google.maps.marker.AdvancedMarkerElement({
-          position: location,
-          map: map,
-          content: markerContent,
-        });
-      } else {
-        // Fallback to standard Marker
-        new google.maps.Marker({
-          position: location,
-          map: map,
-          title: "Selected Location",
-        });
-        console.warn(
-          "AdvancedMarkerElement is not available, using standard Marker."
-        );
-      }
+    if (location && mapRef.current) {
+      mapRef.current.panTo(location); // Automatically pan to the selected location
     }
   }, [location]);
 

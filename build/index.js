@@ -2875,28 +2875,11 @@ function AddEvent() {
     });
   }, handleCancel = () => navigate("/dashboard");
   return useEffect6(() => {
-    if (location && mapRef.current && window.google) {
-      let map = mapRef.current;
-      if (window.google && window.google.maps && window.google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
-        let markerContent = document.createElement("div");
-        markerContent.style.fontSize = "24px", new google.maps.marker.AdvancedMarkerElement({
-          position: location,
-          map,
-          content: markerContent
-        });
-      } else
-        new google.maps.Marker({
-          position: location,
-          map,
-          title: "Selected Location"
-        }), console.warn(
-          "AdvancedMarkerElement is not available, using standard Marker."
-        );
-    }
+    location && mapRef.current && mapRef.current.panTo(location);
   }, [location]), /* @__PURE__ */ jsxDEV21("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
     /* @__PURE__ */ jsxDEV21("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Create New Post" }, void 0, !1, {
       fileName: "app/routes/add-event.jsx",
-      lineNumber: 71,
+      lineNumber: 44,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV21(
@@ -2908,7 +2891,7 @@ function AddEvent() {
         children: [
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 79,
+            lineNumber: 52,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -2925,14 +2908,14 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 80,
+              lineNumber: 53,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 89,
+            lineNumber: 62,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -2948,14 +2931,14 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 90,
+              lineNumber: 63,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 98,
+            lineNumber: 71,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -2971,14 +2954,14 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 99,
+              lineNumber: 72,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 107,
+            lineNumber: 80,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -2996,7 +2979,7 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 108,
+              lineNumber: 81,
               columnNumber: 9
             },
             this
@@ -3015,7 +2998,7 @@ function AddEvent() {
               },
               children: location && /* @__PURE__ */ jsxDEV21(Marker3, { position: location, title: "Selected Location" }, void 0, !1, {
                 fileName: "app/routes/add-event.jsx",
-                lineNumber: 132,
+                lineNumber: 105,
                 columnNumber: 15
               }, this)
             },
@@ -3023,18 +3006,18 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 119,
+              lineNumber: 92,
               columnNumber: 11
             },
             this
           ) }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 118,
+            lineNumber: 91,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 137,
+            lineNumber: 110,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -3052,14 +3035,14 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 138,
+              lineNumber: 111,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 148,
+            lineNumber: 121,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV21(
@@ -3074,7 +3057,7 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 149,
+              lineNumber: 122,
               columnNumber: 9
             },
             this
@@ -3091,7 +3074,7 @@ function AddEvent() {
               !1,
               {
                 fileName: "app/routes/add-event.jsx",
-                lineNumber: 157,
+                lineNumber: 130,
                 columnNumber: 11
               },
               this
@@ -3108,14 +3091,14 @@ function AddEvent() {
               !1,
               {
                 fileName: "app/routes/add-event.jsx",
-                lineNumber: 163,
+                lineNumber: 136,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 156,
+            lineNumber: 129,
             columnNumber: 9
           }, this)
         ]
@@ -3124,14 +3107,14 @@ function AddEvent() {
       !0,
       {
         fileName: "app/routes/add-event.jsx",
-        lineNumber: 74,
+        lineNumber: 47,
         columnNumber: 7
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/add-event.jsx",
-    lineNumber: 70,
+    lineNumber: 43,
     columnNumber: 5
   }, this);
 }
@@ -3994,7 +3977,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-7HXZCFKR.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-KKDHQITS.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-CNZXVTPS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LOWTLRSB.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-O5GNYB6P.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-4L7ESQ5R.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-2KYJVLFI.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-WACVH2Z2.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-HSYC2SWZ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-LWVCRKJ4.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-BZH6KNVR.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUK66PBI.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-YWRYA37E.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-OLIVA3IR.js", imports: ["/build/_shared/chunk-WACVH2Z2.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-KLV5VW7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-32ZHGPIC.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-CHP4HAEV.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-BQVAG5LU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile1": { id: "routes/profile1", parentId: "root", path: "profile1", index: void 0, caseSensitive: void 0, module: "/build/routes/profile1-CL2CFHKQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-E5UMBJ46.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SDPVZWSB.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "76fba714", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1733225939828 }, url: "/build/manifest-76FBA714.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-7HXZCFKR.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-KKDHQITS.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-CNZXVTPS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LOWTLRSB.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-C54GBYO3.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-4L7ESQ5R.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-2KYJVLFI.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-WACVH2Z2.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-HSYC2SWZ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-LWVCRKJ4.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-BZH6KNVR.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUK66PBI.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-YWRYA37E.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-OLIVA3IR.js", imports: ["/build/_shared/chunk-WACVH2Z2.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-KLV5VW7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-32ZHGPIC.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-CHP4HAEV.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-BQVAG5LU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile1": { id: "routes/profile1", parentId: "root", path: "profile1", index: void 0, caseSensitive: void 0, module: "/build/routes/profile1-CL2CFHKQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-E5UMBJ46.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SDPVZWSB.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "da92d620", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1733226316314 }, url: "/build/manifest-DA92D620.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
