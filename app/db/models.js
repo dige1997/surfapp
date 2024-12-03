@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../services/auth.server";
+import { AuthorizationError } from "../services/auth.server";
 
 // ========== models ========== //
 
@@ -164,25 +165,23 @@ async function insertData() {
     password: await hashPassword("1234"),
   });
 
-  const event4 = await Event.create({
-    date: new Date(2021, 4, 1),
-    image:
-      "https://images.unsplash.com/photo-1566241832378-917a0f30db2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-    title: 101,
+  const event1 = await Event.create({
+    date: new Date(),
+    title: "Event 1",
+    description: "Description 1",
+    location: "55.676098, 12.568337",
     creator: test._id,
-    location: "aa",
-    description: "A beautiful sunset at the beach in Aarhus",
-    attendees: [test2._id],
+    image: "https://source.unsplash.com/random",
+    attendees: [test._id],
   });
 
-  const event5 = await Event.create({
-    date: new Date(2021, 4, 1),
-    image:
-      "https://images.unsplash.com/photo-1566241832378-917a0f30db2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-    title: "Bike ride",
+  const event2 = await Event.create({
+    date: new Date(),
+    title: "Event 2",
+    description: "Description 2",
+    location: "55.676098, 12.568337",
     creator: test._id,
-    location: "aa",
-    description: "A beautiful bike ride in Silkeborg",
-    attendees: [test2._id],
+    image: "https://source.unsplash.com/random",
+    attendees: [test._id],
   });
 }

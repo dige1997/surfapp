@@ -9,7 +9,7 @@ export async function loader({ request }) {
 
 export default function Nav() {
   return (
-    <nav className="flex shadow-md justify-between md:justify-items-end items-center">
+    <nav className="flex bg-slate-50 shadow-2xl justify-between md:justify-items-end items-center z-50">
       <NavLink to={authenticator ? "/dashboard" : "/main-dashboard"}>
         <h1 className="font-mono text-2xl font-bold m-auto p-2 mx-2">
           Elevation
@@ -24,7 +24,7 @@ export default function Nav() {
         </NavLink>
         <NavLink
           to="/signin"
-          className="mx-2  bg-gray-100 hover:bg-gray-200 rounded-xl p-2"
+          className="mx-2 bg-slate-300 hover:bg-slate-400 rounded-xl p-2"
         >
           Login
         </NavLink>

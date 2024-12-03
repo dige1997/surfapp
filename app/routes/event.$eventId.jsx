@@ -1,17 +1,18 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { Form, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import mongoose from "mongoose";
 import { useEffect, useState } from "react";
 import { authenticator } from "../services/auth.server";
+import { GoogleMapLoader } from "../components/GoogleMapLoader";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWYQ";
+const GOOGLE_MAPS_API_KEY = "AIzaSyBJgJJUQYgDJs2DoVGNXrk7P8vxB01bwo0";
 const MAP_ID = "71f267d426ae7773"; // Replace with your actual Map ID
 
 export function meta({ data }) {
   return [
     {
-      title: `TrailBlaze - ${data.event.title || "Event"}`,
+      title: `Evelation - ${data.event.title || "Event"}`,
     },
   ];
 }
@@ -28,16 +29,13 @@ export default function Event() {
   const { event, authUser } = useLoaderData();
   const [city, setCity] = useState(null);
 
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-  });
-
   const location = event?.location
     ? {
         lat: parseFloat(event.location.split(",")[0]),
         lng: parseFloat(event.location.split(",")[1]),
       }
     : null;
+
   useEffect(() => {
     if (location) {
       const fetchCityName = async () => {
@@ -84,9 +82,6 @@ export default function Event() {
     }
   }, [location]);
 
-  if (loadError) return <div>Error loading Google Maps</div>;
-  if (!isLoaded) return <div>Loading Google Maps...</div>;
-
   const attending = event?.attendees?.some(
     (attendee) => attendee._id === authUser?._id
   );
@@ -111,27 +106,26 @@ export default function Event() {
       <h3>{event.description}</h3>
       <div className="flex my-2">
         <img src="/date.png" alt="" className="h-6" />
-        <p className="pl-2">
-          {new Date(event.date).toLocaleDateString("en-GB")}
-        </p>
+        <p className="">{new Date(event.date).toLocaleDateString("en-GB")}</p>
       </div>
       <div className="flex my-2">
-        <img src="/location.png" alt="Location Icon" className="h-6" />
-        <p className="pl-2">{city || "Fetching location..."}</p>
+        <p className="">{city || "Fetching location..."}</p>
       </div>
-      {isLoaded && location ? (
-        <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "400px" }}
-          center={location}
-          zoom={12}
-          options={{
-            mapId: MAP_ID,
-          }}
-        >
-          <Marker position={location} />
-        </GoogleMap>
-      ) : (
-        <div>Loading Google Maps...</div>
+
+      {/* Use GoogleMapLoader to wrap GoogleMap */}
+      {location && (
+        <GoogleMapLoader>
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "400px" }}
+            center={location}
+            zoom={12}
+            options={{
+              mapId: MAP_ID,
+            }}
+          >
+            <Marker position={location} />
+          </GoogleMap>
+        </GoogleMapLoader>
       )}
 
       <p>{event.attendees.length} Like</p>
@@ -148,6 +142,7 @@ export default function Event() {
           </button>
         </Form>
       ) : null}
+
       {authUser?._id === event?.creator?._id && (
         <div className="flex py-4">
           <Form action="update">

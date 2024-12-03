@@ -188,22 +188,22 @@ async function insertData() {
     eventsCreated: [],
     eventsAttending: [],
     password: await hashPassword("1234")
-  }), event4 = await Event2.create({
-    date: new Date(2021, 4, 1),
-    image: "https://images.unsplash.com/photo-1566241832378-917a0f30db2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-    title: 101,
+  }), event1 = await Event2.create({
+    date: /* @__PURE__ */ new Date(),
+    title: "Event 1",
+    description: "Description 1",
+    location: "55.676098, 12.568337",
     creator: test._id,
-    location: "aa",
-    description: "A beautiful sunset at the beach in Aarhus",
-    attendees: [test2._id]
-  }), event5 = await Event2.create({
-    date: new Date(2021, 4, 1),
-    image: "https://images.unsplash.com/photo-1566241832378-917a0f30db2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-    title: "Bike ride",
+    image: "https://source.unsplash.com/random",
+    attendees: [test._id]
+  }), event2 = await Event2.create({
+    date: /* @__PURE__ */ new Date(),
+    title: "Event 2",
+    description: "Description 2",
+    location: "55.676098, 12.568337",
     creator: test._id,
-    location: "aa",
-    description: "A beautiful bike ride in Silkeborg",
-    attendees: [test2._id]
+    image: "https://source.unsplash.com/random",
+    attendees: [test._id]
   });
 }
 
@@ -360,7 +360,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-JB7DJAU2.css";
+var tailwind_default = "/build/_assets/tailwind-763FSUF2.css";
 
 // app/components/Nav.jsx
 import { useState, useEffect, useRef } from "react";
@@ -423,6 +423,23 @@ function Nav({ user }) {
               columnNumber: 21
             },
             this
+          ),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/locations",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "See spots"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 71,
+              columnNumber: 21
+            },
+            this
           )
         ] }, void 0, !0, {
           fileName: "app/components/Nav.jsx",
@@ -445,13 +462,13 @@ function Nav({ user }) {
           !1,
           {
             fileName: "app/components/Nav.jsx",
-            lineNumber: 74,
+            lineNumber: 85,
             columnNumber: 19
           },
           this
         ) }, void 0, !1, {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 73,
+          lineNumber: 84,
           columnNumber: 17
         }, this)
       ] }, void 0, !0, {
@@ -471,7 +488,7 @@ function Nav({ user }) {
           children: [
             /* @__PURE__ */ jsxDEV2("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 95,
+              lineNumber: 106,
               columnNumber: 17
             }, this),
             isMobileMenuOpen ? /* @__PURE__ */ jsxDEV2(
@@ -485,13 +502,13 @@ function Nav({ user }) {
               !1,
               {
                 fileName: "app/components/Nav.jsx",
-                lineNumber: 99,
+                lineNumber: 110,
                 columnNumber: 19
               },
               this
             ) : /* @__PURE__ */ jsxDEV2("span", { className: "block", children: "\u2630" }, void 0, !1, {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 97,
+              lineNumber: 108,
               columnNumber: 19
             }, this)
           ]
@@ -500,13 +517,13 @@ function Nav({ user }) {
         !0,
         {
           fileName: "app/components/Nav.jsx",
-          lineNumber: 91,
+          lineNumber: 102,
           columnNumber: 15
         },
         this
       ) }, void 0, !1, {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 90,
+        lineNumber: 101,
         columnNumber: 13
       }, this)
     ] }, void 0, !0, {
@@ -540,7 +557,7 @@ function Nav({ user }) {
             !1,
             {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 118,
+              lineNumber: 129,
               columnNumber: 11
             },
             this
@@ -557,7 +574,24 @@ function Nav({ user }) {
             !1,
             {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 129,
+              lineNumber: 140,
+              columnNumber: 11
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV2(
+            NavLink,
+            {
+              to: "/locations",
+              className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
+              onClick: handleLinkClick,
+              children: "See spots"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/Nav.jsx",
+              lineNumber: 151,
               columnNumber: 11
             },
             this
@@ -574,7 +608,7 @@ function Nav({ user }) {
             !1,
             {
               fileName: "app/components/Nav.jsx",
-              lineNumber: 140,
+              lineNumber: 162,
               columnNumber: 11
             },
             this
@@ -585,7 +619,7 @@ function Nav({ user }) {
       !0,
       {
         fileName: "app/components/Nav.jsx",
-        lineNumber: 114,
+        lineNumber: 125,
         columnNumber: 9
       },
       this
@@ -601,7 +635,7 @@ function Nav({ user }) {
 import { NavLink as NavLink2 } from "@remix-run/react";
 import { jsxDEV as jsxDEV3 } from "react/jsx-dev-runtime";
 function Nav2() {
-  return /* @__PURE__ */ jsxDEV3("nav", { className: "flex shadow-md justify-between md:justify-items-end items-center", children: [
+  return /* @__PURE__ */ jsxDEV3("nav", { className: "flex bg-slate-50 shadow-2xl justify-between md:justify-items-end items-center z-50", children: [
     /* @__PURE__ */ jsxDEV3(NavLink2, { to: authenticator ? "/dashboard" : "/main-dashboard", children: /* @__PURE__ */ jsxDEV3("h1", { className: "font-mono text-2xl font-bold m-auto p-2 mx-2", children: "Elevation" }, void 0, !1, {
       fileName: "app/components/NavAll.jsx",
       lineNumber: 14,
@@ -632,7 +666,7 @@ function Nav2() {
         NavLink2,
         {
           to: "/signin",
-          className: "mx-2  bg-gray-100 hover:bg-gray-200 rounded-xl p-2",
+          className: "mx-2 bg-slate-300 hover:bg-slate-400 rounded-xl p-2",
           children: "Login"
         },
         void 0,
@@ -1359,8 +1393,9 @@ import mongoose9 from "mongoose";
 import { useEffect as useEffect2, useState as useState4 } from "react";
 import { jsxDEV as jsxDEV9 } from "react/jsx-dev-runtime";
 var DashboardData = () => {
-  let [weatherData, setWeatherData] = useState4(null), [city, setCity] = useState4("Loading..."), [country, setCountry] = useState4(""), [inputCity, setInputCity] = useState4(""), [error, setError] = useState4(""), [activeTab, setActiveTab] = useState4("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
+  let [weatherData, setWeatherData] = useState4(null), [city, setCity] = useState4("Loading..."), [country, setCountry] = useState4(""), [inputCity, setInputCity] = useState4(""), [error, setError] = useState4(""), [loading, setLoading] = useState4(!0), [activeTab, setActiveTab] = useState4("wind"), apiKey = "84c59fa875b07f0e54b6dd1ce011f187", fetchWeatherData = async (city2) => {
     let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city2}&appid=${apiKey}&units=metric`;
+    setLoading(!0);
     try {
       let response = await fetch(apiUrl);
       if (!response.ok) {
@@ -1368,9 +1403,11 @@ var DashboardData = () => {
         throw new Error(`Error: ${errorText}`);
       }
       let data = await response.json();
-      setWeatherData(data), setError(""), setCountry(data.city.country);
+      setWeatherData(data), setError(""), setCountry(data.city.country), localStorage.setItem(city2, JSON.stringify(data));
     } catch (error2) {
       console.error("Error fetching weather data:", error2), setError("Could not fetch weather data. Please try another city.");
+    } finally {
+      setLoading(!1);
     }
   }, fetchCityByCoordinates = async (lat, lon) => {
     let reverseGeoUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
@@ -1394,7 +1431,8 @@ var DashboardData = () => {
   useEffect2(() => {
     getUserLocation();
   }, []), useEffect2(() => {
-    city !== "Loading..." && fetchWeatherData(city);
+    let cachedData = localStorage.getItem(city);
+    cachedData ? (setWeatherData(JSON.parse(cachedData)), setError(""), setLoading(!1)) : city !== "Loading..." && fetchWeatherData(city);
   }, [city]);
   let handleSearch = (e) => {
     e.preventDefault(), inputCity && (setCity(inputCity), setInputCity(""));
@@ -1419,7 +1457,15 @@ var DashboardData = () => {
     let lowerCaseDescription = description.toLowerCase();
     return lowerCaseDescription.includes("clear") ? "\u2600\uFE0F" : lowerCaseDescription.includes("clouds") ? "\u2601\uFE0F" : lowerCaseDescription.includes("rain") ? "\u{1F327}\uFE0F" : lowerCaseDescription.includes("thunderstorm") ? "\u26C8\uFE0F" : lowerCaseDescription.includes("snow") ? "\u2744\uFE0F" : lowerCaseDescription.includes("mist") || lowerCaseDescription.includes("fog") ? "\u{1F32B}\uFE0F" : "\u{1F324}\uFE0F";
   };
-  return /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col p-4", children: [
+  return /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col p-4", children: loading ? /* @__PURE__ */ jsxDEV9("div", { className: "loader-container", children: /* @__PURE__ */ jsxDEV9("div", { className: "spinner" }, void 0, !1, {
+    fileName: "app/components/DashboardData.jsx",
+    lineNumber: 131,
+    columnNumber: 11
+  }, this) }, void 0, !1, {
+    fileName: "app/components/DashboardData.jsx",
+    lineNumber: 130,
+    columnNumber: 9
+  }, this) : /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col p-4", id: "outer-container", children: [
     /* @__PURE__ */ jsxDEV9("form", { className: "flex justify-center mt-20", onSubmit: handleSearch, children: [
       /* @__PURE__ */ jsxDEV9(
         "input",
@@ -1434,50 +1480,47 @@ var DashboardData = () => {
         !1,
         {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 123,
-          columnNumber: 9
+          lineNumber: 136,
+          columnNumber: 13
         },
         this
       ),
       /* @__PURE__ */ jsxDEV9("button", { className: "bg-slate-50 rounded-r-2xl p-2", type: "submit", children: "\u{1F50D}" }, void 0, !1, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 130,
-        columnNumber: 9
+        lineNumber: 143,
+        columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/DashboardData.jsx",
-      lineNumber: 122,
-      columnNumber: 7
+      lineNumber: 135,
+      columnNumber: 11
     }, this),
     /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col md:flex-row", children: [
       /* @__PURE__ */ jsxDEV9("div", { className: "md:w-3/6 md:justify-center md:mx-auto", children: [
         /* @__PURE__ */ jsxDEV9("div", { className: "mt-4 flex justify-center flex-col", children: /* @__PURE__ */ jsxDEV9("div", { children: [
           /* @__PURE__ */ jsxDEV9("h1", { className: "text-7xl font-bold text-center mt-2 capitalize", children: city }, void 0, !1, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 138,
-            columnNumber: 15
+            lineNumber: 151,
+            columnNumber: 19
           }, this),
-          /* @__PURE__ */ jsxDEV9("p", { className: "text-4xl font-semibold text-center", children: [
-            " ",
-            country
-          ] }, void 0, !0, {
+          /* @__PURE__ */ jsxDEV9("p", { className: "text-4xl font-semibold text-center", children: country }, void 0, !1, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 141,
-            columnNumber: 15
+            lineNumber: 154,
+            columnNumber: 19
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 137,
-          columnNumber: 13
+          lineNumber: 150,
+          columnNumber: 17
         }, this) }, void 0, !1, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 136,
-          columnNumber: 11
+          lineNumber: 149,
+          columnNumber: 15
         }, this),
         error && /* @__PURE__ */ jsxDEV9("p", { className: "text-red-500 text-center", children: error }, void 0, !1, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 145,
-          columnNumber: 21
+          lineNumber: 160,
+          columnNumber: 25
         }, this),
         weatherData ? /* @__PURE__ */ jsxDEV9("div", { className: "bg-s-100 rounded-xl w-full p-6 mt-4 mx-auto", children: [
           /* @__PURE__ */ jsxDEV9("p", { className: "text-3xl flex items-center gap-3", children: [
@@ -1486,8 +1529,8 @@ var DashboardData = () => {
             " \xB0C"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 149,
-            columnNumber: 15
+            lineNumber: 164,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { children: [
             "Feels Like: ",
@@ -1495,8 +1538,8 @@ var DashboardData = () => {
             " \xB0C"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 152,
-            columnNumber: 15
+            lineNumber: 167,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { children: [
             "Min Temp: ",
@@ -1504,8 +1547,8 @@ var DashboardData = () => {
             " \xB0C"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 153,
-            columnNumber: 15
+            lineNumber: 168,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { children: [
             "Max Temp: ",
@@ -1513,17 +1556,19 @@ var DashboardData = () => {
             " \xB0C"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 154,
-            columnNumber: 15
+            lineNumber: 169,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { className: "text-3xl flex items-center gap-3", children: [
-            getWeatherEmoji(weatherData.list[0].weather[0].description),
+            getWeatherEmoji(
+              weatherData.list[0].weather[0].description
+            ),
             " ",
             weatherData.list[0].weather[0].description
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 155,
-            columnNumber: 15
+            lineNumber: 170,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { children: [
             "Rain:",
@@ -1533,8 +1578,8 @@ var DashboardData = () => {
             "mm"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 159,
-            columnNumber: 15
+            lineNumber: 176,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { className: "text-3xl flex items-center gap-3", children: [
             "\u{1F4A8} ",
@@ -1542,36 +1587,36 @@ var DashboardData = () => {
             " m/s"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 164,
-            columnNumber: 15
+            lineNumber: 183,
+            columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV9("p", { children: [
-            "Wind Direction: ",
-            getWindDirection(weatherData.list[0].wind.deg),
+            "Wind Direction:",
             " ",
-            "(",
+            getWindDirection(weatherData.list[0].wind.deg),
+            " (",
             weatherData.list[0].wind.deg,
             "\xB0)"
           ] }, void 0, !0, {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 167,
-            columnNumber: 15
+            lineNumber: 186,
+            columnNumber: 19
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 148,
-          columnNumber: 13
+          lineNumber: 163,
+          columnNumber: 17
         }, this) : /* @__PURE__ */ jsxDEV9("p", { className: "text-center mt-4", children: "Loading weather data..." }, void 0, !1, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 173,
-          columnNumber: 13
+          lineNumber: 193,
+          columnNumber: 17
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 135,
-        columnNumber: 9
+        lineNumber: 148,
+        columnNumber: 13
       }, this),
-      /* @__PURE__ */ jsxDEV9("div", { className: "w-full h-96 pl-4", children: [
+      /* @__PURE__ */ jsxDEV9("div", { className: "w-full h-96 p-4", children: [
         /* @__PURE__ */ jsxDEV9("div", { className: "flex mt-4", children: [
           /* @__PURE__ */ jsxDEV9(
             "button",
@@ -1584,8 +1629,8 @@ var DashboardData = () => {
             !1,
             {
               fileName: "app/components/DashboardData.jsx",
-              lineNumber: 179,
-              columnNumber: 13
+              lineNumber: 198,
+              columnNumber: 17
             },
             this
           ),
@@ -1600,8 +1645,8 @@ var DashboardData = () => {
             !1,
             {
               fileName: "app/components/DashboardData.jsx",
-              lineNumber: 189,
-              columnNumber: 13
+              lineNumber: 208,
+              columnNumber: 17
             },
             this
           ),
@@ -1616,15 +1661,15 @@ var DashboardData = () => {
             !1,
             {
               fileName: "app/components/DashboardData.jsx",
-              lineNumber: 199,
-              columnNumber: 13
+              lineNumber: 218,
+              columnNumber: 17
             },
             this
           )
         ] }, void 0, !0, {
           fileName: "app/components/DashboardData.jsx",
-          lineNumber: 178,
-          columnNumber: 11
+          lineNumber: 197,
+          columnNumber: 15
         }, this),
         activeTab === "wind" && weatherData && /* @__PURE__ */ jsxDEV9(
           "iframe",
@@ -1638,8 +1683,8 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 212,
-            columnNumber: 13
+            lineNumber: 231,
+            columnNumber: 17
           },
           this
         ),
@@ -1655,8 +1700,8 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 220,
-            columnNumber: 13
+            lineNumber: 239,
+            columnNumber: 17
           },
           this
         ),
@@ -1672,24 +1717,28 @@ var DashboardData = () => {
           !1,
           {
             fileName: "app/components/DashboardData.jsx",
-            lineNumber: 228,
-            columnNumber: 13
+            lineNumber: 247,
+            columnNumber: 17
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/components/DashboardData.jsx",
-        lineNumber: 177,
-        columnNumber: 9
+        lineNumber: 196,
+        columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/DashboardData.jsx",
-      lineNumber: 134,
-      columnNumber: 7
+      lineNumber: 147,
+      columnNumber: 11
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/DashboardData.jsx",
-    lineNumber: 121,
+    lineNumber: 134,
+    columnNumber: 9
+  }, this) }, void 0, !1, {
+    fileName: "app/components/DashboardData.jsx",
+    lineNumber: 128,
     columnNumber: 5
   }, this);
 }, DashboardData_default = DashboardData;
@@ -2273,17 +2322,38 @@ __export(event_eventId_exports, {
   loader: () => loader9,
   meta: () => meta5
 });
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { Form as Form5, useLoaderData as useLoaderData7 } from "@remix-run/react";
 import { json as json5 } from "@remix-run/node";
 import mongoose11 from "mongoose";
 import { useEffect as useEffect4, useState as useState6 } from "react";
+
+// app/components/GoogleMapLoader.jsx
+import { useJsApiLoader } from "@react-google-maps/api";
 import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
-var GOOGLE_MAPS_API_KEY = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWYQ", MAP_ID = "71f267d426ae7773";
+var GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
+function GoogleMapLoader({ children }) {
+  let { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY
+  });
+  return loadError ? /* @__PURE__ */ jsxDEV14("div", { children: "Error loading Google Maps" }, void 0, !1, {
+    fileName: "app/components/GoogleMapLoader.jsx",
+    lineNumber: 11,
+    columnNumber: 12
+  }, this) : isLoaded ? children : /* @__PURE__ */ jsxDEV14("div", { children: "Loading Google Maps..." }, void 0, !1, {
+    fileName: "app/components/GoogleMapLoader.jsx",
+    lineNumber: 15,
+    columnNumber: 12
+  }, this);
+}
+
+// app/routes/event.$eventId.jsx
+import { GoogleMap, Marker } from "@react-google-maps/api";
+import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
+var GOOGLE_MAPS_API_KEY2 = "AIzaSyBJgJJUQYgDJs2DoVGNXrk7P8vxB01bwo0", MAP_ID = "71f267d426ae7773";
 function meta5({ data }) {
   return [
     {
-      title: `TrailBlaze - ${data.event.title || "Event"}`
+      title: `Evelation - ${data.event.title || "Event"}`
     }
   ];
 }
@@ -2292,16 +2362,14 @@ async function loader9({ request, params }) {
   return json5({ event, authUser });
 }
 function Event() {
-  let { event, authUser } = useLoaderData7(), [city, setCity] = useState6(null), { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY
-  }), location = event?.location ? {
+  let { event, authUser } = useLoaderData7(), [city, setCity] = useState6(null), location = event?.location ? {
     lat: parseFloat(event.location.split(",")[0]),
     lng: parseFloat(event.location.split(",")[1])
   } : null;
-  if (useEffect4(() => {
+  useEffect4(() => {
     if (location) {
       let fetchCityName = async () => {
-        let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${GOOGLE_MAPS_API_KEY}`;
+        let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${GOOGLE_MAPS_API_KEY2}`;
         try {
           let data = await (await fetch(geocodeUrl)).json();
           if (data.results.length > 0) {
@@ -2330,28 +2398,17 @@ function Event() {
       };
       console.log("Parsed Location:", location), fetchCityName();
     }
-  }, [location]), loadError)
-    return /* @__PURE__ */ jsxDEV14("div", { children: "Error loading Google Maps" }, void 0, !1, {
-      fileName: "app/routes/event.$eventId.jsx",
-      lineNumber: 87,
-      columnNumber: 25
-    }, this);
-  if (!isLoaded)
-    return /* @__PURE__ */ jsxDEV14("div", { children: "Loading Google Maps..." }, void 0, !1, {
-      fileName: "app/routes/event.$eventId.jsx",
-      lineNumber: 88,
-      columnNumber: 25
-    }, this);
+  }, [location]);
   let attending = event?.attendees?.some(
     (attendee) => attendee._id === authUser?._id
   );
-  return /* @__PURE__ */ jsxDEV14(
+  return /* @__PURE__ */ jsxDEV15(
     "div",
     {
       id: "event-page",
       className: "page max-w-5xl flex flex-col justify-center m-auto p-6",
       children: [
-        /* @__PURE__ */ jsxDEV14(
+        /* @__PURE__ */ jsxDEV15(
           "div",
           {
             className: "h-96 w-full flex rounded-xl",
@@ -2365,21 +2422,42 @@ function Event() {
           !1,
           {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 99,
+            lineNumber: 94,
             columnNumber: 7
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV14("div", { className: "my-4", children: [
-          /* @__PURE__ */ jsxDEV14("h1", { className: "text-3xl", children: event.title }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV15("div", { className: "my-4", children: [
+          /* @__PURE__ */ jsxDEV15("h1", { className: "text-3xl", children: event.title }, void 0, !1, {
+            fileName: "app/routes/event.$eventId.jsx",
+            lineNumber: 103,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV15("p", { className: "text-gray-500", children: [
+            "Post by: ",
+            event?.creator?.name
+          ] }, void 0, !0, {
+            fileName: "app/routes/event.$eventId.jsx",
+            lineNumber: 104,
+            columnNumber: 9
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/event.$eventId.jsx",
+          lineNumber: 102,
+          columnNumber: 7
+        }, this),
+        /* @__PURE__ */ jsxDEV15("h3", { children: event.description }, void 0, !1, {
+          fileName: "app/routes/event.$eventId.jsx",
+          lineNumber: 106,
+          columnNumber: 7
+        }, this),
+        /* @__PURE__ */ jsxDEV15("div", { className: "flex my-2", children: [
+          /* @__PURE__ */ jsxDEV15("img", { src: "/date.png", alt: "", className: "h-6" }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
             lineNumber: 108,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV14("p", { className: "text-gray-500", children: [
-            "Post by: ",
-            event?.creator?.name
-          ] }, void 0, !0, {
+          /* @__PURE__ */ jsxDEV15("p", { className: "", children: new Date(event.date).toLocaleDateString("en-GB") }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
             lineNumber: 109,
             columnNumber: 9
@@ -2389,44 +2467,16 @@ function Event() {
           lineNumber: 107,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV14("h3", { children: event.description }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV15("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV15("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
+          fileName: "app/routes/event.$eventId.jsx",
+          lineNumber: 112,
+          columnNumber: 9
+        }, this) }, void 0, !1, {
           fileName: "app/routes/event.$eventId.jsx",
           lineNumber: 111,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV14("div", { className: "flex my-2", children: [
-          /* @__PURE__ */ jsxDEV14("img", { src: "/date.png", alt: "", className: "h-6" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 113,
-            columnNumber: 9
-          }, this),
-          /* @__PURE__ */ jsxDEV14("p", { className: "pl-2", children: new Date(event.date).toLocaleDateString("en-GB") }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 114,
-            columnNumber: 9
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 112,
-          columnNumber: 7
-        }, this),
-        /* @__PURE__ */ jsxDEV14("div", { className: "flex my-2", children: [
-          /* @__PURE__ */ jsxDEV14("img", { src: "/location.png", alt: "Location Icon", className: "h-6" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 119,
-            columnNumber: 9
-          }, this),
-          /* @__PURE__ */ jsxDEV14("p", { className: "pl-2", children: city || "Fetching location..." }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 120,
-            columnNumber: 9
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 118,
-          columnNumber: 7
-        }, this),
-        isLoaded && location ? /* @__PURE__ */ jsxDEV14(
+        location && /* @__PURE__ */ jsxDEV15(GoogleMapLoader, { children: /* @__PURE__ */ jsxDEV15(
           GoogleMap,
           {
             mapContainerStyle: { width: "100%", height: "400px" },
@@ -2435,34 +2485,42 @@ function Event() {
             options: {
               mapId: MAP_ID
             },
-            children: /* @__PURE__ */ jsxDEV14(Marker, { position: location }, void 0, !1, {
+            children: /* @__PURE__ */ jsxDEV15(Marker, { position: location }, void 0, !1, {
               fileName: "app/routes/event.$eventId.jsx",
-              lineNumber: 131,
-              columnNumber: 11
+              lineNumber: 126,
+              columnNumber: 13
             }, this)
           },
           void 0,
           !1,
           {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 123,
-            columnNumber: 9
+            lineNumber: 118,
+            columnNumber: 11
           },
           this
-        ) : /* @__PURE__ */ jsxDEV14("div", { children: "Loading Google Maps..." }, void 0, !1, {
+        ) }, void 0, !1, {
           fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 134,
+          lineNumber: 117,
           columnNumber: 9
         }, this),
-        /* @__PURE__ */ jsxDEV14("p", { children: [
+        /* @__PURE__ */ jsxDEV15("p", { children: [
           event.attendees.length,
           " Like"
         ] }, void 0, !0, {
           fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 137,
+          lineNumber: 131,
           columnNumber: 7
         }, this),
-        !attending && authUser ? /* @__PURE__ */ jsxDEV14(Form5, { method: "post", children: /* @__PURE__ */ jsxDEV14("button", { name: "_action", value: "attend", children: "Like" }, void 0, !1, {
+        !attending && authUser ? /* @__PURE__ */ jsxDEV15(Form5, { method: "post", children: /* @__PURE__ */ jsxDEV15("button", { name: "_action", value: "attend", children: "Like" }, void 0, !1, {
+          fileName: "app/routes/event.$eventId.jsx",
+          lineNumber: 134,
+          columnNumber: 11
+        }, this) }, void 0, !1, {
+          fileName: "app/routes/event.$eventId.jsx",
+          lineNumber: 133,
+          columnNumber: 9
+        }, this) : authUser ? /* @__PURE__ */ jsxDEV15(Form5, { method: "post", children: /* @__PURE__ */ jsxDEV15("button", { name: "_action", value: "unattend", children: "Unlike" }, void 0, !1, {
           fileName: "app/routes/event.$eventId.jsx",
           lineNumber: 140,
           columnNumber: 11
@@ -2470,37 +2528,29 @@ function Event() {
           fileName: "app/routes/event.$eventId.jsx",
           lineNumber: 139,
           columnNumber: 9
-        }, this) : authUser ? /* @__PURE__ */ jsxDEV14(Form5, { method: "post", children: /* @__PURE__ */ jsxDEV14("button", { name: "_action", value: "unattend", children: "Unlike" }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 146,
-          columnNumber: 11
-        }, this) }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 145,
-          columnNumber: 9
         }, this) : null,
-        authUser?._id === event?.creator?._id && /* @__PURE__ */ jsxDEV14("div", { className: "flex py-4", children: [
-          /* @__PURE__ */ jsxDEV14(Form5, { action: "update", children: /* @__PURE__ */ jsxDEV14("button", { children: "Update" }, void 0, !1, {
+        authUser?._id === event?.creator?._id && /* @__PURE__ */ jsxDEV15("div", { className: "flex py-4", children: [
+          /* @__PURE__ */ jsxDEV15(Form5, { action: "update", children: /* @__PURE__ */ jsxDEV15("button", { children: "Update" }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 154,
+            lineNumber: 149,
             columnNumber: 13
           }, this) }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 153,
+            lineNumber: 148,
             columnNumber: 11
           }, this),
-          /* @__PURE__ */ jsxDEV14(Form5, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV14("button", { className: "ml-4 text-cancel", children: "Delete this event" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV15(Form5, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV15("button", { className: "ml-4 text-cancel", children: "Delete this event" }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 157,
+            lineNumber: 152,
             columnNumber: 13
           }, this) }, void 0, !1, {
             fileName: "app/routes/event.$eventId.jsx",
-            lineNumber: 156,
+            lineNumber: 151,
             columnNumber: 11
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/event.$eventId.jsx",
-          lineNumber: 152,
+          lineNumber: 147,
           columnNumber: 9
         }, this)
       ]
@@ -2509,7 +2559,7 @@ function Event() {
     !0,
     {
       fileName: "app/routes/event.$eventId.jsx",
-      lineNumber: 95,
+      lineNumber: 90,
       columnNumber: 5
     },
     this
@@ -2523,20 +2573,42 @@ __export(main_dashboard_exports, {
   meta: () => meta6
 });
 import "react";
-import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
+import { NavLink as NavLink3 } from "react-router-dom";
+import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
 var meta6 = () => [{ title: "Elevation" }];
 function MainDashboard() {
-  return /* @__PURE__ */ jsxDEV15("div", { className: "page", children: /* @__PURE__ */ jsxDEV15("div", { className: "page", children: /* @__PURE__ */ jsxDEV15(DashboardData_default, {}, void 0, !1, {
-    fileName: "app/routes/main-dashboard.jsx",
-    lineNumber: 12,
-    columnNumber: 9
-  }, this) }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV16("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV16("div", { className: "w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10", children: /* @__PURE__ */ jsxDEV16("p", { children: [
+      "Sign in to see more or",
+      /* @__PURE__ */ jsxDEV16(NavLink3, { to: "/signup", className: "text-blue-600", children: [
+        " ",
+        "sign up here"
+      ] }, void 0, !0, {
+        fileName: "app/routes/main-dashboard.jsx",
+        lineNumber: 15,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 13,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 12,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV16("div", { className: "page", children: /* @__PURE__ */ jsxDEV16(DashboardData_default, {}, void 0, !1, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 22,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 21,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
     fileName: "app/routes/main-dashboard.jsx",
     lineNumber: 11,
-    columnNumber: 7
-  }, this) }, void 0, !1, {
-    fileName: "app/routes/main-dashboard.jsx",
-    lineNumber: 10,
     columnNumber: 5
   }, this);
 }
@@ -2553,21 +2625,21 @@ import { Form as Form6, useLoaderData as useLoaderData8 } from "@remix-run/react
 import mongoose12 from "mongoose";
 
 // app/components/UserAvatar.jsx
-import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 function UserAvatar({ user }) {
-  return /* @__PURE__ */ jsxDEV16("div", { className: "avatar", children: [
-    /* @__PURE__ */ jsxDEV16("img", { src: user.image, alt: user.name }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV17("div", { className: "avatar", children: [
+    /* @__PURE__ */ jsxDEV17("img", { src: user.image, alt: user.name }, void 0, !1, {
       fileName: "app/components/UserAvatar.jsx",
       lineNumber: 4,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV16("span", { children: [
-      /* @__PURE__ */ jsxDEV16("h3", { children: user.name }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV17("span", { children: [
+      /* @__PURE__ */ jsxDEV17("h3", { children: user.name }, void 0, !1, {
         fileName: "app/components/UserAvatar.jsx",
         lineNumber: 6,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV16("p", { children: user.title }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV17("p", { children: user.title }, void 0, !1, {
         fileName: "app/components/UserAvatar.jsx",
         lineNumber: 7,
         columnNumber: 9
@@ -2585,20 +2657,20 @@ function UserAvatar({ user }) {
 }
 
 // app/components/PostCard.jsx
-import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
 function PostCard({ post }) {
-  return /* @__PURE__ */ jsxDEV17("article", { className: "post-card", children: [
-    /* @__PURE__ */ jsxDEV17(UserAvatar, { user: post.user }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV18("article", { className: "post-card", children: [
+    /* @__PURE__ */ jsxDEV18(UserAvatar, { user: post.user }, void 0, !1, {
       fileName: "app/components/PostCard.jsx",
       lineNumber: 6,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV17("img", { src: post.image, alt: post.caption }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV18("img", { src: post.image, alt: post.caption }, void 0, !1, {
       fileName: "app/components/PostCard.jsx",
       lineNumber: 7,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV17("h3", { children: post.caption }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV18("h3", { children: post.caption }, void 0, !1, {
       fileName: "app/components/PostCard.jsx",
       lineNumber: 8,
       columnNumber: 7
@@ -2611,7 +2683,7 @@ function PostCard({ post }) {
 }
 
 // app/routes/posts.$postId.jsx
-import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
 function meta7({ data }) {
   return [
     {
@@ -2630,19 +2702,19 @@ function Post() {
   function confirmDelete(event) {
     confirm("Please confirm you want to delete this post.") || event.preventDefault();
   }
-  return /* @__PURE__ */ jsxDEV18("div", { id: "post-page", className: "page", children: [
-    /* @__PURE__ */ jsxDEV18("h1", { children: post.caption }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV19("div", { id: "post-page", className: "page", children: [
+    /* @__PURE__ */ jsxDEV19("h1", { children: post.caption }, void 0, !1, {
       fileName: "app/routes/posts.$postId.jsx",
       lineNumber: 37,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV18(PostCard, { post }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV19(PostCard, { post }, void 0, !1, {
       fileName: "app/routes/posts.$postId.jsx",
       lineNumber: 38,
       columnNumber: 7
     }, this),
-    authUser._id === post.user._id && /* @__PURE__ */ jsxDEV18("div", { className: "btns", children: [
-      /* @__PURE__ */ jsxDEV18(Form6, { action: "update", children: /* @__PURE__ */ jsxDEV18("button", { children: "Update" }, void 0, !1, {
+    authUser._id === post.user._id && /* @__PURE__ */ jsxDEV19("div", { className: "btns", children: [
+      /* @__PURE__ */ jsxDEV19(Form6, { action: "update", children: /* @__PURE__ */ jsxDEV19("button", { children: "Update" }, void 0, !1, {
         fileName: "app/routes/posts.$postId.jsx",
         lineNumber: 42,
         columnNumber: 13
@@ -2651,7 +2723,7 @@ function Post() {
         lineNumber: 41,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV18(Form6, { action: "destroy", method: "post", onSubmit: confirmDelete, children: /* @__PURE__ */ jsxDEV18("button", { children: "Delete" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV19(Form6, { action: "destroy", method: "post", onSubmit: confirmDelete, children: /* @__PURE__ */ jsxDEV19("button", { children: "Delete" }, void 0, !1, {
         fileName: "app/routes/posts.$postId.jsx",
         lineNumber: 45,
         columnNumber: 13
@@ -2684,23 +2756,23 @@ import { GoogleMap as GoogleMap2, Marker as Marker2, useJsApiLoader as useJsApiL
 import { useState as useState7, useRef as useRef2 } from "react";
 import { json as json7 } from "@remix-run/node";
 import mongoose13 from "mongoose";
-import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
-var GOOGLE_MAPS_API_KEY2 = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWY", MAP_ID2 = "71f267d426ae7773", meta8 = () => [{ title: "Evelation - Post" }];
+import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
+var GOOGLE_MAPS_API_KEY3 = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWY", MAP_ID2 = "71f267d426ae7773", meta8 = () => [{ title: "Evelation - Post" }];
 async function loader11({ request }) {
   let event = await mongoose13.models.Event.find().populate("creator").populate("attendees");
   return json7({ event });
 }
 function Index2() {
   let { event } = useLoaderData9(), [center] = useState7({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef2(), { isLoaded, loadError } = useJsApiLoader2({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY2,
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY3,
     libraries: ["places"]
   });
-  return loadError ? /* @__PURE__ */ jsxDEV19("div", { children: "Error loading Google Maps" }, void 0, !1, {
+  return loadError ? /* @__PURE__ */ jsxDEV20("div", { children: "Error loading Google Maps" }, void 0, !1, {
     fileName: "app/routes/event._index.jsx",
     lineNumber: 35,
     columnNumber: 12
-  }, this) : isLoaded ? /* @__PURE__ */ jsxDEV19("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV19("div", { className: "map-container", children: /* @__PURE__ */ jsxDEV19(
+  }, this) : isLoaded ? /* @__PURE__ */ jsxDEV20("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV20("div", { className: "map-container", children: /* @__PURE__ */ jsxDEV20(
       GoogleMap2,
       {
         mapContainerStyle: { width: "100%", height: "400px" },
@@ -2713,7 +2785,7 @@ function Index2() {
         },
         children: event.map(
           (evt) => evt.location && // Ensure the event has location data
-          /* @__PURE__ */ jsxDEV19(
+          /* @__PURE__ */ jsxDEV20(
             Marker2,
             {
               position: {
@@ -2746,7 +2818,7 @@ function Index2() {
       lineNumber: 44,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV19("section", { className: "events-list", children: event.map((evt) => /* @__PURE__ */ jsxDEV19("div", { className: "event-item", children: /* @__PURE__ */ jsxDEV19(EventCard2, { event: evt }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV20("section", { className: "events-list", children: event.map((evt) => /* @__PURE__ */ jsxDEV20("div", { className: "event-item", children: /* @__PURE__ */ jsxDEV20(EventCard2, { event: evt }, void 0, !1, {
       fileName: "app/routes/event._index.jsx",
       lineNumber: 74,
       columnNumber: 13
@@ -2763,7 +2835,7 @@ function Index2() {
     fileName: "app/routes/event._index.jsx",
     lineNumber: 43,
     columnNumber: 5
-  }, this) : /* @__PURE__ */ jsxDEV19("div", { children: "Loading..." }, void 0, !1, {
+  }, this) : /* @__PURE__ */ jsxDEV20("div", { children: "Loading..." }, void 0, !1, {
     fileName: "app/routes/event._index.jsx",
     lineNumber: 39,
     columnNumber: 12
@@ -2783,11 +2855,11 @@ __export(add_event_exports, {
 import { useEffect as useEffect6, useRef as useRef3, useState as useState8 } from "react";
 import { useNavigate as useNavigate4 } from "@remix-run/react";
 import { Form as Form7 } from "@remix-run/react";
-import { GoogleMap as GoogleMap3, Marker as Marker3, useJsApiLoader as useJsApiLoader3 } from "@react-google-maps/api";
+import { GoogleMap as GoogleMap3, Marker as Marker3 } from "@react-google-maps/api";
 import mongoose14 from "mongoose";
 import { redirect as redirect5 } from "@remix-run/node";
-import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
-var GOOGLE_MAPS_API_KEY3 = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWYQ", mapLibraries = ["marker"], MAP_ID3 = "71f267d426ae7773";
+import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
+var MAP_ID3 = "71f267d426ae7773";
 async function loader12({ request }) {
   return await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
@@ -2796,10 +2868,7 @@ async function loader12({ request }) {
 function AddEvent() {
   let [image, setImage] = useState8(
     "https://placehold.co/600x400?text=Add+your+amazing+image"
-  ), [location, setLocation] = useState8(null), [center] = useState8({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef3(), navigate = useNavigate4(), { isLoaded, loadError } = useJsApiLoader3({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY3,
-    libraries: mapLibraries
-  }), handleMapClick = (event) => {
+  ), [location, setLocation] = useState8(null), [center] = useState8({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef3(), navigate = useNavigate4(), handleMapClick = (event) => {
     setLocation({
       lat: event.latLng.lat(),
       lng: event.latLng.lng()
@@ -2808,7 +2877,7 @@ function AddEvent() {
   return useEffect6(() => {
     if (location && mapRef.current && window.google) {
       let map = mapRef.current;
-      if (google.maps.marker.AdvancedMarkerElement) {
+      if (window.google && window.google.maps && window.google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
         let markerContent = document.createElement("div");
         markerContent.style.fontSize = "24px", new google.maps.marker.AdvancedMarkerElement({
           position: location,
@@ -2816,31 +2885,33 @@ function AddEvent() {
           content: markerContent
         });
       } else
-        console.warn("AdvancedMarkerElement is not available.");
+        new google.maps.Marker({
+          position: location,
+          map,
+          title: "Selected Location"
+        }), console.warn(
+          "AdvancedMarkerElement is not available, using standard Marker."
+        );
     }
-  }, [location]), loadError ? /* @__PURE__ */ jsxDEV20("div", { children: "Error loading Google Maps" }, void 0, !1, {
-    fileName: "app/routes/add-event.jsx",
-    lineNumber: 64,
-    columnNumber: 12
-  }, this) : isLoaded ? /* @__PURE__ */ jsxDEV20("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
-    /* @__PURE__ */ jsxDEV20("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Create New Event" }, void 0, !1, {
+  }, [location]), /* @__PURE__ */ jsxDEV21("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
+    /* @__PURE__ */ jsxDEV21("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Create New Post" }, void 0, !1, {
       fileName: "app/routes/add-event.jsx",
-      lineNumber: 73,
+      lineNumber: 71,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV20(
+    /* @__PURE__ */ jsxDEV21(
       Form7,
       {
         id: "event-form",
         method: "post",
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "title", children: "Event Title" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 81,
+            lineNumber: 79,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(
             "input",
             {
               required: !0,
@@ -2854,17 +2925,17 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 82,
+              lineNumber: 80,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 91,
+            lineNumber: 89,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(
             "textarea",
             {
               required: !0,
@@ -2877,17 +2948,17 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 92,
+              lineNumber: 90,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 100,
+            lineNumber: 98,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(
             "input",
             {
               required: !0,
@@ -2900,17 +2971,17 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 101,
+              lineNumber: 99,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 109,
+            lineNumber: 107,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(
             "input",
             {
               id: "location",
@@ -2925,12 +2996,12 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 110,
+              lineNumber: 108,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(GoogleMapLoader, { children: /* @__PURE__ */ jsxDEV21(
             GoogleMap3,
             {
               mapContainerStyle: { width: "100%", height: "400px" },
@@ -2942,27 +3013,31 @@ function AddEvent() {
                   mapId: MAP_ID3
                 });
               },
-              children: location && /* @__PURE__ */ jsxDEV20(Marker3, { position: location, title: "Selected Location" }, void 0, !1, {
+              children: location && /* @__PURE__ */ jsxDEV21(Marker3, { position: location, title: "Selected Location" }, void 0, !1, {
                 fileName: "app/routes/add-event.jsx",
                 lineNumber: 132,
-                columnNumber: 24
+                columnNumber: 15
               }, this)
             },
             void 0,
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 120,
-              columnNumber: 9
+              lineNumber: 119,
+              columnNumber: 11
             },
             this
-          ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
+          ) }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 135,
+            lineNumber: 118,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
+            fileName: "app/routes/add-event.jsx",
+            lineNumber: 137,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV21(
             "input",
             {
               required: !0,
@@ -2977,17 +3052,17 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 136,
+              lineNumber: 138,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 146,
+            lineNumber: 148,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21(
             "img",
             {
               id: "image-preview",
@@ -2999,13 +3074,13 @@ function AddEvent() {
             !1,
             {
               fileName: "app/routes/add-event.jsx",
-              lineNumber: 147,
+              lineNumber: 149,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("div", { className: "flex justify-between", children: [
-            /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV21("div", { className: "flex justify-between", children: [
+            /* @__PURE__ */ jsxDEV21(
               "button",
               {
                 type: "submit",
@@ -3016,12 +3091,12 @@ function AddEvent() {
               !1,
               {
                 fileName: "app/routes/add-event.jsx",
-                lineNumber: 155,
+                lineNumber: 157,
                 columnNumber: 11
               },
               this
             ),
-            /* @__PURE__ */ jsxDEV20(
+            /* @__PURE__ */ jsxDEV21(
               "button",
               {
                 type: "button",
@@ -3033,14 +3108,14 @@ function AddEvent() {
               !1,
               {
                 fileName: "app/routes/add-event.jsx",
-                lineNumber: 161,
+                lineNumber: 163,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/add-event.jsx",
-            lineNumber: 154,
+            lineNumber: 156,
             columnNumber: 9
           }, this)
         ]
@@ -3049,19 +3124,15 @@ function AddEvent() {
       !0,
       {
         fileName: "app/routes/add-event.jsx",
-        lineNumber: 76,
+        lineNumber: 74,
         columnNumber: 7
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/add-event.jsx",
-    lineNumber: 72,
+    lineNumber: 70,
     columnNumber: 5
-  }, this) : /* @__PURE__ */ jsxDEV20("div", { children: "Loading..." }, void 0, !1, {
-    fileName: "app/routes/add-event.jsx",
-    lineNumber: 68,
-    columnNumber: 12
   }, this);
 }
 async function action7({ request }) {
@@ -3069,6 +3140,90 @@ async function action7({ request }) {
     failureRedirect: "/signin"
   }), formData = await request.formData(), event = Object.fromEntries(formData);
   return event.creator = user._id, await mongoose14.models.Event.create(event), redirect5("/dashboard");
+}
+
+// app/routes/locations.jsx
+var locations_exports = {};
+__export(locations_exports, {
+  default: () => Locations
+});
+import { Suspense } from "react";
+
+// app/components/ShowAllLocations.jsx
+import { GoogleMap as GoogleMap4, Marker as Marker4 } from "@react-google-maps/api";
+import { useLoaderData as useLoaderData10 } from "@remix-run/react";
+import { json as json8 } from "@remix-run/node";
+import mongoose15 from "mongoose";
+import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+function ShowAllLocations() {
+  let { locations = [] } = useLoaderData10() || {};
+  return console.log("Locations to display on the map:", locations), /* @__PURE__ */ jsxDEV22(GoogleMapLoader, { children: /* @__PURE__ */ jsxDEV22(
+    GoogleMap4,
+    {
+      mapContainerStyle: { width: "100%", height: "500px" },
+      center: locations.length > 0 ? { lat: locations[0].lat, lng: locations[0].lng } : { lat: 41.015137, lng: 28.97953 },
+      zoom: locations.length > 0 ? 10 : 5,
+      options: {
+        mapId: "71f267d426ae7773"
+      },
+      children: locations.map((location, index) => /* @__PURE__ */ jsxDEV22(
+        Marker4,
+        {
+          position: { lat: location.lat, lng: location.lng },
+          title: location.name
+        },
+        index,
+        !1,
+        {
+          fileName: "app/components/ShowAllLocations.jsx",
+          lineNumber: 50,
+          columnNumber: 11
+        },
+        this
+      ))
+    },
+    void 0,
+    !1,
+    {
+      fileName: "app/components/ShowAllLocations.jsx",
+      lineNumber: 37,
+      columnNumber: 7
+    },
+    this
+  ) }, void 0, !1, {
+    fileName: "app/components/ShowAllLocations.jsx",
+    lineNumber: 36,
+    columnNumber: 5
+  }, this);
+}
+
+// app/routes/locations.jsx
+import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+function Locations() {
+  return /* @__PURE__ */ jsxDEV23("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV23("h1", { className: "text-3xl", children: "Locations" }, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 7,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV23(Suspense, { fallback: /* @__PURE__ */ jsxDEV23("div", { children: "Loading map..." }, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 8,
+      columnNumber: 27
+    }, this), children: /* @__PURE__ */ jsxDEV23(ShowAllLocations, {}, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 9,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 8,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/locations.jsx",
+    lineNumber: 6,
+    columnNumber: 5
+  }, this);
 }
 
 // app/routes/add-post.jsx
@@ -3081,9 +3236,9 @@ __export(add_post_exports, {
 });
 import { redirect as redirect6 } from "@remix-run/node";
 import { Form as Form8, useNavigate as useNavigate5 } from "@remix-run/react";
-import mongoose15 from "mongoose";
+import mongoose16 from "mongoose";
 import { useState as useState9 } from "react";
-import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV24 } from "react/jsx-dev-runtime";
 var meta9 = () => [{ title: "Remix Post App - Add New Post" }];
 async function loader13({ request }) {
   return await authenticator.isAuthenticated(request, {
@@ -3095,39 +3250,39 @@ function AddPost() {
   function handleCancel() {
     navigate(-1);
   }
-  return /* @__PURE__ */ jsxDEV21("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV21("h1", { children: "Add a Post" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV24("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV24("h1", { children: "Add a Post" }, void 0, !1, {
       fileName: "app/routes/add-post.jsx",
       lineNumber: 27,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV21(Form8, { id: "post-form", method: "post", children: [
-      /* @__PURE__ */ jsxDEV21("label", { htmlFor: "caption", children: "Caption" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV24(Form8, { id: "post-form", method: "post", children: [
+      /* @__PURE__ */ jsxDEV24("label", { htmlFor: "caption", children: "Caption" }, void 0, !1, {
         fileName: "app/routes/add-post.jsx",
         lineNumber: 29,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV21("input", { id: "caption", name: "caption", type: "text", "aria-label": "caption", placeholder: "Write a caption..." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("input", { id: "caption", name: "caption", type: "text", "aria-label": "caption", placeholder: "Write a caption..." }, void 0, !1, {
         fileName: "app/routes/add-post.jsx",
         lineNumber: 30,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
         fileName: "app/routes/add-post.jsx",
         lineNumber: 32,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV21("input", { name: "image", type: "url", onChange: (e) => setImage(e.target.value), placeholder: "Paste an image URL..." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("input", { name: "image", type: "url", onChange: (e) => setImage(e.target.value), placeholder: "Paste an image URL..." }, void 0, !1, {
         fileName: "app/routes/add-post.jsx",
         lineNumber: 33,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV21("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
         fileName: "app/routes/add-post.jsx",
         lineNumber: 35,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV21(
+      /* @__PURE__ */ jsxDEV24(
         "img",
         {
           id: "image-preview",
@@ -3145,13 +3300,13 @@ function AddPost() {
         },
         this
       ),
-      /* @__PURE__ */ jsxDEV21("div", { className: "btns", children: [
-        /* @__PURE__ */ jsxDEV21("button", { children: "Save" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("div", { className: "btns", children: [
+        /* @__PURE__ */ jsxDEV24("button", { children: "Save" }, void 0, !1, {
           fileName: "app/routes/add-post.jsx",
           lineNumber: 45,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV21("button", { type: "button", className: "btn-cancel", onClick: handleCancel, children: "Cancel" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV24("button", { type: "button", className: "btn-cancel", onClick: handleCancel, children: "Cancel" }, void 0, !1, {
           fileName: "app/routes/add-post.jsx",
           lineNumber: 46,
           columnNumber: 11
@@ -3178,7 +3333,7 @@ async function action8({ request }) {
   });
   console.log(user);
   let formData = await request.formData(), post = Object.fromEntries(formData);
-  return post.user = user._id, await mongoose15.models.Post.create(post), redirect6("/posts");
+  return post.user = user._id, await mongoose16.models.Post.create(post), redirect6("/posts");
 }
 
 // app/routes/profile1.jsx
@@ -3188,19 +3343,19 @@ __export(profile1_exports, {
   default: () => Profile2,
   loader: () => loader14
 });
-import { Form as Form9, useLoaderData as useLoaderData10 } from "@remix-run/react";
+import { Form as Form9, useLoaderData as useLoaderData11 } from "@remix-run/react";
 import "@remix-run/react";
-import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV25 } from "react/jsx-dev-runtime";
 async function loader14({ request }) {
   return await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
   });
 }
 function Profile2() {
-  let user = useLoaderData10();
-  return /* @__PURE__ */ jsxDEV22("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV22("div", { className: "bg-slate-800 p-8", children: /* @__PURE__ */ jsxDEV22("div", { className: "flex justify-center items-center space-x-4", children: [
-      /* @__PURE__ */ jsxDEV22(
+  let user = useLoaderData11();
+  return /* @__PURE__ */ jsxDEV25("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV25("div", { className: "bg-slate-800 p-8", children: /* @__PURE__ */ jsxDEV25("div", { className: "flex justify-center items-center space-x-4", children: [
+      /* @__PURE__ */ jsxDEV25(
         "img",
         {
           src: user.avatar,
@@ -3216,8 +3371,8 @@ function Profile2() {
         },
         this
       ),
-      /* @__PURE__ */ jsxDEV22("div", { children: [
-        /* @__PURE__ */ jsxDEV22("p", { className: "text-white font-bold text-3xl", children: [
+      /* @__PURE__ */ jsxDEV25("div", { children: [
+        /* @__PURE__ */ jsxDEV25("p", { className: "text-white font-bold text-3xl", children: [
           user.name,
           " ",
           user.lastname
@@ -3226,12 +3381,12 @@ function Profile2() {
           lineNumber: 26,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV22("p", { className: "text-white text-lg", children: user.mail }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV25("p", { className: "text-white text-lg", children: user.mail }, void 0, !1, {
           fileName: "app/routes/profile1.jsx",
           lineNumber: 29,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV22("p", { className: "text-white", children: [
+        /* @__PURE__ */ jsxDEV25("p", { className: "text-white", children: [
           "Your sports: ",
           user.hobbies.join(", ")
         ] }, void 0, !0, {
@@ -3253,7 +3408,7 @@ function Profile2() {
       lineNumber: 18,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV22(Form9, { method: "post", className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxDEV22("button", { className: "bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700", children: "Logout" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV25(Form9, { method: "post", className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxDEV25("button", { className: "bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700", children: "Logout" }, void 0, !1, {
       fileName: "app/routes/profile1.jsx",
       lineNumber: 36,
       columnNumber: 9
@@ -3293,9 +3448,9 @@ __export(signin_exports, {
   default: () => SignIn,
   loader: () => loader16
 });
-import { json as json8 } from "@remix-run/node";
-import { Form as Form10, NavLink as NavLink3, useLoaderData as useLoaderData11 } from "@remix-run/react";
-import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+import { json as json9 } from "@remix-run/node";
+import { Form as Form10, NavLink as NavLink4, useLoaderData as useLoaderData12 } from "@remix-run/react";
+import { jsxDEV as jsxDEV26 } from "react/jsx-dev-runtime";
 async function loader16({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
@@ -3307,34 +3462,34 @@ async function loader16({ request }) {
   let headers = new Headers({
     "Set-Cookie": await sessionStorage.commitSession(session)
   });
-  return json8({ error }, { headers });
+  return json9({ error }, { headers });
 }
 function SignIn() {
-  let loaderData = useLoaderData11();
-  return /* @__PURE__ */ jsxDEV23(
+  let loaderData = useLoaderData12();
+  return /* @__PURE__ */ jsxDEV26(
     "div",
     {
       id: "sign-in-page",
       className: " flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV23("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV26("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
           fileName: "app/routes/signin.jsx",
           lineNumber: 35,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV23(
+        /* @__PURE__ */ jsxDEV26(
           Form10,
           {
             id: "sign-in-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV26("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 41,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV23(
+              /* @__PURE__ */ jsxDEV26(
                 "input",
                 {
                   id: "mail",
@@ -3354,12 +3509,12 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV26("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 52,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV23(
+              /* @__PURE__ */ jsxDEV26(
                 "input",
                 {
                   id: "password",
@@ -3379,7 +3534,7 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV23("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV23("button", { children: "Sign In" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV26("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV26("button", { children: "Sign In" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 65,
                 columnNumber: 11
@@ -3388,7 +3543,7 @@ function SignIn() {
                 lineNumber: 64,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV23("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV23("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV26("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV26("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 70,
                 columnNumber: 13
@@ -3408,10 +3563,10 @@ function SignIn() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV23("p", { className: "flex", children: [
+        /* @__PURE__ */ jsxDEV26("p", { className: "flex", children: [
           "No account?",
           " ",
-          /* @__PURE__ */ jsxDEV23(NavLink3, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV26(NavLink4, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
             fileName: "app/routes/signin.jsx",
             lineNumber: 76,
             columnNumber: 9
@@ -3447,11 +3602,11 @@ __export(signup_exports, {
   default: () => SignUp,
   loader: () => loader17
 });
-import { json as json9, redirect as redirect7 } from "@remix-run/node";
-import { Form as Form11, NavLink as NavLink4, useLoaderData as useLoaderData12 } from "@remix-run/react";
-import mongoose16 from "mongoose";
+import { json as json10, redirect as redirect7 } from "@remix-run/node";
+import { Form as Form11, NavLink as NavLink5, useLoaderData as useLoaderData13 } from "@remix-run/react";
+import mongoose17 from "mongoose";
 import { useState as useState10, useRef as useRef4, useEffect as useEffect7 } from "react";
-import { jsxDEV as jsxDEV24 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV27 } from "react/jsx-dev-runtime";
 async function loader17({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
@@ -3463,10 +3618,10 @@ async function loader17({ request }) {
   let headers = new Headers({
     "Set-Cookie": await sessionStorage.commitSession(session)
   });
-  return json9({ error }, { headers });
+  return json10({ error }, { headers });
 }
 function SignUp() {
-  let loaderData = useLoaderData12(), [selectedHobbies, setSelectedHobbies] = useState10([]), [dropdownOpen, setDropdownOpen] = useState10(!1), dropdownRef = useRef4(null), sportsOptions = ["Surf", "Ski", "Kite"], toggleDropdown = () => {
+  let loaderData = useLoaderData13(), [selectedHobbies, setSelectedHobbies] = useState10([]), [dropdownOpen, setDropdownOpen] = useState10(!1), dropdownRef = useRef4(null), sportsOptions = ["Surf", "Ski", "Kite"], toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   }, handleCheckboxChange = (event) => {
     let { value, checked } = event.target;
@@ -3481,30 +3636,30 @@ function SignUp() {
     return document.addEventListener("mousedown", handleClickOutside), () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]), /* @__PURE__ */ jsxDEV24(
+  }, [dropdownRef]), /* @__PURE__ */ jsxDEV27(
     "div",
     {
       id: "sign-up-page",
       className: "flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 mb-32 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV24("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV27("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
           fileName: "app/routes/signup.jsx",
           lineNumber: 65,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV24(
+        /* @__PURE__ */ jsxDEV27(
           Form11,
           {
             id: "sign-up-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 71,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27(
                 "input",
                 {
                   id: "mail",
@@ -3525,12 +3680,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 83,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27(
                 "input",
                 {
                   id: "password",
@@ -3550,12 +3705,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 94,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27(
                 "input",
                 {
                   id: "firstName",
@@ -3574,12 +3729,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 104,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27(
                 "input",
                 {
                   id: "lastName",
@@ -3598,13 +3753,13 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("label", { children: "Select your hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("label", { children: "Select your hobbies:" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 114,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24("div", { className: "relative", ref: dropdownRef, children: [
-                /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27("div", { className: "relative", ref: dropdownRef, children: [
+                /* @__PURE__ */ jsxDEV27(
                   "button",
                   {
                     type: "button",
@@ -3621,8 +3776,8 @@ function SignUp() {
                   },
                   this
                 ),
-                dropdownOpen && /* @__PURE__ */ jsxDEV24("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV24("label", { className: "block p-2", children: [
-                  /* @__PURE__ */ jsxDEV24(
+                dropdownOpen && /* @__PURE__ */ jsxDEV27("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV27("label", { className: "block p-2", children: [
+                  /* @__PURE__ */ jsxDEV27(
                     "input",
                     {
                       type: "checkbox",
@@ -3654,13 +3809,13 @@ function SignUp() {
                 lineNumber: 115,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV24("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
-                /* @__PURE__ */ jsxDEV24("strong", { children: "Selected Hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV27("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
+                /* @__PURE__ */ jsxDEV27("strong", { children: "Selected Hobbies:" }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 144,
                   columnNumber: 15
                 }, this),
-                /* @__PURE__ */ jsxDEV24("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV27("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 145,
                   columnNumber: 15
@@ -3674,7 +3829,7 @@ function SignUp() {
                 lineNumber: 141,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV27(
                 "input",
                 {
                   type: "hidden",
@@ -3690,7 +3845,7 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV24("button", { children: "Sign Up" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV27("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV27("button", { children: "Sign Up" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 157,
                 columnNumber: 11
@@ -3699,7 +3854,7 @@ function SignUp() {
                 lineNumber: 156,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV24("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV24("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV27("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV27("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 162,
                 columnNumber: 13
@@ -3719,10 +3874,10 @@ function SignUp() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV24("p", { children: [
+        /* @__PURE__ */ jsxDEV27("p", { children: [
           "Already have an account?",
           " ",
-          /* @__PURE__ */ jsxDEV24(NavLink4, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV27(NavLink5, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
             fileName: "app/routes/signup.jsx",
             lineNumber: 168,
             columnNumber: 9
@@ -3747,7 +3902,7 @@ function SignUp() {
 async function action11({ request }) {
   try {
     let formData = await request.formData(), newUser = Object.fromEntries(formData);
-    return newUser.selectedHobbies = JSON.parse(newUser.selectedHobbies || "[]"), await mongoose16.models.User.create({
+    return newUser.selectedHobbies = JSON.parse(newUser.selectedHobbies || "[]"), await mongoose17.models.User.create({
       mail: newUser.mail,
       password: newUser.password,
       name: newUser.name,
@@ -3767,10 +3922,10 @@ __export(error_exports, {
   default: () => Example
 });
 import { Link as Link4 } from "react-router-dom";
-import { Fragment, jsxDEV as jsxDEV25 } from "react/jsx-dev-runtime";
+import { Fragment, jsxDEV as jsxDEV28 } from "react/jsx-dev-runtime";
 function Example() {
-  return /* @__PURE__ */ jsxDEV25(Fragment, { children: /* @__PURE__ */ jsxDEV25("main", { className: "relative isolate min-h-full", children: [
-    /* @__PURE__ */ jsxDEV25(
+  return /* @__PURE__ */ jsxDEV28(Fragment, { children: /* @__PURE__ */ jsxDEV28("main", { className: "relative isolate min-h-full", children: [
+    /* @__PURE__ */ jsxDEV28(
       "img",
       {
         src: "https://cdn.pixabay.com/photo/2017/08/10/01/11/field-2616740_1280.jpg",
@@ -3790,24 +3945,24 @@ function Example() {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV25("div", { className: "mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8 text-gray-50", children: [
-      /* @__PURE__ */ jsxDEV25("p", { className: "text-base font-semibold leading-8 text-white", children: "404" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV28("div", { className: "mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8 text-gray-50", children: [
+      /* @__PURE__ */ jsxDEV28("p", { className: "text-base font-semibold leading-8 text-white", children: "404" }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 16,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV25("h1", { className: "mt-4 text-3xl font-bold tracking-tight  sm:text-5xl", children: "Page not found" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV28("h1", { className: "mt-4 text-3xl font-bold tracking-tight  sm:text-5xl", children: "Page not found" }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 17,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV25("p", { className: "mt-4 text-base  sm:mt-6", children: "Sorry, we couldn\u2019t find the page you\u2019re looking for." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV28("p", { className: "mt-4 text-base  sm:mt-6", children: "Sorry, we couldn\u2019t find the page you\u2019re looking for." }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 20,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV25("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV25(Link4, { to: "/event", className: "text-sm font-semibold leading-7 ", children: [
-        /* @__PURE__ */ jsxDEV25("span", { "aria-hidden": "true", children: "\u2190" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV28("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV28(Link4, { to: "/event", className: "text-sm font-semibold leading-7 ", children: [
+        /* @__PURE__ */ jsxDEV28("span", { "aria-hidden": "true", children: "\u2190" }, void 0, !1, {
           fileName: "app/routes/error.jsx",
           lineNumber: 25,
           columnNumber: 15
@@ -3839,7 +3994,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-7HXZCFKR.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-KKDHQITS.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-EHWSPLNU.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-YBNG2UBP.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-2NMNLWPF.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-4L7ESQ5R.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-BA4PIDIS.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-P6JZWUJZ.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-HSYC2SWZ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-OVVHWV6T.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-BZH6KNVR.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUK66PBI.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-SSFNCLYP.js", imports: ["/build/_shared/chunk-P6JZWUJZ.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-KLV5VW7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-32ZHGPIC.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-CHP4HAEV.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-BQVAG5LU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile1": { id: "routes/profile1", parentId: "root", path: "profile1", index: void 0, caseSensitive: void 0, module: "/build/routes/profile1-CL2CFHKQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-E5UMBJ46.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SDPVZWSB.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "1d3c4e1f", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1732895610053 }, url: "/build/manifest-1D3C4E1F.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-7HXZCFKR.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-KKDHQITS.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-HKPYBBGK.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-CNZXVTPS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LOWTLRSB.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-O5GNYB6P.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-4L7ESQ5R.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-2KYJVLFI.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-WACVH2Z2.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-HSYC2SWZ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-LWVCRKJ4.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-BZH6KNVR.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUK66PBI.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-YWRYA37E.js", imports: ["/build/_shared/chunk-EMFGA6DM.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-OLIVA3IR.js", imports: ["/build/_shared/chunk-WACVH2Z2.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId": { id: "routes/posts.$postId", parentId: "root", path: "posts/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId-KLV5VW7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId.destroy": { id: "routes/posts.$postId.destroy", parentId: "routes/posts.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId.destroy-QJD7CVP4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/posts.$postId_.update": { id: "routes/posts.$postId_.update", parentId: "root", path: "posts/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$postId_.update-32ZHGPIC.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-CHP4HAEV.js", imports: ["/build/_shared/chunk-V6KE3PNR.js", "/build/_shared/chunk-UJ252UTL.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-BQVAG5LU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile1": { id: "routes/profile1", parentId: "root", path: "profile1", index: void 0, caseSensitive: void 0, module: "/build/routes/profile1-CL2CFHKQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-E5UMBJ46.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-SDPVZWSB.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-GMSPC5K3.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "76fba714", hmr: { runtime: "/build/_shared/chunk-HKPYBBGK.js", timestamp: 1733225939828 }, url: "/build/manifest-76FBA714.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
@@ -3954,6 +4109,14 @@ var mode = "development", assetsBuildDirectory = "public/build", future = { v3_f
     index: void 0,
     caseSensitive: void 0,
     module: add_event_exports
+  },
+  "routes/locations": {
+    id: "routes/locations",
+    parentId: "root",
+    path: "locations",
+    index: void 0,
+    caseSensitive: void 0,
+    module: locations_exports
   },
   "routes/add-post": {
     id: "routes/add-post",
