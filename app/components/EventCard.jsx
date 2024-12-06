@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function EventCard({ event }) {
+export default function EventCard({ event, onCityUpdate }) {
   const [city, setCity] = useState(null);
+
+  const normalizeCityName = (cityName) => {
+    // Normalize the string by removing diacritical marks (accents) and making the name lowercase
+    return cityName
+      .normalize("NFD") // Decompose combined characters into base characters + diacritics
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .toLowerCase(); // Convert to lowercase for consistency
+  };
 
   const fetchCityFromCoordinates = async (lat, lng) => {
     const apiKey = "AIzaSyC8mGRx4SS4NLfyl7AIOhktrM_F9EOHWYQ"; // Replace with your Google API key
@@ -10,14 +18,9 @@ export default function EventCard({ event }) {
 
     try {
       const response = await axios.get(url);
-      console.log("Google Maps API Response:", response.data); // Log the full response for inspection
-
       const results = response.data.results;
       if (results.length > 0) {
         const addressComponents = results[0].address_components;
-        console.log("Address Components:", addressComponents); // Log the address components for debugging
-
-        // Try finding 'locality', 'administrative_area_level_1', or other components
         const nearestCity =
           addressComponents.find(
             (component) =>
@@ -29,42 +32,36 @@ export default function EventCard({ event }) {
           )?.long_name ||
           "Unknown location";
 
-        console.log("Nearest City:", nearestCity); // Log the found city name
-        setCity(nearestCity); // Set city state
+        const normalizedCity = normalizeCityName(nearestCity); // Normalize the city name
+        setCity(normalizedCity);
+        onCityUpdate(event._id, normalizedCity); // Update the parent with the city
       } else {
-        console.log("No results found for coordinates.");
-        setCity("Unknown location"); // Fallback if no city is found
+        const normalizedCity = normalizeCityName("Unknown location");
+        setCity(normalizedCity);
+        onCityUpdate(event._id, normalizedCity);
       }
     } catch (error) {
       console.error("Error fetching city:", error);
-      setCity("Error fetching location"); // Handle error
+      const normalizedCity = normalizeCityName("Error fetching location");
+      setCity(normalizedCity);
+      onCityUpdate(event._id, normalizedCity);
     }
   };
 
   useEffect(() => {
     if (event.location) {
-      // Split the coordinates string into an array of [lat, lng]
       const [lat, lng] = event.location
         .split(",")
         .map((coord) => parseFloat(coord.trim()));
-
-      // Check if lat and lng are valid numbers
       if (!isNaN(lat) && !isNaN(lng)) {
-        console.log("Event Coordinates:", lat, lng); // Log coordinates to check
         fetchCityFromCoordinates(lat, lng);
       } else {
-        console.log("Invalid event coordinates:", event.location); // Log if coordinates are invalid
-        setCity("No location available");
+        const normalizedCity = normalizeCityName("No location available");
+        setCity(normalizedCity);
+        onCityUpdate(event._id, normalizedCity);
       }
-    } else {
-      console.log("No location data found for event.");
-      setCity("No location available");
     }
   }, [event.location]);
-
-  useEffect(() => {
-    console.log("City state updated:", city); // Log the updated city
-  }, [city]);
 
   return (
     <article className="flex p-4 rounded-xl shadow-lg w-full bg-slate-50">

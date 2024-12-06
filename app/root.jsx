@@ -14,10 +14,7 @@ import NavAll from "./components/NavAll";
 import Footer from "./components/footer";
 
 export function links() {
-  return [
-    { rel: "stylesheet", href: stylesheet },
-    { rel: "stylesheet", href: "/fonts/inter/inter.css" },
-  ];
+  return [{ rel: "stylesheet", href: stylesheet }];
 }
 export async function loader({ request }) {
   return await authenticator.isAuthenticated(request);

@@ -1,3 +1,4 @@
+import { useState } from "react"; // Import useState
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import mongoose from "mongoose";
@@ -25,7 +26,8 @@ export async function loader({ request }) {
 }
 
 export default function Index() {
-  const { mostLikedEvent } = useLoaderData(); // Get the most liked event from the loader
+  const { mostLikedEvent } = useLoaderData();
+  const [eventCities, setEventCities] = useState({}); // Initialize the state for event cities
 
   // Handle the case where there are no events
   if (!mostLikedEvent) {
@@ -37,11 +39,18 @@ export default function Index() {
     );
   }
 
-  // Render the most liked event
+  // Update city for a specific event
+  const updateCity = (eventId, city) => {
+    setEventCities((prev) => ({
+      ...prev,
+      [eventId]: city,
+    }));
+  };
+
   return (
     <div className="page">
       <DashboardData />
-      <div className=" p-4">
+      <div className="p-4">
         <Link
           key={mostLikedEvent._id}
           className="event-link"
@@ -50,8 +59,8 @@ export default function Index() {
           <div className="md:hidden w-full flex justify-center">
             <EventListCards event={mostLikedEvent} />
           </div>
-          <div className="hidden md:flex  w-full  justify-center">
-            <EventCard event={mostLikedEvent} />
+          <div className="hidden md:flex w-full justify-center">
+            <EventCard event={mostLikedEvent} onCityUpdate={updateCity} />
           </div>
         </Link>
       </div>

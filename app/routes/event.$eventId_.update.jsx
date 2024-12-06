@@ -1,104 +1,200 @@
-import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData, useNavigate } from "@remix-run/react";
-import mongoose from "mongoose";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { Form } from "@remix-run/react";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { authenticator } from "../services/auth.server";
+import mongoose from "mongoose";
+import { json, redirect } from "@remix-run/node";
+import { GoogleMapLoader } from "../components/GoogleMapLoader";
 
-export function meta() {
-  return [
-    {
-      title: "Trailblaze - Update event",
-    },
-  ];
-}
+const MAP_ID = "71f267d426ae7773";
 
 export async function loader({ request, params }) {
-  await authenticator.isAuthenticated(request, {
+  const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
 
-  const event = await mongoose.models.Event.findById(params.eventId).populate("creator");
+  const event = await mongoose.models.Event.findById(params.eventId).populate(
+    "creator"
+  );
+
+  if (!event) {
+    throw new Response("Event not found", { status: 404 });
+  }
+
+  if (event.creator._id.toString() !== user._id.toString()) {
+    return redirect("/dashboard");
+  }
+
   return json({ event });
 }
 
 export default function UpdateEvent() {
   const { event } = useLoaderData();
   const [image, setImage] = useState(event.image);
+  const [location, setLocation] = useState(
+    event.location
+      ? Array.isArray(event.location)
+        ? event.location
+        : event.location.split(",").map((coord) => parseFloat(coord.trim()))
+      : null
+  );
+  const [center, setCenter] = useState(
+    location
+      ? { lat: location[0], lng: location[1] }
+      : { lat: 41.0082, lng: 28.9784 }
+  );
+  const mapRef = useRef(null);
+  const markerRef = useRef(null); // Ref for marker instance
   const navigate = useNavigate();
 
-  function handleCancel() {
-    navigate(-1);
-  }
+  const handleMapClick = (e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+
+    if (typeof lat === "number" && typeof lng === "number") {
+      setLocation([lat, lng]);
+      setCenter({ lat, lng });
+    } else {
+      console.error("Invalid coordinates:", lat, lng);
+    }
+  };
+
+  const handleCancel = () => navigate("/dashboard");
+
+  useEffect(() => {
+    if (location && mapRef.current) {
+      const [lat, lng] = location;
+      if (typeof lat === "number" && typeof lng === "number") {
+        mapRef.current.panTo({ lat, lng });
+      } else {
+        console.error("Invalid location:", location);
+      }
+    }
+  }, [location]);
+
+  // Handle marker creation and update
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    if (!markerRef.current) {
+      // Create the marker if it doesn't exist
+      markerRef.current = new google.maps.Marker({
+        map: mapRef.current,
+        position: center,
+        title: "Selected Location",
+      });
+    } else {
+      // Update marker position if it exists
+      markerRef.current.setPosition(center);
+    }
+  }, [center]); // Trigger when center changes
+
+  const parsedLocation = location
+    ? { lat: location[0], lng: location[1] }
+    : { lat: 41.0082, lng: 28.9784 };
 
   return (
-    <div className="page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8 ">
-      <h1 className="m-auto flex justify-center font-semibold text-2xl mb-6">Update Event</h1>
-      <Form id="event-form" method="post" className="rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4">
-        <label htmlFor="title">Title</label>
+    <div className="page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8">
+      <h1 className="m-auto flex justify-center font-semibold text-2xl mb-6">
+        Update Event
+      </h1>
+      <Form
+        id="event-form"
+        method="post"
+        className="rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4"
+      >
+        <label htmlFor="title">Post Title</label>
         <input
+          required
           id="title"
-          defaultValue={event.title}
           name="title"
           type="text"
-          aria-label="title"
+          defaultValue={event.title}
           placeholder="Write a title..."
-          className="rounded-xl p-2  border-gray-400 border"
+          className="rounded-xl p-2 border-gray-400 border"
         />
-       
+
         <label htmlFor="description">Description</label>
         <textarea
+          required
           id="description"
           name="description"
-          type="text"
-          aria-label="description"
-          placeholder="Write a description..."
           defaultValue={event.description}
-          className="rounded-xl p-2  border-gray-400 border" 
+          placeholder="Write a description..."
+          className="rounded-xl p-2 border-gray-400 border"
         />
-        <label htmlFor="location">Location</label>
-        <input 
-        id="location"
-        name="location"
-        type="text"
-        aria-label="location"
-        placeholder="Write a location..."
-        defaultValue={event.location}
-        className="rounded-xl p-2  border-gray-400 border" />
-
 
         <label htmlFor="date">Date</label>
         <input
+          required
           id="date"
           name="date"
           type="date"
-          aria-label="date"
-          defaultValue={new Date(event.date).toISOString().split("T")[0]}
-          className="rounded-xl p-2  border-gray-400 border"
+          defaultValue={event.date.split("T")[0]}
+          className="rounded-xl p-2 border-gray-400 border"
         />
 
-<label htmlFor="image">Image URL</label>
+        <label htmlFor="location">Location</label>
         <input
+          id="location"
+          name="location"
+          type="text"
+          readOnly
+          placeholder="Click on the map to select a location"
+          value={location ? location.join(", ") : ""}
+          className="rounded-xl p-2 border-gray-400 border"
+        />
+
+        <GoogleMapLoader>
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "400px" }}
+            center={parsedLocation}
+            zoom={12}
+            onClick={handleMapClick}
+            onLoad={(map) => {
+              mapRef.current = map;
+              map.setOptions({
+                mapId: MAP_ID,
+              });
+            }}
+          >
+            {/* Map overlay */}
+          </GoogleMap>
+        </GoogleMapLoader>
+
+        <label htmlFor="image">Image URL</label>
+        <input
+          required
+          id="image"
           name="image"
-          defaultValue={event.image}
           type="url"
-          onChange={(e) => setImage(e.target.value)}
+          defaultValue={event.image}
           placeholder="Paste an image URL..."
-          className="rounded-xl p-2  border-gray-400 border" 
+          onChange={(e) => setImage(e.target.value)}
+          className="rounded-xl p-2 border-gray-400 border"
         />
 
         <label htmlFor="image-preview">Image Preview</label>
         <img
           id="image-preview"
-          className="m-auto rounded-xl"
-          src={image ? image : "https://placehold.co/600x400?text=Paste+an+image+URL"}
-          alt="Choose"
-          onError={(e) => (e.target.src = "https://placehold.co/600x400?text=Error+loading+image")}
+          src={image}
+          alt="Preview"
+          className="image-preview m-auto rounded-xl"
         />
 
-        <input name="uid" type="text" defaultValue={event.uid} hidden />
-        <div className="btns ">
-          <button className="bg-accent hover:bg-primary hover:text-background p-2 rounded-lg mr-6">Save</button>
-          <button type="button" className="btn-cancel text-cancel" onClick={handleCancel}>
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-accent hover:bg-primary hover:text-background p-2 rounded-lg"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            className="text-cancel p-2 rounded-lg"
+            onClick={handleCancel}
+          >
             Cancel
           </button>
         </div>
@@ -108,31 +204,25 @@ export default function UpdateEvent() {
 }
 
 export async function action({ request, params }) {
-  // Protect the route
   const authUser = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
 
-  // Fetch the post to check if the current user is the creator
   const eventToUpdate = await mongoose.models.Event.findById(params.eventId);
 
-  if (eventToUpdate.creator.toString() !== authUser._id.toString()) {
-    // User is not the creator of the post, redirect
-    return redirect(`/event/${params.eventId}`);
+  if (
+    !eventToUpdate ||
+    eventToUpdate.creator.toString() !== authUser._id.toString()
+  ) {
+    return redirect(`/dashboard`);
   }
 
-  // User is authenticated and is the creator, proceed to update the post
   const formData = await request.formData();
-  const event = Object.fromEntries(formData);
+  const updatedEvent = Object.fromEntries(formData);
 
-  // Since postToUpdate is already the document you want to update,
-  // you can directly modify and save it, which can be more efficient than findByIdAndUpdate
-  eventToUpdate.title = event.title;
-  eventToUpdate.image = event.image;
-  eventToUpdate.description = event.description;
-  eventToUpdate.date = event.date;
-  eventToUpdate.location = event.location;
-  
+  Object.assign(eventToUpdate, updatedEvent);
+  eventToUpdate.location = updatedEvent.location;
+
   await eventToUpdate.save();
 
   return redirect(`/event/${params.eventId}`);

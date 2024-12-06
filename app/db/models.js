@@ -25,18 +25,57 @@ const userSchema = new mongoose.Schema(
     eventsCreated: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Events",
+        ref: "Event",
       },
     ],
     eventsAttending: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Events",
+        ref: "Event",
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
   },
   { timestamps: true }
 );
+// Create a method to follow another user
+userSchema.methods.follow = async function (userId) {
+  if (!this.following.includes(userId)) {
+    this.following.push(userId);
+    await this.save();
+
+    const userToFollow = await User.findById(userId);
+    if (userToFollow && !userToFollow.followers.includes(this._id)) {
+      userToFollow.followers.push(this._id);
+      await userToFollow.save();
+    }
+  }
+};
+
+// Create a method to unfollow another user
+userSchema.methods.unfollow = async function (userId) {
+  if (this.following.includes(userId)) {
+    this.following.pull(userId);
+    await this.save();
+
+    const userToUnfollow = await User.findById(userId);
+    if (userToUnfollow && userToUnfollow.followers.includes(this._id)) {
+      userToUnfollow.followers.pull(this._id);
+      await userToUnfollow.save();
+    }
+  }
+};
 
 const User = mongoose.model("User", userSchema);
 
@@ -153,6 +192,8 @@ async function insertData() {
     eventsCreated: [],
     eventsAttending: [],
     password: await hashPassword("1234"),
+    followers: [test2._id],
+    following: [test2._id],
   });
 
   console.log(test);

@@ -1,10 +1,11 @@
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, Link } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import mongoose from "mongoose";
 import { useEffect, useState } from "react";
 import { authenticator } from "../services/auth.server";
 import { GoogleMapLoader } from "../components/GoogleMapLoader";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import { NavLink } from "react-router-dom";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyBJgJJUQYgDJs2DoVGNXrk7P8vxB01bwo0";
 const MAP_ID = "71f267d426ae7773"; // Replace with your actual Map ID
@@ -101,7 +102,15 @@ export default function Event() {
       ></div>
       <div className="my-4">
         <h1 className="text-3xl">{event.title}</h1>
-        <p className="text-gray-500">Post by: {event?.creator?.name}</p>
+        <p className="text-gray-500">
+          Post by:{" "}
+          <NavLink
+            to={`/userProfile/${event?.creator?._id}`}
+            className="text-blue-500 hover:underline"
+          >
+            {event?.creator?.name}
+          </NavLink>
+        </p>
       </div>
       <h3>{event.description}</h3>
       <div className="flex my-2">

@@ -6,13 +6,62 @@ const DashboardData = () => {
   const [country, setCountry] = useState("");
   const [inputCity, setInputCity] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("wind");
+  const [isOffline, setIsOffline] = useState(false);
+
   const apiKey = "84c59fa875b07f0e54b6dd1ce011f187";
+  const debounceDelay = 500; // Delay in ms to debounce input
+
+  useEffect(() => {
+    // Run only on the client side
+    if (typeof window !== "undefined" && navigator) {
+      setIsOffline(!navigator.onLine);
+
+      const handleNetworkChange = () => {
+        const isOnline = navigator.onLine;
+        setIsOffline(!isOnline);
+        if (!isOnline) {
+          setError(
+            "You are offline. Data displayed is from the last fetched information."
+          );
+          const cachedData = localStorage.getItem(city);
+          if (cachedData) {
+            setWeatherData(JSON.parse(cachedData));
+            setLoading(false);
+          }
+        } else {
+          setError("");
+        }
+      };
+
+      // Add event listeners for online and offline states
+      window.addEventListener("online", handleNetworkChange);
+      window.addEventListener("offline", handleNetworkChange);
+
+      return () => {
+        // Cleanup listeners on component unmount
+        window.removeEventListener("online", handleNetworkChange);
+        window.removeEventListener("offline", handleNetworkChange);
+      };
+    }
+  }, [city]);
+
+  // Debounced search function
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputCity) {
+        setCity(inputCity);
+        setInputCity("");
+      }
+    }, debounceDelay);
+
+    return () => clearTimeout(timer); // Cleanup the timeout if the input changes before the delay
+  }, [inputCity]);
 
   const fetchWeatherData = async (city) => {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) {
@@ -23,12 +72,12 @@ const DashboardData = () => {
       setWeatherData(data);
       setError("");
       setCountry(data.city.country);
-      localStorage.setItem(city, JSON.stringify(data));
+      localStorage.setItem(city, JSON.stringify(data)); // Only store data when it’s successfully fetched
     } catch (error) {
       console.error("Error fetching weather data:", error);
       setError("Could not fetch weather data. Please try another city.");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -49,7 +98,7 @@ const DashboardData = () => {
   };
 
   const getUserLocation = () => {
-    if (navigator.geolocation) {
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -67,17 +116,21 @@ const DashboardData = () => {
   };
 
   useEffect(() => {
-    getUserLocation();
+    if (typeof window !== "undefined") {
+      getUserLocation();
+    }
   }, []);
 
   useEffect(() => {
-    const cachedData = localStorage.getItem(city);
-    if (cachedData) {
-      setWeatherData(JSON.parse(cachedData));
-      setError("");
-      setLoading(false);
-    } else if (city !== "Loading...") {
-      fetchWeatherData(city);
+    if (typeof window !== "undefined") {
+      const cachedData = localStorage.getItem(city);
+      if (cachedData) {
+        setWeatherData(JSON.parse(cachedData));
+        setError("");
+        setLoading(false);
+      } else if (city !== "Loading...") {
+        fetchWeatherData(city); // Only fetch if data is not in local storage
+      }
     }
   }, [city]);
 
@@ -85,47 +138,44 @@ const DashboardData = () => {
     e.preventDefault();
     if (inputCity) {
       setCity(inputCity);
-      setInputCity("");
+      setInputCity(""); // Clear input after search
     }
   };
 
   const getWindDirection = (degrees) => {
-    if (degrees >= 337.5 || degrees < 22.5) {
-      return "N";
-    } else if (degrees >= 22.5 && degrees < 67.5) {
-      return "NE";
-    } else if (degrees >= 67.5 && degrees < 112.5) {
-      return "E";
-    } else if (degrees >= 112.5 && degrees < 157.5) {
-      return "SE";
-    } else if (degrees >= 157.5 && degrees < 202.5) {
-      return "S";
-    } else if (degrees >= 202.5 && degrees < 247.5) {
-      return "SW";
-    } else if (degrees >= 247.5 && degrees < 292.5) {
-      return "W";
-    } else if (degrees >= 292.5 && degrees < 337.5) {
-      return "NW";
-    }
+    if (degrees >= 337.5 || degrees < 22.5) return "N";
+    if (degrees >= 22.5 && degrees < 67.5) return "NE";
+    if (degrees >= 67.5 && degrees < 112.5) return "E";
+    if (degrees >= 112.5 && degrees < 157.5) return "SE";
+    if (degrees >= 157.5 && degrees < 202.5) return "S";
+    if (degrees >= 202.5 && degrees < 247.5) return "SW";
+    if (degrees >= 247.5 && degrees < 292.5) return "W";
+    if (degrees >= 292.5 && degrees < 337.5) return "NW";
   };
 
   const getWeatherEmoji = (description) => {
     const lowerCaseDescription = description.toLowerCase();
-    if (lowerCaseDescription.includes("clear")) return "☀️"; // Clear sky
-    if (lowerCaseDescription.includes("clouds")) return "☁️"; // Cloudy
-    if (lowerCaseDescription.includes("rain")) return "🌧️"; // Rain
-    if (lowerCaseDescription.includes("thunderstorm")) return "⛈️"; // Thunderstorm
-    if (lowerCaseDescription.includes("snow")) return "❄️"; // Snow
+    if (lowerCaseDescription.includes("clear")) return "☀️";
+    if (lowerCaseDescription.includes("clouds")) return "☁️";
+    if (lowerCaseDescription.includes("rain")) return "🌧️";
+    if (lowerCaseDescription.includes("thunderstorm")) return "⛈️";
+    if (lowerCaseDescription.includes("snow")) return "❄️";
     if (
       lowerCaseDescription.includes("mist") ||
       lowerCaseDescription.includes("fog")
     )
-      return "🌫️"; // Mist/Fog
-    return "🌤️"; // Default emoji for other types
+      return "🌫️";
+    return "🌤️";
   };
 
   return (
     <div className="flex flex-col p-4">
+      {isOffline && (
+        <div className="bg-yellow-200 text-yellow-800 p-4 mb-4 rounded-lg">
+          ⚠️ You are offline. Displayed data may be outdated.
+        </div>
+      )}
+
       {loading ? (
         <div className="loader-container">
           <div className="spinner"></div>
@@ -141,7 +191,15 @@ const DashboardData = () => {
               className="bg-slate-50 p-2 w-72 rounded-l-2xl focus:outline-none"
             />
             <button className="bg-slate-50 rounded-r-2xl p-2" type="submit">
-              🔍
+              <svg
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 24 24"
+              >
+                <path d="M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 20 22 L 22 20 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z"></path>
+              </svg>
             </button>
           </form>
           <div className="flex flex-col md:flex-row">
