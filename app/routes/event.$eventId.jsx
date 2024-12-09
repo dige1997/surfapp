@@ -114,7 +114,6 @@ export default function Event() {
       </div>
       <h3>{event.description}</h3>
       <div className="flex my-2">
-        <img src="/date.png" alt="" className="h-6" />
         <p className="">{new Date(event.date).toLocaleDateString("en-GB")}</p>
       </div>
       <div className="flex my-2">
