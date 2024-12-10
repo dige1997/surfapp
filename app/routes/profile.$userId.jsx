@@ -4,6 +4,7 @@ import EventCard from "../components/EventCard";
 import mongoose from "mongoose";
 import EventListCards from "../components/EventListCards";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export async function loader({ request }) {
   // Fetch user
@@ -23,8 +24,9 @@ export async function loader({ request }) {
     .populate("creator")
     .populate("attendees");
 
-  // Fetch the updated user
-  const userUpdated = await mongoose.models.User.findOne({ _id: user._id });
+  const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
+    .populate("followers", "_id name")
+    .populate("following", "_id name");
 
   // Return user, events created by the user, and events the user is attending
   return { user: userUpdated, events, eventsAttending };
@@ -32,6 +34,14 @@ export async function loader({ request }) {
 
 export default function Profile() {
   const { user, events, eventsAttending } = useLoaderData();
+  const [cityUpdates, setCityUpdates] = useState({});
+  const handleCityUpdate = (eventId, cityName) => {
+    setCityUpdates((prev) => ({
+      ...prev,
+      [eventId]: cityName,
+    }));
+    console.log(`City updated for event ${eventId}: ${cityName}`);
+  };
 
   return (
     <div className="page flex flex-col justify-center m-auto w-4/6">
@@ -82,6 +92,14 @@ export default function Profile() {
             <p className="font-semibold">Mail: </p>
             <p>{user?.mail}</p>
           </div>
+          <div className="py-2">
+            <p className="font-semibold">Followers: </p>
+            <p>{user.followers.length}</p>
+          </div>
+          <div className="py-2">
+            <p className="font-semibold">Following: </p>
+            <p>{user.following.length}</p>
+          </div>
         </div>
 
         <Form
@@ -121,7 +139,7 @@ export default function Profile() {
                 <EventListCards event={event} />
               </div>
               <div className="hidden md:block">
-                <EventCard event={event} />
+                <EventCard event={event} onCityUpdate={handleCityUpdate} />
               </div>
             </Link>
           </div>
