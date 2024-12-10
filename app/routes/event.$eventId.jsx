@@ -7,7 +7,6 @@ import { GoogleMapLoader } from "../components/GoogleMapLoader";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { NavLink } from "react-router-dom";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyBJgJJUQYgDJs2DoVGNXrk7P8vxB01bwo0";
 const MAP_ID = "71f267d426ae7773"; // Replace with your actual Map ID
 
 export function meta({ data }) {

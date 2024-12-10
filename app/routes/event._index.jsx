@@ -24,6 +24,7 @@ export default function Index() {
   const { event } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
   const [eventCities, setEventCities] = useState({});
+  const [displayedEventsCount, setDisplayedEventsCount] = useState(6);
 
   // Update the city in the eventCities state
   const updateCity = (eventId, city) => {
@@ -33,20 +34,26 @@ export default function Index() {
     }));
   };
 
-  const filteredEvents = event.filter((event) => {
-    // Get the city from the eventCities state, ensuring it's lowercase for case-insensitivity
-    const city = (eventCities[event._id] || "").toLowerCase();
+  const loadMoreEvents = () => {
+    setDisplayedEventsCount((prevCount) => prevCount + 6);
+  };
 
-    // Convert searchTerm to lowercase for case-insensitive matching
-    const searchTermLower = searchTerm.toLowerCase();
+  const filteredEvents = event
+    .filter((event) => {
+      // Get the city from the eventCities state, ensuring it's lowercase for case-insensitivity
+      const city = (eventCities[event._id] || "").toLowerCase();
 
-    // Check if any of the event fields or the city includes the searchTerm
-    return (
-      Object.values(event).some((value) =>
-        value.toString().toLowerCase().includes(searchTermLower)
-      ) || city.includes(searchTermLower) // Include city in the search, case-insensitive
-    );
-  });
+      // Convert searchTerm to lowercase for case-insensitive matching
+      const searchTermLower = searchTerm.toLowerCase();
+
+      // Check if any of the event fields or the city includes the searchTerm
+      return (
+        Object.values(event).some((value) =>
+          value.toString().toLowerCase().includes(searchTermLower)
+        ) || city.includes(searchTermLower) // Include city in the search, case-insensitive
+      );
+    })
+    .slice(0, displayedEventsCount); // Limit to displayedEventsCount
 
   return (
     <div className="page">
@@ -101,6 +108,14 @@ export default function Index() {
             </Link>
           ))}
         </section>
+        {event.length > displayedEventsCount && (
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto mt-4"
+            onClick={loadMoreEvents}
+          >
+            Load More
+          </button>
+        )}
       </div>
     </div>
   );

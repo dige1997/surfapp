@@ -35,12 +35,17 @@ export async function loader({ request }) {
 export default function Profile() {
   const { user, events, eventsAttending } = useLoaderData();
   const [cityUpdates, setCityUpdates] = useState({});
+  const [displayedEventsCount, setDisplayedEventsCount] = useState(3); // Initial count of displayed events
   const handleCityUpdate = (eventId, cityName) => {
     setCityUpdates((prev) => ({
       ...prev,
       [eventId]: cityName,
     }));
     console.log(`City updated for event ${eventId}: ${cityName}`);
+  };
+
+  const loadMoreEvents = () => {
+    setDisplayedEventsCount((prev) => prev + 3); // Show 3 more events
   };
 
   return (
@@ -83,22 +88,26 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div className="flex flex-col">
-          <div className="py-2">
-            <p className="font-semibold">Name: </p>
-            <p>{user?.name}</p>
+        <div className="flex flex-row">
+          <div className="flex flex-col">
+            <div className="py-2">
+              <p className="font-semibold">Name: </p>
+              <p>{user?.name}</p>
+            </div>
+            <div className="py-2">
+              <p className="font-semibold">Mail: </p>
+              <p>{user?.mail}</p>
+            </div>
           </div>
-          <div className="py-2">
-            <p className="font-semibold">Mail: </p>
-            <p>{user?.mail}</p>
-          </div>
-          <div className="py-2">
-            <p className="font-semibold">Followers: </p>
-            <p>{user.followers.length}</p>
-          </div>
-          <div className="py-2">
-            <p className="font-semibold">Following: </p>
-            <p>{user.following.length}</p>
+          <div className="flex">
+            <div className="py-2">
+              <p className="font-semibold">Followers: </p>
+              <p>{user.followers.length}</p>
+            </div>
+            <div className="p-2">
+              <p className="font-semibold">Following: </p>
+              <p>{user.following.length}</p>
+            </div>
           </div>
         </div>
 
@@ -117,7 +126,7 @@ export default function Profile() {
         <h2 className="text-2xl font-semibold">Liked posts</h2>
       </div>
       <div>
-        {eventsAttending.map((event) => (
+        {eventsAttending.slice(0, displayedEventsCount).map((event) => (
           <div key={event._id}>
             <Link className="event-link" to={`/event/${event._id}`}>
               <div className=" md:hidden ">
@@ -129,10 +138,15 @@ export default function Profile() {
             </Link>
           </div>
         ))}
+        {eventsAttending.length > displayedEventsCount && (
+          <button className="load-more-button" onClick={loadMoreEvents}>
+            Load More
+          </button>
+        )}
       </div>
       <div className="mb-16">
         <h2 className="text-lg font-medium pt-6">Posts by me</h2>
-        {events.map((event) => (
+        {events.slice(0, displayedEventsCount).map((event) => (
           <div key={event._id}>
             <Link className="event-link" to={`/event/${event._id}`}>
               <div className=" md:hidden ">
@@ -144,6 +158,16 @@ export default function Profile() {
             </Link>
           </div>
         ))}
+        <div className="flex w-full">
+          {events.length > displayedEventsCount && (
+            <button
+              className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
+              onClick={loadMoreEvents}
+            >
+              Load More
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
