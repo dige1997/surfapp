@@ -94,23 +94,50 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="user-profile-page">
-      <h1 className="text-3xl">{userProfile.name}</h1>
-      <p>Email: {userProfile.mail}</p>
-      <p>{followersCount} Followers</p>
-      <p>{userProfile.following.length} Following</p>
-
-      {authUser && authUser._id !== userProfile._id && (
-        <div className="follow-actions">
-          {isFollowing ? (
-            <button onClick={() => handleFollowAction("unfollow")}>
-              Unfollow
-            </button>
-          ) : (
-            <button onClick={() => handleFollowAction("follow")}>Follow</button>
-          )}
+    <div className="container mx-auto p-6">
+      <div className="bg-white shadow-md rounded-lg p-8">
+        <div className="flex items-center space-x-4 mb-6">
+          <img
+            src={userProfile.avatarUrl || "/default-avatar.png"}
+            alt={`${userProfile.name}'s avatar`}
+            className="w-24 h-24 rounded-full object-cover"
+          />
+          <div>
+            <h1 className="text-2xl font-semibold">{userProfile.name}</h1>
+            <p className="text-gray-600">{userProfile.mail}</p>
+          </div>
         </div>
-      )}
+
+        <div className="flex justify-between mb-6">
+          <p className="text-lg">
+            {followersCount} <span className="text-gray-500">Followers</span>
+          </p>
+          <p className="text-lg">
+            {userProfile.following.length}{" "}
+            <span className="text-gray-500">Following</span>
+          </p>
+        </div>
+
+        {authUser && authUser._id !== userProfile._id && (
+          <div className="flex items-center space-x-4">
+            {isFollowing ? (
+              <button
+                onClick={() => handleFollowAction("unfollow")}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={() => handleFollowAction("follow")}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+              >
+                Follow
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

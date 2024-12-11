@@ -7,35 +7,37 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export async function loader({ request }) {
-  // Fetch user
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
 
-  // Fetch events created by the user
+  const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
+    .populate("followers", "_id name")
+    .populate("following", "_id name");
+
   const events = await mongoose.models.Event.find({ creator: user._id })
     .populate("creator")
     .populate("attendees");
 
-  // Fetch events the user is attending
   const eventsAttending = await mongoose.models.Event.find({
     attendees: user._id,
   })
     .populate("creator")
     .populate("attendees");
 
-  const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
-    .populate("followers", "_id name")
-    .populate("following", "_id name");
-
-  // Return user, events created by the user, and events the user is attending
   return { user: userUpdated, events, eventsAttending };
 }
 
 export default function Profile() {
   const { user, events, eventsAttending } = useLoaderData();
   const [cityUpdates, setCityUpdates] = useState({});
-  const [displayedEventsCount, setDisplayedEventsCount] = useState(3); // Initial count of displayed events
+  const [displayedEventsCount, setDisplayedEventsCount] = useState(3);
+  const [popupList, setPopupList] = useState({
+    visible: false,
+    users: [],
+    type: "",
+  });
+
   const handleCityUpdate = (eventId, cityName) => {
     setCityUpdates((prev) => ({
       ...prev,
@@ -45,7 +47,15 @@ export default function Profile() {
   };
 
   const loadMoreEvents = () => {
-    setDisplayedEventsCount((prev) => prev + 3); // Show 3 more events
+    setDisplayedEventsCount((prev) => prev + 3);
+  };
+
+  const togglePopup = (type) => {
+    setPopupList((prev) => ({
+      visible: !prev.visible,
+      users: type === "followers" ? user.followers : user.following,
+      type,
+    }));
   };
 
   return (
@@ -88,11 +98,15 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-between">
           <div className="flex flex-col">
             <div className="py-2">
               <p className="font-semibold">Name: </p>
               <p>{user?.name}</p>
+            </div>
+            <div>
+              <p className="font-semibold">Lastname: </p>
+              <p>{user?.lastname}</p>
             </div>
             <div className="py-2">
               <p className="font-semibold">Mail: </p>
@@ -100,13 +114,19 @@ export default function Profile() {
             </div>
           </div>
           <div className="flex">
-            <div className="py-2">
-              <p className="font-semibold">Followers: </p>
-              <p>{user.followers.length}</p>
+            <div
+              className="py-2 cursor-pointer"
+              onClick={() => togglePopup("followers")}
+            >
+              <p className="font-semibold">Followers </p>
+              <p className="flex justify-center">{user.followers.length}</p>
             </div>
-            <div className="p-2">
-              <p className="font-semibold">Following: </p>
-              <p>{user.following.length}</p>
+            <div
+              className="p-2 cursor-pointer"
+              onClick={() => togglePopup("following")}
+            >
+              <p className="font-semibold">Following </p>
+              <p className="flex justify-center">{user.following.length}</p>
             </div>
           </div>
         </div>
@@ -115,11 +135,9 @@ export default function Profile() {
           method="post"
           className="items-center w-1/2 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto"
         >
-          <div className="">
-            <button className="text-cancel flex flex-row font-semibold w-full justify-center">
-              Logout
-            </button>
-          </div>
+          <button className="text-cancel flex flex-row font-semibold w-full justify-center">
+            Logout
+          </button>
         </Form>
       </div>
       <div className="py-6">
@@ -169,6 +187,31 @@ export default function Profile() {
           )}
         </div>
       </div>
+
+      {popupList.visible && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm shadow-lg p-4 z-50">
+          <div className="w-96 bg-white shadow-lg p-4 rounded-lg relative max-h-96 overflow-hidden">
+            <div className="flex flex-row justify-between">
+              <h3 className="text-xl font-semibold ">
+                {popupList.type === "followers" ? "Followers" : "Following"}
+              </h3>
+              <button
+                onClick={() =>
+                  setPopupList((prev) => ({ ...prev, visible: false }))
+                }
+                className=" bg-red-500 text-white px-2 py-1 rounded "
+              >
+                X
+              </button>
+            </div>
+            <ul className="list-disc ml-6">
+              {popupList.users.map((user) => (
+                <li key={user._id}>{user.name}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

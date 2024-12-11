@@ -1,4 +1,6 @@
+// DashboardData.jsx
 import React, { useEffect, useState } from "react";
+import { IframeDisplay } from "./IframeDisplay"; // Import the IframeDisplay component
 
 const DashboardData = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -197,119 +199,89 @@ const DashboardData = () => {
                 x="0px"
                 y="0px"
                 viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <path d="M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 20 22 L 22 20 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z"></path>
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </button>
           </form>
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-3/6 md:justify-center md:mx-auto">
-              <div className="mt-4 flex justify-center flex-col">
-                <div>
-                  <h1 className="text-7xl font-bold text-center mt-2 capitalize">
-                    {city}
-                  </h1>
-                  <p className="text-4xl font-semibold text-center">
-                    {country}
-                  </p>
-                </div>
-              </div>
-
-              {error && <p className="text-red-500 text-center">{error}</p>}
-
-              {weatherData ? (
-                <div className="bg-s-100 rounded-xl w-full p-6 mt-4 mx-auto">
-                  <p className="text-3xl flex items-center gap-3">
-                    🌡 {weatherData.list[0].main.temp} °C
-                  </p>
-                  <p>Feels Like: {weatherData.list[0].main.feels_like} °C</p>
-                  <p>Min Temp: {weatherData.list[0].main.temp_min} °C</p>
-                  <p>Max Temp: {weatherData.list[0].main.temp_max} °C</p>
-                  <p className="text-3xl flex items-center gap-3">
-                    {getWeatherEmoji(
-                      weatherData.list[0].weather[0].description
-                    )}{" "}
-                    {weatherData.list[0].weather[0].description}
-                  </p>
-                  <p>
-                    Rain:{" "}
-                    {weatherData.list[0].rain
-                      ? weatherData.list[0].rain["3h"]
-                      : 0}{" "}
-                    mm
-                  </p>
-                  <p className="text-3xl flex items-center gap-3">
-                    💨 {weatherData.list[0].wind.speed} m/s
-                  </p>
-                  <p>
-                    Wind Direction:{" "}
-                    {getWindDirection(weatherData.list[0].wind.deg)} (
-                    {weatherData.list[0].wind.deg}°)
-                  </p>
-                </div>
-              ) : (
-                <p className="text-center mt-4">Loading weather data...</p>
-              )}
+          <div className="mt-10 p-4 flex flex-col justify-between items-center rounded-xl shadow-md h-full">
+            <h1 className="text-2xl font-semibold mb-4 text-gray-800">
+              Weather in {city}, {country}
+            </h1>
+            <div className="flex flex-row items-center mb-4">
+              <p className="text-6xl">
+                {weatherData &&
+                  getWeatherEmoji(weatherData.list[0].weather[0].description)}
+              </p>
+              <h2 className="text-5xl ml-4 font-medium">
+                {weatherData && Math.round(weatherData.list[0].main.temp)}°C
+              </h2>
             </div>
-            <div className="w-full h-96 p-4">
-              <div className="flex mt-4">
-                <button
-                  className={`p-2 rounded-t-md shadow-md ${
-                    activeTab === "wind"
-                      ? "bg-blue-500 text-white"
-                      : "bg-slate-100 hover:bg-slate-400"
-                  }`}
-                  onClick={() => setActiveTab("wind")}
-                >
-                  Wind Map
-                </button>
-                <button
-                  className={`p-2 rounded-t-md shadow-md ${
-                    activeTab === "swell"
-                      ? "bg-blue-500 text-white"
-                      : "bg-slate-100 hover:bg-slate-400"
-                  }`}
-                  onClick={() => setActiveTab("swell")}
-                >
-                  Swell Map
-                </button>
-                <button
-                  className={`p-2 rounded-t-md shadow-md ${
-                    activeTab === "temp"
-                      ? "bg-slate-500 text-white"
-                      : "bg-slate-100 hover:bg-slate-400"
-                  }`}
-                  onClick={() => setActiveTab("temp")}
-                >
-                  Sea Temp
-                </button>
+            <p className="text-xl text-gray-600">
+              {weatherData &&
+                weatherData.list[0].weather[0].description.toUpperCase()}
+            </p>
+            <div className="flex justify-between mt-8">
+              <div className="flex flex-col items-center">
+                <p className="text-sm text-gray-600">Wind</p>
+                <p className="font-medium">
+                  {weatherData && Math.round(weatherData.list[0].wind.speed)}{" "}
+                  m/s
+                </p>
+                <p className="text-sm text-gray-600">
+                  {weatherData &&
+                    getWindDirection(weatherData.list[0].wind.deg)}
+                </p>
               </div>
-
-              {activeTab === "wind" && weatherData && (
-                <iframe
-                  title="Windy Map"
-                  src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=wind&metricTemp=°C&metricWind=m/s`}
-                  className="w-full h-full rounded-md"
-                  frameBorder="0"
-                ></iframe>
-              )}
-              {activeTab === "swell" && weatherData && (
-                <iframe
-                  title="Swell Map"
-                  src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`}
-                  className="w-full h-full rounded-md"
-                  frameBorder="0"
-                ></iframe>
-              )}
-              {activeTab === "temp" && weatherData && (
-                <iframe
-                  title="Sea Temperature"
-                  src={`https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sst&product=ecmwfAnalysis&level=surface`}
-                  className="w-full h-full rounded-md"
-                  frameBorder="0"
-                ></iframe>
-              )}
+              <div className="flex flex-col items-center">
+                <p className="text-sm text-gray-600">Humidity</p>
+                <p className="font-medium">
+                  {weatherData && weatherData.list[0].main.humidity}%
+                </p>
+              </div>
+              <div className="flex flex-col items-center">
+                <p className="text-sm text-gray-600">Pressure</p>
+                <p className="font-medium">
+                  {weatherData && weatherData.list[0].main.pressure} hPa
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div className="mt-10">
+            <button
+              className={`${
+                activeTab === "wind" ? "bg-blue-700" : "bg-blue-500"
+              } text-white p-2 rounded-t-lg`}
+              onClick={() => setActiveTab("wind")}
+            >
+              Wind
+            </button>
+            <button
+              className={`${
+                activeTab === "swell" ? "bg-blue-700" : "bg-blue-500"
+              } text-white p-2 rounded-t-lg`}
+              onClick={() => setActiveTab("swell")}
+            >
+              Swell
+            </button>
+            <button
+              className={`${
+                activeTab === "temp" ? "bg-blue-700" : "bg-blue-500"
+              } text-white p-2 rounded-t-lg`}
+              onClick={() => setActiveTab("temp")}
+            >
+              Temperature
+            </button>
+          </div>
+          <div className="">
+            <IframeDisplay activeTab={activeTab} weatherData={weatherData} />
           </div>
         </div>
       )}

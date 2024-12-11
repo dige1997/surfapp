@@ -1,5 +1,5 @@
-import { Form, useLoaderData, Link } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { Form, useLoaderData, useActionData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
 import mongoose from "mongoose";
 import { useEffect, useState } from "react";
 import { authenticator } from "../services/auth.server";
@@ -7,6 +7,7 @@ import { GoogleMapLoader } from "../components/GoogleMapLoader";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { NavLink } from "react-router-dom";
 
+const GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
 const MAP_ID = "71f267d426ae7773"; // Replace with your actual Map ID
 
 export function meta({ data }) {
@@ -23,6 +24,33 @@ export async function loader({ request, params }) {
     .populate("attendees")
     .populate("creator");
   return json({ event, authUser });
+}
+
+export async function action({ request, params }) {
+  const formData = new URLSearchParams(await request.text());
+  const action = formData.get("_action");
+  const authUser = await authenticator.isAuthenticated(request);
+
+  if (!authUser) {
+    throw new Error("User not authenticated");
+  }
+
+  const eventId = params.eventId;
+  const Event = mongoose.models.Event;
+
+  if (action === "attend") {
+    // User wants to like the event
+    await Event.findByIdAndUpdate(eventId, {
+      $addToSet: { attendees: authUser._id },
+    });
+  } else if (action === "unattend") {
+    // User wants to unlike the event
+    await Event.findByIdAndUpdate(eventId, {
+      $pull: { attendees: authUser._id },
+    });
+  }
+
+  return redirect(`/event/${eventId}`);
 }
 
 export default function Event() {
@@ -63,7 +91,6 @@ export default function Event() {
                 setCity(cityComponent.long_name);
                 return;
               }
-              console.log("Parsed Location:", location);
             }
 
             // Fallback to administrative area or formatted address
@@ -77,7 +104,6 @@ export default function Event() {
           setCity("Error fetching location");
         }
       };
-      console.log("Parsed Location:", location);
       fetchCityName();
     }
   }, [location]);
@@ -111,8 +137,10 @@ export default function Event() {
           </NavLink>
         </p>
       </div>
-      <h3>{event.description}</h3>
-      <div className="flex my-2">
+      <h3 className="text-gray-500 font-bold">Description</h3>
+      <p>{event.description}</p>
+      <div className="flex flex-col my-2">
+        <p>Date</p>
         <p className="">{new Date(event.date).toLocaleDateString("en-GB")}</p>
       </div>
       <div className="flex my-2">
@@ -135,16 +163,26 @@ export default function Event() {
         </GoogleMapLoader>
       )}
 
-      <p>{event.attendees.length} Like</p>
+      <p>💙 {event.attendees.length}</p>
       {!attending && authUser ? (
         <Form method="post">
-          <button name="_action" value="attend">
+          <button
+            type="submit"
+            name="_action"
+            value="attend"
+            className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+          >
             Like
           </button>
         </Form>
       ) : authUser ? (
         <Form method="post">
-          <button name="_action" value="unattend">
+          <button
+            type="submit"
+            name="_action"
+            value="unattend"
+            className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+          >
             Unlike
           </button>
         </Form>
@@ -153,10 +191,14 @@ export default function Event() {
       {authUser?._id === event?.creator?._id && (
         <div className="flex py-4">
           <Form action="update">
-            <button>Update</button>
+            <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">
+              Update
+            </button>
           </Form>
           <Form action="destroy" method="post">
-            <button className="ml-4 text-cancel">Delete this event</button>
+            <button className="ml-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">
+              Delete this event
+            </button>
           </Form>
         </div>
       )}

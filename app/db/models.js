@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    lastname: {
+      type: String,
+      required: true,
+    },
     mail: {
       type: String,
       required: true,
@@ -189,6 +193,7 @@ async function insertData() {
   const test = await User.create({
     mail: "test@test.dk",
     name: "Tester test",
+    lastname: "Testesen",
     eventsCreated: [],
     eventsAttending: [],
     password: await hashPassword("1234"),
@@ -201,6 +206,7 @@ async function insertData() {
   const test2 = await User.create({
     mail: "test2@test2.dk",
     name: "Tester test",
+    lastname: "Testesen",
     eventsCreated: [],
     eventsAttending: [],
     password: await hashPassword("1234"),

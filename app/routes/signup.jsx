@@ -187,8 +187,8 @@ export async function action({ request }) {
       mail: newUser.mail,
       password: newUser.password,
       name: newUser.name,
-      lastname: newUser.lastName, // Capturing lastname here
-      hobbies: newUser.selectedHobbies, // Optional, based on schema
+      lastname: newUser.lastName,
+      hobbies: newUser.selectedHobbies,
     });
 
     return redirect("/signin");
