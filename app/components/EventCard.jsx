@@ -62,14 +62,14 @@ export default function EventCard({ event, onCityUpdate }) {
   return (
     <article className="flex my-4 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg">
       <div
-        className="md:w-1/3 h-48 md:h-auto bg-cover bg-center"
+        className="md:w-1/3 h-48 md:h-auto bg-cover bg-center "
         style={{
           backgroundImage: `url(${event?.image})`,
         }}
       ></div>
       <div className="flex flex-col w-full p-4">
         <div className="flex justify-between items-start">
-          <h2 className="text-2xl font-bold text-gray-800 truncate">
+          <h2 className="text-2xl font-bold max-w-80 text-gray-800 truncate">
             {event.title}
           </h2>
           <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
@@ -88,11 +88,6 @@ export default function EventCard({ event, onCityUpdate }) {
             <p className="text-sm text-gray-600 mt-1">
               <span className="font-semibold">Location:</span> {city}
             </p>
-          </div>
-          <div className="mt-4 md:mt-0">
-            <button className="text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">
-              Attend
-            </button>
           </div>
         </div>
         <div className="mt-4">

@@ -3,10 +3,11 @@ import { json, redirect } from "@remix-run/node";
 import { useState } from "react";
 import { authenticator } from "../services/auth.server";
 import mongoose from "mongoose";
+import EventCard from "../components/EventCard";
+import { Link } from "react-router-dom";
 
 export async function loader({ request, params }) {
   const authUser = await authenticator.isAuthenticated(request);
-
   if (!authUser) {
     return redirect("/login");
   }
@@ -19,7 +20,9 @@ export async function loader({ request, params }) {
     throw new Response("User not found", { status: 404 });
   }
 
-  return json({ userProfile, authUser });
+  const events = await mongoose.models.Event.find({ creator: userProfile._id }); // Fetch events by the user
+
+  return json({ userProfile, authUser, events });
 }
 
 export async function action({ request, params }) {
@@ -62,8 +65,8 @@ export async function action({ request, params }) {
 }
 
 export default function UserProfile() {
-  const { userProfile, authUser } = useLoaderData();
-
+  const { userProfile, authUser, events } = useLoaderData();
+  const [eventCities, setEventCities] = useState({});
   const [followersCount, setFollowersCount] = useState(
     userProfile.followers.length
   );
@@ -72,6 +75,8 @@ export default function UserProfile() {
       (followingUser) => followingUser.toString() === userProfile._id.toString()
     )
   );
+
+  const [showFullAboutMe, setShowFullAboutMe] = useState(false);
 
   const handleFollowAction = async (actionType) => {
     const response = await fetch(`/userProfile/${userProfile._id}`, {
@@ -93,18 +98,30 @@ export default function UserProfile() {
     }
   };
 
+  const updateCity = (eventId, city) => {
+    setEventCities((prev) => ({
+      ...prev,
+      [eventId]: city,
+    }));
+  };
+
+  const toggleAboutMePopup = () => {
+    setShowFullAboutMe(!showFullAboutMe);
+  };
+
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-md rounded-lg p-8">
         <div className="flex items-center space-x-4 mb-6">
-          <img
-            src={userProfile.avatarUrl || "/default-avatar.png"}
-            alt={`${userProfile.name}'s avatar`}
-            className="w-24 h-24 rounded-full object-cover"
-          />
+          <div
+            className="w-20 h-20 rounded-full bg-gray-300"
+            style={{
+              backgroundImage: `url(${userProfile.avatarUrl})`,
+              backgroundSize: "cover",
+            }}
+          ></div>
           <div>
             <h1 className="text-2xl font-semibold">{userProfile.name}</h1>
-            <p className="text-gray-600">{userProfile.mail}</p>
           </div>
         </div>
 
@@ -115,6 +132,17 @@ export default function UserProfile() {
           <p className="text-lg">
             {userProfile.following.length}{" "}
             <span className="text-gray-500">Following</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-lg font-semibold">About Me</p>
+          <p>
+            {showFullAboutMe
+              ? userProfile.aboutMe
+              : `${userProfile.aboutMe.slice(0, 200)}... `}
+            <button onClick={toggleAboutMePopup} className="text-blue-500">
+              {showFullAboutMe ? "See Less" : "See More"}
+            </button>
           </p>
         </div>
 
@@ -137,6 +165,17 @@ export default function UserProfile() {
             )}
           </div>
         )}
+      </div>
+
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-4">Created Events</h2>
+        <div className="">
+          {events.map((event) => (
+            <Link key={event._id} to={`/event/${event._id}`}>
+              <EventCard event={event} onCityUpdate={updateCity} />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

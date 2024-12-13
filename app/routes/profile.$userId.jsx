@@ -37,7 +37,7 @@ export default function Profile() {
     users: [],
     type: "",
   });
-
+  const [aboutMePopup, setAboutMePopup] = useState(false);
   const handleCityUpdate = (eventId, cityName) => {
     setCityUpdates((prev) => ({
       ...prev,
@@ -98,8 +98,15 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div className="flex flex-row justify-between">
+        <div div className="flex flex-row justify-between">
           <div className="flex flex-col">
+            <div
+              style={{
+                backgroundImage: `url(${user.avatarUrl})`,
+                backgroundSize: "cover",
+              }}
+              className="w-20 h-20 rounded-full bg-gray-300"
+            ></div>
             <div className="py-2">
               <p className="font-semibold">Name: </p>
               <p>{user?.name}</p>
@@ -111,6 +118,24 @@ export default function Profile() {
             <div className="py-2">
               <p className="font-semibold">Mail: </p>
               <p>{user?.mail}</p>
+            </div>
+          </div>
+          <div className="flex flex-col w-full mt-auto">
+            <div className=" flex  flex-col p-2">
+              <p className="font-semibold">About Me: </p>
+              <p>
+                {user?.aboutMe.length > 100
+                  ? `${user.aboutMe.slice(0, 100)}...`
+                  : user.aboutMe}
+                {user?.aboutMe.length > 100 && (
+                  <button
+                    className="text-blue-500 underline ml-2"
+                    onClick={() => setAboutMePopup(true)}
+                  >
+                    See More
+                  </button>
+                )}
+              </p>
             </div>
           </div>
           <div className="flex">
@@ -130,7 +155,20 @@ export default function Profile() {
             </div>
           </div>
         </div>
-
+        {aboutMePopup && (
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50">
+            <div className="bg-white shadow-lg p-4 rounded-lg w-96 relative">
+              <h3 className="text-lg font-semibold">About Me</h3>
+              <p className="mt-2">{user.aboutMe}</p>
+              <button
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+                onClick={() => setAboutMePopup(false)}
+              >
+                X
+              </button>
+            </div>
+          </div>
+        )}
         <Form
           method="post"
           className="items-center w-1/2 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto"
@@ -151,15 +189,20 @@ export default function Profile() {
                 <EventListCards event={event} />
               </div>
               <div className="hidden md:block">
-                <EventCard event={event} />
+                <EventCard event={event} onCityUpdate={handleCityUpdate} />
               </div>
             </Link>
           </div>
         ))}
         {eventsAttending.length > displayedEventsCount && (
-          <button className="load-more-button" onClick={loadMoreEvents}>
-            Load More
-          </button>
+          <div className="flex w-full">
+            <button
+              className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
+              onClick={loadMoreEvents}
+            >
+              Load More
+            </button>
+          </div>
         )}
       </div>
       <div className="mb-16">

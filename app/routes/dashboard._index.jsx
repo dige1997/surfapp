@@ -14,23 +14,25 @@ export const meta = () => {
 export async function loader({ request }) {
   const user = await authenticator.isAuthenticated(request);
   if (!user) {
-    return json({ mostLikedEvent: null });
+    return json({ mostLikedEvents: [] });
   }
 
-  const mostLikedEvent = await mongoose.models.Event.findOne()
+  // Fetch the top 3 most liked events
+  const mostLikedEvents = await mongoose.models.Event.find()
     .sort({ attendees: -1 }) // Sort by attendees array length in descending order
+    .limit(3) // Limit to 3 events
     .populate("creator") // Populate creator field
     .populate("attendees"); // Populate attendees field
 
-  return json({ mostLikedEvent }); // Return the most liked event
+  return json({ mostLikedEvents }); // Return the most liked events
 }
 
 export default function Index() {
-  const { mostLikedEvent } = useLoaderData();
+  const { mostLikedEvents } = useLoaderData();
   const [eventCities, setEventCities] = useState({}); // Initialize the state for event cities
 
   // Handle the case where there are no events
-  if (!mostLikedEvent) {
+  if (!mostLikedEvents || mostLikedEvents.length === 0) {
     return (
       <div className="page">
         <DashboardData />
@@ -50,19 +52,22 @@ export default function Index() {
   return (
     <div className="page">
       <DashboardData />
-      <div className="p-4">
-        <Link
-          key={mostLikedEvent._id}
-          className="event-link"
-          to={`/event/${mostLikedEvent._id}`}
-        >
-          <div className="md:hidden w-full flex justify-center">
-            <EventListCards event={mostLikedEvent} />
-          </div>
-          <div className="hidden md:flex w-full justify-center">
-            <EventCard event={mostLikedEvent} onCityUpdate={updateCity} />
-          </div>
-        </Link>
+      <div className="md:p-8 p-4">
+        <h2 className="font-bold text-2xl">Most liked posts</h2>
+        {mostLikedEvents.map((event) => (
+          <Link
+            key={event._id}
+            className="event-link"
+            to={`/event/${event._id}`}
+          >
+            <div className="md:hidden w-full flex justify-center">
+              <EventListCards event={event} />
+            </div>
+            <div className="hidden md:flex w-full justify-center">
+              <EventCard event={event} onCityUpdate={updateCity} />
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

@@ -28,9 +28,17 @@ export default function SignUp() {
   const loaderData = useLoaderData();
   const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState("");
   const dropdownRef = useRef(null); // Declare ref here
-
-  const sportsOptions = ["Surf", "Ski", "Kite"];
+  const sportsOptions = [
+    "Surfing",
+    "Snowboarding",
+    "Kiteboarding",
+    "Skateboarding",
+    "Skiing",
+    "wakeboarding",
+    "windsurfing",
+  ];
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -41,6 +49,10 @@ export default function SignUp() {
     setSelectedHobbies((prev) =>
       checked ? [...prev, value] : prev.filter((hobby) => hobby !== value)
     );
+  };
+
+  const handleAvatarChange = (event) => {
+    setAvatarPreview(event.target.value);
   };
 
   // Close dropdown when clicking outside
@@ -110,6 +122,28 @@ export default function SignUp() {
           placeholder="Type your last name..."
           className="p-2 rounded-xl w-full"
         />
+
+        <label htmlFor="avatarUrl">Avatar URL</label>
+        <input
+          id="avatarUrl"
+          type="url"
+          name="avatarUrl"
+          aria-label="avatar url"
+          placeholder="Paste your avatar URL or leave blank for default..."
+          className="p-2 rounded-xl w-full"
+          onChange={handleAvatarChange}
+        />
+
+        {/* Display avatar preview */}
+        {avatarPreview && (
+          <div className="mt-2">
+            <img
+              src={avatarPreview}
+              alt="Avatar Preview"
+              className="w-20 h-20 rounded-full object-cover border"
+            />
+          </div>
+        )}
 
         <label>Select your hobbies:</label>
         <div className="relative" ref={dropdownRef}>
@@ -188,6 +222,7 @@ export async function action({ request }) {
       password: newUser.password,
       name: newUser.name,
       lastname: newUser.lastName,
+      avatarUrl: newUser.avatarUrl,
       hobbies: newUser.selectedHobbies,
     });
 

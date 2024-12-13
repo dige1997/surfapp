@@ -57,6 +57,9 @@ export default function AddEvent() {
           type="text"
           placeholder="Write a title..."
           className="rounded-xl p-2 border-gray-400 border"
+          onInvalid={(e) => {
+            e.target.setCustomValidity("Please enter a title for your post.");
+          }}
         />
 
         <label htmlFor="description">Description</label>
@@ -66,6 +69,11 @@ export default function AddEvent() {
           name="description"
           placeholder="Write a description..."
           className="rounded-xl p-2 border-gray-400 border"
+          onInvalid={(e) => {
+            e.target.setCustomValidity(
+              "Please enter a description for your post."
+            );
+          }}
         />
 
         <label htmlFor="date">Date</label>
@@ -87,6 +95,9 @@ export default function AddEvent() {
           value={location ? `${location.lat}, ${location.lng}` : ""}
           className="rounded-xl p-2 border-gray-400 border"
         />
+        <div>
+          <p>Click on the map to select a location.</p>
+        </div>
 
         <GoogleMapLoader>
           <GoogleMap

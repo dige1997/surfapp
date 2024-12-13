@@ -1,84 +1,58 @@
-import { Form, useLoaderData, Link } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import React, { useEffect, useState } from "react";
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { GoogleMapLoader } from "./GoogleMapLoader";
 import mongoose from "mongoose";
-import { useEffect, useState } from "react";
-import { authenticator } from "../services/auth.server";
-import { GoogleMapLoader } from "../components/GoogleMapLoader";
-import { GoogleMap, Marker } from "@react-google-maps/api";
 
-const MAP_ID = "71f267d426ae7773"; // Replace with your actual Map ID
+// Assuming mongoose connection is set up elsewhere in your project
+const ShowAllLocations = () => {
+  const apiKey = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA"; // Replace with your Google Maps API Key
 
-export async function loader() {
-  let locations = [];
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: apiKey,
+  });
 
-  try {
-    const events = await mongoose.models.Event.find({}, "location").exec();
-
-    if (events && events.length > 0) {
-      locations = events
-        .map((event) => {
-          if (event.location) {
-            const [lat, lng] = event.location.split(",").map(Number);
-            console.log(
-              `Event ID: ${event._id}, Latitude: ${lat}, Longitude: ${lng}`
-            );
-            // Ensure lat and lng are valid numbers
-            if (!isNaN(lat) && !isNaN(lng)) {
-              return { lat, lng };
-            }
-          }
-          return null;
-        })
-        .filter((location) => location !== null); // Filter out null values which represent invalid or undefined locations
-    } else {
-      console.warn("No events found in the database.");
-    }
-  } catch (error) {
-    console.error("Database query error:", error);
-  }
-
-  return json({ locations });
-}
-
-export default function ShowAllLocations() {
-  const { locations = [] } = useLoaderData() || {};
-  const [center, setCenter] = useState({ lat: 56.2639, lng: 9.5018 }); // Default to Denmark
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    // Get the user's geolocation
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setCenter({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      },
-      (error) => {
-        console.warn("Geolocation error:", error);
-      }
-    );
-  }, []);
+    const fetchLocations = async () => {
+      try {
+        // Make sure mongoose models are properly set up and connected
+        if (!mongoose.models.Event) {
+          throw new Error("Mongoose model 'Event' is not defined");
+        }
 
-  // Log the data
-  console.log("Locations to display on the map:", locations);
+        const Event = mongoose.models.Event; // Access your Event model
+        const events = await Event.find({}, { location: 1 }); // Only fetch location field
+        const coordinates = events.map((event) => {
+          // Assuming location string format: "latitude,longitude"
+          const [lat, lng] = event.location.split(",").map(Number);
+          return { lat, lng };
+        });
+        setLocations(coordinates);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []); // No dependencies array means it will run once on mount
+
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading Maps...</div>;
 
   return (
-    <GoogleMapLoader>
+    <div style={{ width: "100%", height: "100vh" }}>
       <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "500px" }}
-        center={center}
-        zoom={locations.length > 0 ? 10 : 5}
-        options={{
-          mapId: MAP_ID,
-        }}
+        center={{ lat: 0, lng: 0 }} // Center point for the map
+        zoom={3} // Zoom level
+        mapContainerStyle={{ width: "100%", height: "100%" }}
       >
         {locations.map((location, index) => (
-          <Marker
-            key={index}
-            position={{ lat: location.lat, lng: location.lng }}
-          />
+          <Marker key={index} position={location} />
         ))}
       </GoogleMap>
-    </GoogleMapLoader>
+    </div>
   );
-}
+};
+
+export default ShowAllLocations;

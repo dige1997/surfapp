@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../services/auth.server";
-import { AuthorizationError } from "../services/auth.server";
 
 // ========== models ========== //
 
@@ -25,6 +24,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       select: false,
+    },
+    avatarUrl: {
+      type: String,
+    },
+    aboutMe: {
+      type: String,
     },
     eventsCreated: [
       {
@@ -192,7 +197,7 @@ async function insertData() {
 
   const test = await User.create({
     mail: "test@test.dk",
-    name: "Tester test",
+    name: "Tester",
     lastname: "Testesen",
     eventsCreated: [],
     eventsAttending: [],
@@ -205,7 +210,7 @@ async function insertData() {
 
   const test2 = await User.create({
     mail: "test2@test2.dk",
-    name: "Tester test",
+    name: "Tester",
     lastname: "Testesen",
     eventsCreated: [],
     eventsAttending: [],
@@ -219,7 +224,7 @@ async function insertData() {
     location: "55.676098, 12.568337",
     creator: test._id,
     image: "https://source.unsplash.com/random",
-    attendees: [test._id],
+    attendees: [test2._id],
   });
 
   const event2 = await Event.create({
@@ -229,6 +234,6 @@ async function insertData() {
     location: "55.676098, 12.568337",
     creator: test._id,
     image: "https://source.unsplash.com/random",
-    attendees: [test._id],
+    attendees: [test2._id],
   });
 }

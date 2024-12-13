@@ -1,10 +1,9 @@
 import { Form, useLoaderData, useActionData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import mongoose from "mongoose";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { authenticator } from "../services/auth.server";
 import { GoogleMapLoader } from "../components/GoogleMapLoader";
-import { GoogleMap, Marker } from "@react-google-maps/api";
 import { NavLink } from "react-router-dom";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
@@ -39,12 +38,10 @@ export async function action({ request, params }) {
   const Event = mongoose.models.Event;
 
   if (action === "attend") {
-    // User wants to like the event
     await Event.findByIdAndUpdate(eventId, {
       $addToSet: { attendees: authUser._id },
     });
   } else if (action === "unattend") {
-    // User wants to unlike the event
     await Event.findByIdAndUpdate(eventId, {
       $pull: { attendees: authUser._id },
     });
@@ -56,6 +53,7 @@ export async function action({ request, params }) {
 export default function Event() {
   const { event, authUser } = useLoaderData();
   const [city, setCity] = useState(null);
+  const mapRef = useRef(null);
 
   const location = event?.location
     ? {
@@ -67,18 +65,16 @@ export default function Event() {
   useEffect(() => {
     if (location) {
       const fetchCityName = async () => {
-        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${GOOGLE_MAPS_API_KEY}`;
+        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${GOOGLE_MAPS_API_KEY}
+`;
         try {
           const response = await fetch(geocodeUrl);
           const data = await response.json();
 
           if (data.results.length > 0) {
-            // Filter results to exclude Plus Codes
             const filteredResults = data.results.filter(
               (result) => !result.types.includes("plus_code")
             );
-
-            // Find the best match for city or locality
             const cityResult = filteredResults.find((result) =>
               result.types.includes("locality")
             );
@@ -93,7 +89,6 @@ export default function Event() {
               }
             }
 
-            // Fallback to administrative area or formatted address
             const fallbackResult = filteredResults[0];
             setCity(fallbackResult?.formatted_address || "Unknown Location");
           } else {
@@ -105,6 +100,37 @@ export default function Event() {
         }
       };
       fetchCityName();
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (location && mapRef.current) {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: location,
+        zoom: 12,
+        mapId: MAP_ID,
+      });
+
+      if (window.google.maps.marker?.AdvancedMarkerView) {
+        const advancedMarker = new window.google.maps.marker.AdvancedMarkerView(
+          {
+            position: location,
+            map,
+            content: `<div style="background-color: #fff; border: 2px solid #007BFF; border-radius: 8px; padding: 8px; font-size: 14px; text-align: center;">Event Location</div>`,
+          }
+        );
+
+        advancedMarker.addListener("click", () => {
+          alert("You clicked the marker!");
+        });
+      } else {
+        console.warn("AdvancedMarkerView is not available.");
+        new window.google.maps.Marker({
+          position: location,
+          map,
+          title: "Event Location",
+        });
+      }
     }
   }, [location]);
 
@@ -147,61 +173,66 @@ export default function Event() {
         <p className="">{city || "Fetching location..."}</p>
       </div>
 
-      {/* Use GoogleMapLoader to wrap GoogleMap */}
       {location && (
         <GoogleMapLoader>
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "400px" }}
-            center={location}
-            zoom={12}
-            options={{
-              mapId: MAP_ID,
-            }}
-          >
-            <Marker position={location} />
-          </GoogleMap>
+          <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
         </GoogleMapLoader>
       )}
-
-      <p>💙 {event.attendees.length}</p>
-      {!attending && authUser ? (
-        <Form method="post">
-          <button
-            type="submit"
-            name="_action"
-            value="attend"
-            className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
-          >
-            Like
-          </button>
-        </Form>
-      ) : authUser ? (
-        <Form method="post">
-          <button
-            type="submit"
-            name="_action"
-            value="unattend"
-            className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-          >
-            Unlike
-          </button>
-        </Form>
-      ) : null}
-
-      {authUser?._id === event?.creator?._id && (
-        <div className="flex py-4">
-          <Form action="update">
-            <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">
-              Update
-            </button>
-          </Form>
-          <Form action="destroy" method="post">
-            <button className="ml-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">
-              Delete this event
-            </button>
-          </Form>
+      <div className="flex items-center gap-4 mt-4 justify-between">
+        <div className="flex gap-2 items-center">
+          <p>💙 {event.attendees.length}</p>
+          {!attending && authUser ? (
+            <Form method="post">
+              <button
+                type="submit"
+                name="_action"
+                value="attend"
+                className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+              >
+                Like
+              </button>
+            </Form>
+          ) : authUser ? (
+            <Form method="post">
+              <button
+                type="submit"
+                name="_action"
+                value="unattend"
+                className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+              >
+                Unlike
+              </button>
+            </Form>
+          ) : null}
         </div>
-      )}
+        <div>
+          {authUser?._id === event?.creator?._id && (
+            <div className="flex py-4">
+              <Form action="update">
+                <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">
+                  Update
+                </button>
+              </Form>
+              <Form action="destroy" method="post">
+                <button
+                  className="ml-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                  onClick={(e) => {
+                    if (
+                      !window.confirm(
+                        "Are you sure you want to delete this post?"
+                      )
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  Delete this event
+                </button>
+              </Form>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -70,6 +70,30 @@ export default function UpdateProfile() {
     };
   }, []);
 
+  async function handleDeleteProfile() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete your profile?"
+    );
+    if (confirmed) {
+      try {
+        const response = await fetch(`/profile/${user._id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          navigate("/signin");
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Failed to delete profile: ${errorText}`);
+        }
+      } catch (error) {
+        console.error("Error deleting profile:", error);
+        alert("Error deleting profile. Please try again later.");
+        navigate("/error-page"); // Redirect to an error page or appropriate page
+      }
+    }
+  }
+
   return (
     <div className="w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8">
       <h1 className="m-auto flex justify-center font-semibold text-2xl mb-6">
@@ -115,6 +139,24 @@ export default function UpdateProfile() {
           name="password"
           placeholder="New Password"
           className="rounded-xl p-2  border-gray-400 border"
+        />
+        <label htmlFor="aboutMe">About Me</label>
+        <input
+          type="description"
+          id="aboutMe"
+          name="aboutMe"
+          defaultValue={user.aboutMe}
+          placeholder="Write something about yourself..."
+          className="rounded-xl p-2  border-gray-400 border"
+        />
+        <label htmlFor="avatarUrl">Avatar URL</label>
+        <input
+          id="avatarUrl"
+          type="url"
+          name="avatarUrl"
+          aria-label="avatar url"
+          placeholder="Paste your avatar URL or leave blank for default..."
+          className="p-2 rounded-xl w-full"
         />
         <label>Select your hobbies:</label>
         {selectedHobbies.length > 0 && (
@@ -165,7 +207,14 @@ export default function UpdateProfile() {
           className="btn-cancel text-cancel"
           onClick={handleCancel}
         >
-          cancel
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="btn-delete-profile mt-4 bg-red-600 hover:bg-red-800 text-white p-2 rounded-lg"
+          onClick={handleDeleteProfile}
+        >
+          Delete Profile
         </button>
       </Form>
     </div>
@@ -177,46 +226,72 @@ export async function action({ request }) {
     failureRedirect: "/signin",
   });
 
-  const formData = new URLSearchParams(await request.text());
-  const name = formData.get("name");
-  const lastName = formData.get("lastName");
-  const mail = formData.get("mail");
-  const password = formData.get("password");
-  const hobbies = formData.getAll("hobbies");
+  if (request.method === "DELETE") {
+    try {
+      const response = await fetch(`/api/users/${authUser._id}`, {
+        method: "DELETE",
+      });
 
-  try {
-    let userToUpdate = await mongoose.models.User.findOne({
-      _id: authUser._id,
-    });
-
-    if (!userToUpdate) {
-      console.error("User not found");
-      return redirect("/error-page");
-    }
-
-    if (mail !== userToUpdate.mail) {
-      const existingUser = await mongoose.models.User.findOne({ mail });
-
-      if (existingUser) {
-        console.error("Email already in use");
-        return redirect("/error-page");
+      if (response.ok) {
+        return redirect("/signin"); // Redirect to signin page after deletion
+      } else {
+        console.error("Error deleting user:", response.statusText);
+        return redirect("/error-page"); // Ensure this route is defined
       }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      return redirect("/error-page"); // Ensure this route is defined
     }
+  } else {
+    // Handling other form submissions
+    const formData = new URLSearchParams(await request.text());
+    const name = formData.get("name");
+    const lastName = formData.get("lastName");
+    const mail = formData.get("mail");
+    const password = formData.get("password");
+    const hobbies = formData.getAll("hobbies");
+    const avatarUrl = formData.get("avatarUrl");
+    const aboutMe = formData.get("aboutMe");
 
-    userToUpdate.name = name;
-    userToUpdate.lastname = lastName;
-    userToUpdate.mail = mail;
-    if (password) {
-      userToUpdate.password = await hashPassword(password);
-    }
-    userToUpdate.hobbies = hobbies;
+    try {
+      let userToUpdate = await mongoose.models.User.findOne({
+        _id: authUser._id,
+      });
 
-    const updatedUser = await userToUpdate.save();
-    if (updatedUser) {
-      return redirect(`/profile/${updatedUser._id}`);
+      if (!userToUpdate) {
+        console.error("User not found");
+        return redirect("/error-page"); // Ensure this route is defined
+      }
+
+      // Check if the email is already in use by another user
+      const existingUser = await mongoose.models.User.findOne({ mail });
+      if (
+        existingUser &&
+        existingUser._id.toString() !== userToUpdate._id.toString()
+      ) {
+        console.error("Email already in use");
+        return redirect("/error-page"); // Ensure this route is defined
+      }
+
+      // Update user details
+      userToUpdate.name = name;
+      userToUpdate.lastname = lastName;
+      userToUpdate.mail = mail;
+      if (password) {
+        userToUpdate.password = await hashPassword(password);
+      }
+      userToUpdate.hobbies = hobbies;
+      userToUpdate.avatarUrl = avatarUrl;
+      userToUpdate.aboutMe = aboutMe;
+
+      // Save updated user data
+      const updatedUser = await userToUpdate.save();
+      if (updatedUser) {
+        return redirect(`/profile/${updatedUser._id}`);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return redirect("/error-page"); // Ensure this route is defined
     }
-  } catch (error) {
-    console.error("Error updating user:", error);
-    return redirect("/error-page");
   }
 }
