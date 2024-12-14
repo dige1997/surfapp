@@ -104,7 +104,7 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row md:justify-between">
           <div className="flex flex-col">
             <div
               style={{
@@ -126,7 +126,7 @@ export default function Profile() {
               <p>{user?.mail}</p>
             </div>
           </div>
-          <div className="flex flex-col w-full mt-auto">
+          <div className="md:flex hidden flex-col w-full mt-auto">
             <div className=" md:flex hidden flex-col p-2">
               <p className="font-semibold">About Me: </p>
               <p>
@@ -167,7 +167,7 @@ export default function Profile() {
                 </p>
               </div>
             </div>
-            <div className="  flex flex-col ">
+            <div className=" md:hidden flex flex-col ">
               <p className="font-semibold">About Me: </p>
               <p>
                 {user?.aboutMe
