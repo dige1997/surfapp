@@ -37,6 +37,7 @@ export default function Profile() {
     users: [],
     type: "",
   });
+
   const [aboutMePopup, setAboutMePopup] = useState(false);
   const handleCityUpdate = (eventId, cityName) => {
     setCityUpdates((prev) => ({
@@ -98,7 +99,7 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between">
           <div className="flex flex-col">
             <div
               style={{

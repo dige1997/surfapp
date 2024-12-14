@@ -84,7 +84,7 @@ const DashboardData = () => {
   };
 
   const fetchCityByCoordinates = async (lat, lon) => {
-    const reverseGeoUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
+    const reverseGeoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
     try {
       const response = await fetch(reverseGeoUrl);
       const data = await response.json();
