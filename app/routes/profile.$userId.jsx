@@ -13,7 +13,8 @@ export async function loader({ request }) {
 
   const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
     .populate("followers", "_id name")
-    .populate("following", "_id name");
+    .populate("following", "_id name")
+    .populate("aboutMe");
 
   const events = await mongoose.models.Event.find({ creator: user._id })
     .populate("creator")
@@ -145,14 +146,18 @@ export default function Profile() {
               onClick={() => togglePopup("followers")}
             >
               <p className="font-semibold">Followers </p>
-              <p className="flex justify-center">{user.followers.length}</p>
+              <p className="flex justify-center">
+                {user.followers ? user.followers.length : 0}
+              </p>
             </div>
             <div
               className="p-2 cursor-pointer"
               onClick={() => togglePopup("following")}
             >
               <p className="font-semibold">Following </p>
-              <p className="flex justify-center">{user.following.length}</p>
+              <p className="flex justify-center">
+                {user.following ? user.following.length : 0}
+              </p>
             </div>
           </div>
         </div>
