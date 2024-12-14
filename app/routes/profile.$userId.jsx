@@ -131,7 +131,7 @@ export default function Profile() {
                     ? `${user.aboutMe.slice(0, 100)}...`
                     : user.aboutMe
                   : "No about me information"}
-                {user?.aboutMe.length > 100 && (
+                {user?.aboutMe && user?.aboutMe.length > 100 && (
                   <button
                     className="text-blue-500 underline ml-2"
                     onClick={() => setAboutMePopup(true)}
