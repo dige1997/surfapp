@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "@remix-run/react";
+import { authenticator } from "../services/auth.server";
 
 export default function Nav({ user }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -43,9 +44,15 @@ export default function Nav({ user }) {
           <div className="flex w-full h-16 items-center ">
             <div className="flex w-full items-center">
               <div className="flex w-full justify-between">
-                <div className="hidden md:block">
-                  <div className="ml-10 flex items-baseline space-x-4">
-                    <div className="shrink-0">{/* Logo */}</div>
+                <div className="shrink-0">
+                  <NavLink to={user ? "/dashboard" : "/main-dashboard"}>
+                    <h1 className="font-mono text-2xl font-bold m-auto p-2 mx-2">
+                      Elevation
+                    </h1>
+                  </NavLink>
+                </div>
+                <div className="hidden items-center md:flex">
+                  <div className="ml-10 items-center flex  space-x-4">
                     <NavLink
                       to="/dashboard"
                       className={({ isActive }) =>

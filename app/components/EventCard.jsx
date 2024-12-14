@@ -60,7 +60,7 @@ export default function EventCard({ event, onCityUpdate }) {
   }, [event.location]);
 
   return (
-    <article className="flex my-4 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg">
+    <article className="flex my-2 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg">
       <div
         className="md:w-1/3 h-48 md:h-auto bg-cover bg-center "
         style={{

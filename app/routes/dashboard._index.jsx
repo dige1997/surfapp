@@ -36,7 +36,7 @@ export default function Index() {
     return (
       <div className="page">
         <DashboardData />
-        <p>No events available at the moment.</p>
+        <p>Signup to see posts.</p>
       </div>
     );
   }

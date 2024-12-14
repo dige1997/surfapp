@@ -1,12 +1,26 @@
 import React from "react";
 import DashboardData from "../components/DashboardData";
-import { NavLink } from "react-router-dom";
+import { NavLink, redirect } from "react-router-dom";
+import { authenticator } from "../services/auth.server";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta = () => {
   return [{ title: "Elevation" }];
 };
 
+export async function loader({ request }) {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/main-dashboard",
+  });
+  if (!user) {
+    return redirect("/dashboard");
+  }
+}
+
 export default function MainDashboard() {
+  // Get the loader data
+  useLoaderData();
+
   return (
     <div className="page">
       <div className="w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10">

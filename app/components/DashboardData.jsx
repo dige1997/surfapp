@@ -1,4 +1,3 @@
-// DashboardData.jsx
 import React, { useEffect, useState } from "react";
 import { IframeDisplay } from "./IframeDisplay"; // Import the IframeDisplay component
 
@@ -13,7 +12,6 @@ const DashboardData = () => {
   const [isOffline, setIsOffline] = useState(false);
 
   const apiKey = "84c59fa875b07f0e54b6dd1ce011f187";
-  const debounceDelay = 500; // Delay in ms to debounce input
 
   useEffect(() => {
     // Run only on the client side
@@ -48,18 +46,6 @@ const DashboardData = () => {
       };
     }
   }, [city]);
-
-  // Debounced search function
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inputCity) {
-        setCity(inputCity);
-        setInputCity("");
-      }
-    }, debounceDelay);
-
-    return () => clearTimeout(timer); // Cleanup the timeout if the input changes before the delay
-  }, [inputCity]);
 
   const fetchWeatherData = async (city) => {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
@@ -126,15 +112,15 @@ const DashboardData = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const cachedData = localStorage.getItem(city);
-      if (cachedData) {
+      if (cachedData && isOffline) {
         setWeatherData(JSON.parse(cachedData));
         setError("");
         setLoading(false);
       } else if (city !== "Loading...") {
-        fetchWeatherData(city); // Only fetch if data is not in local storage
+        fetchWeatherData(city); // Only fetch if data is not in local storage or user is online
       }
     }
-  }, [city]);
+  }, [city, isOffline]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -211,80 +197,58 @@ const DashboardData = () => {
             </button>
           </form>
           <div className="mt-10 p-4 flex flex-col justify-between items-center rounded-xl shadow-md h-full">
-            <h1 className="text-2xl font-semibold mb-4 text-gray-800">
-              Weather in {city}, {country}
-            </h1>
-            <div className="flex flex-row items-center mb-4">
-              <p className="text-6xl">
-                {weatherData &&
-                  getWeatherEmoji(weatherData.list[0].weather[0].description)}
-              </p>
-              <h2 className="text-5xl ml-4 font-medium">
-                {weatherData && Math.round(weatherData.list[0].main.temp)}°C
-              </h2>
-            </div>
-            <p className="text-xl text-gray-600">
-              {weatherData &&
-                weatherData.list[0].weather[0].description.toUpperCase()}
-            </p>
-            <div className="flex justify-between mt-8">
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-600">Wind</p>
-                <p className="font-medium">
-                  {weatherData && Math.round(weatherData.list[0].wind.speed)}{" "}
-                  m/s
-                </p>
-                <p className="text-sm text-gray-600">
+            <div className="flex gap-10 p-4">
+              <div>
+                <h1 className="text-5xl font-semibold mb-6 text-gray-800">
+                  {city}, {country}
+                </h1>
+                <div className="flex flex-row items-center ">
+                  <p className="text-6xl">
+                    {weatherData &&
+                      getWeatherEmoji(
+                        weatherData.list[0].weather[0].description
+                      )}
+                  </p>
+                  <h2 className="text-5xl ml-4 font-medium">
+                    {weatherData && Math.round(weatherData.list[0].main.temp)}°C
+                  </h2>
+                </div>
+                <p className="text-xl text-gray-600">
                   {weatherData &&
-                    getWindDirection(weatherData.list[0].wind.deg)}
+                    weatherData.list[0].weather[0].description.toUpperCase()}
                 </p>
               </div>
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-600">Humidity</p>
-                <p className="font-medium">
-                  {weatherData && weatherData.list[0].main.humidity}%
-                </p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-600">Pressure</p>
-                <p className="font-medium">
-                  {weatherData && weatherData.list[0].main.pressure} hPa
-                </p>
+              <div className="flex flex-col justify-between ">
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-600">Wind</p>
+                  <p className="font-medium">
+                    {weatherData && Math.round(weatherData.list[0].wind.speed)}{" "}
+                    m/s
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {weatherData &&
+                      getWindDirection(weatherData.list[0].wind.deg)}
+                  </p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-600">Humidity</p>
+                  <p className="font-medium">
+                    {weatherData && weatherData.list[0].main.humidity}%
+                  </p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-600">Pressure</p>
+                  <p className="font-medium">
+                    {weatherData && weatherData.list[0].main.pressure} hPa
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="mt-10">
-            <button
-              className={`${
-                activeTab === "wind" ? "bg-blue-700" : "bg-blue-500"
-              } text-white p-2 rounded-t-lg`}
-              onClick={() => setActiveTab("wind")}
-            >
-              Wind
-            </button>
-            <button
-              className={`${
-                activeTab === "swell" ? "bg-blue-700" : "bg-blue-500"
-              } text-white p-2 rounded-t-lg`}
-              onClick={() => setActiveTab("swell")}
-            >
-              Swell
-            </button>
-            <button
-              className={`${
-                activeTab === "temp" ? "bg-blue-700" : "bg-blue-500"
-              } text-white p-2 rounded-t-lg`}
-              onClick={() => setActiveTab("temp")}
-            >
-              Temperature
-            </button>
-          </div>
-          <div className="">
             <IframeDisplay activeTab={activeTab} weatherData={weatherData} />
           </div>
         </div>
       )}
+      {error && <p className="text-red-600 mt-4">{error}</p>}
     </div>
   );
 };

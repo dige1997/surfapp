@@ -63,7 +63,7 @@ export default function EventCard({ event }) {
   }
 
   return (
-    <article className="flex flex-col m-4 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden">
+    <article className="flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden">
       {/* Event Image */}
       <img
         className="rounded-lg w-full h-48 object-cover"

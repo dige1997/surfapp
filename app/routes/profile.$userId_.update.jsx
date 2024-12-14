@@ -154,10 +154,20 @@ export default function UpdateProfile() {
           id="avatarUrl"
           type="url"
           name="avatarUrl"
+          defaultValue={user.avatarUrl}
           aria-label="avatar url"
           placeholder="Paste your avatar URL or leave blank for default..."
           className="p-2 rounded-xl w-full"
         />
+        <label htmlFor="image-preview">Image Preview</label>
+        <div
+          style={{
+            backgroundImage: `url(${user.avatarUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          className="w-72 h-72 mx-auto rounded-full bg-gray-300"
+        ></div>
         <label>Select your hobbies:</label>
         {selectedHobbies.length > 0 && (
           <div className="mb-2">

@@ -29,6 +29,10 @@ export async function loader({ request }) {
   return { user: userUpdated, events, eventsAttending };
 }
 
+export async function action({ request }) {
+  await authenticator.logout(request, { redirectTo: "/signin" });
+}
+
 export default function Profile() {
   const { user, events, eventsAttending } = useLoaderData();
   const [cityUpdates, setCityUpdates] = useState({});
@@ -61,7 +65,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="page flex flex-col justify-center m-auto w-4/6">
+    <div className="page flex flex-col justify-center m-auto p-4 md:w-4/6">
       <div className="w-full flex flex-col justify-center m-auto my-8">
         <div className="flex justify-between">
           <h1 className="font-semibold text-xl">Profile</h1>
@@ -123,7 +127,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="flex flex-col w-full mt-auto">
-            <div className=" flex  flex-col p-2">
+            <div className=" md:flex hidden flex-col p-2">
               <p className="font-semibold">About Me: </p>
               <p>
                 {user?.aboutMe
@@ -142,23 +146,43 @@ export default function Profile() {
               </p>
             </div>
           </div>
-          <div className="flex">
-            <div
-              className="py-2 cursor-pointer"
-              onClick={() => togglePopup("followers")}
-            >
-              <p className="font-semibold">Followers </p>
-              <p className="flex justify-center">
-                {user.followers ? user.followers.length : 0}
-              </p>
+          <div className="flex flex-col">
+            <div className="flex flex-row">
+              <div
+                className="py-2 cursor-pointer"
+                onClick={() => togglePopup("followers")}
+              >
+                <p className="font-semibold">Followers </p>
+                <p className="flex justify-center">
+                  {user.followers ? user.followers.length : 0}
+                </p>
+              </div>
+              <div
+                className="p-2 cursor-pointer"
+                onClick={() => togglePopup("following")}
+              >
+                <p className="font-semibold">Following </p>
+                <p className="flex justify-center">
+                  {user.following ? user.following.length : 0}
+                </p>
+              </div>
             </div>
-            <div
-              className="p-2 cursor-pointer"
-              onClick={() => togglePopup("following")}
-            >
-              <p className="font-semibold">Following </p>
-              <p className="flex justify-center">
-                {user.following ? user.following.length : 0}
+            <div className="  flex flex-col ">
+              <p className="font-semibold">About Me: </p>
+              <p>
+                {user?.aboutMe
+                  ? user?.aboutMe.length > 100
+                    ? `${user.aboutMe.slice(0, 100)}...`
+                    : user.aboutMe
+                  : "No about me information"}
+                {user?.aboutMe && user?.aboutMe.length > 100 && (
+                  <button
+                    className="text-blue-500 underline ml-2"
+                    onClick={() => setAboutMePopup(true)}
+                  >
+                    See More
+                  </button>
+                )}
               </p>
             </div>
           </div>
@@ -179,7 +203,7 @@ export default function Profile() {
         )}
         <Form
           method="post"
-          className="items-center w-1/2 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto"
+          className="items-center w-1/2 md:mt-0 mt-4 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto"
         >
           <button className="text-cancel flex flex-row font-semibold w-full justify-center">
             Logout
@@ -189,7 +213,7 @@ export default function Profile() {
       <div className="py-6">
         <h2 className="text-2xl font-semibold">Liked posts</h2>
       </div>
-      <div>
+      <div className="flex flex-col justify-center w-full">
         {eventsAttending.slice(0, displayedEventsCount).map((event) => (
           <div key={event._id}>
             <Link className="event-link" to={`/event/${event._id}`}>
@@ -265,8 +289,4 @@ export default function Profile() {
       )}
     </div>
   );
-}
-
-export async function action({ request }) {
-  await authenticator.logout(request, { redirectTo: "/main-dashboard" });
 }
