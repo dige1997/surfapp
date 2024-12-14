@@ -1,13 +1,20 @@
-import React, { Suspense } from "react";
-import ShowAllLocations from "../components/ShowAllLocations";
+import { useLoaderData } from "@remix-run/react";
+import ShowAllLocations from "../components/ShowAllLocations"; // Adjust the import path
+import mongoose from "mongoose";
+import { json } from "@remix-run/node";
 
-export default function Locations() {
+// Loader for fetching events
+export async function loader() {
+  const events = await mongoose.models.Event.find({});
+  return json({ events });
+}
+
+export default function LocationsPage() {
+  const { events } = useLoaderData();
+
   return (
-    <div className="page">
-      <h1 className="text-3xl">Locations</h1>
-      <Suspense fallback={<div>Loading map...</div>}>
-        <ShowAllLocations />
-      </Suspense>
+    <div style={{ width: "100%", height: "100vh" }}>
+      <ShowAllLocations events={events} />
     </div>
   );
 }

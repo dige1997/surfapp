@@ -1,58 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import { GoogleMapLoader } from "./GoogleMapLoader";
-import mongoose from "mongoose";
+import React, { useEffect, useRef, useState } from "react";
+import { useJsApiLoader } from "@react-google-maps/api";
 
-// Assuming mongoose connection is set up elsewhere in your project
-const ShowAllLocations = () => {
-  const apiKey = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA"; // Replace with your Google Maps API Key
+const GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
+const MAP_ID = "71f267d426ae7773";
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
+export default function ShowAllLocations({ events }) {
+  const [locations, setLocations] = useState([]);
+  const mapRef = useRef(null);
+  const infoWindowRef = useRef(null); // Reference for the InfoWindow
+  const geocoderRef = useRef(null); // Reference for Geocoding
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
-  const [locations, setLocations] = useState([]);
+  useEffect(() => {
+    if (events) {
+      const eventLocations = events.map((event) => {
+        const [lat, lng] = event.location.split(",").map(Number);
+        return { lat, lng, title: event.title || "Event Location" };
+      });
+      setLocations(eventLocations);
+    }
+  }, [events]);
 
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        // Make sure mongoose models are properly set up and connected
-        if (!mongoose.models.Event) {
-          throw new Error("Mongoose model 'Event' is not defined");
-        }
+    if (isLoaded && locations.length > 0 && mapRef.current) {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: locations[0], // Center map at the first location
+        zoom: 8,
+        mapId: MAP_ID,
+      });
 
-        const Event = mongoose.models.Event; // Access your Event model
-        const events = await Event.find({}, { location: 1 }); // Only fetch location field
-        const coordinates = events.map((event) => {
-          // Assuming location string format: "latitude,longitude"
-          const [lat, lng] = event.location.split(",").map(Number);
-          return { lat, lng };
+      // Initialize InfoWindow and Geocoder
+      infoWindowRef.current = new window.google.maps.InfoWindow();
+      geocoderRef.current = new window.google.maps.Geocoder();
+
+      // Add markers with click event listeners
+      locations.forEach((location) => {
+        const marker = new window.google.maps.Marker({
+          position: { lat: location.lat, lng: location.lng },
+          map,
+          title: location.title,
         });
-        setLocations(coordinates);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchLocations();
-  }, []); // No dependencies array means it will run once on mount
+        // Add a click listener to show the InfoWindow with city name
+        marker.addListener("click", () => {
+          geocoderRef.current.geocode(
+            { location: { lat: location.lat, lng: location.lng } },
+            (results, status) => {
+              if (status === "OK" && results[0]) {
+                const city = results.find((result) =>
+                  result.types.includes("locality")
+                )?.formatted_address;
 
-  if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading Maps...</div>;
+                const infoContent = `
+                  <div>
+                    <h3>${location.title}</h3>
+                    <p>City: ${city || "Unknown"}</p>
+                    <p>Latitude: ${location.lat}</p>
+                    <p>Longitude: ${location.lng}</p>
+                  </div>
+                `;
+                infoWindowRef.current.setContent(infoContent);
+                infoWindowRef.current.open(map, marker);
+              } else {
+                console.error("Geocoder failed:", status);
+                infoWindowRef.current.setContent(`
+                  <div>
+                    <h3>${location.title}</h3>
+                    <p>Latitude: ${location.lat}</p>
+                    <p>Longitude: ${location.lng}</p>
+                    <p>City: Unable to fetch</p>
+                  </div>
+                `);
+                infoWindowRef.current.open(map, marker);
+              }
+            }
+          );
+        });
+      });
+    }
+  }, [isLoaded, locations]);
 
-  return (
-    <div style={{ width: "100%", height: "100vh" }}>
-      <GoogleMap
-        center={{ lat: 0, lng: 0 }} // Center point for the map
-        zoom={3} // Zoom level
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-      >
-        {locations.map((location, index) => (
-          <Marker key={index} position={location} />
-        ))}
-      </GoogleMap>
-    </div>
-  );
-};
+  if (loadError) return <div>Error loading Google Maps</div>;
+  if (!isLoaded) return <div>Loading Google Maps...</div>;
 
-export default ShowAllLocations;
+  return <div ref={mapRef} style={{ width: "100%", height: "100vh" }} />;
+}
