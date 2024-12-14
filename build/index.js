@@ -2805,7 +2805,7 @@ function Profile() {
     setCityUpdates((prev) => ({
       ...prev,
       [eventId]: cityName
-    })), console.log(...oo_oo4("3844458299_48_4_48_65_4", `City updated for event ${eventId}: ${cityName}`));
+    })), console.log(...oo_oo4("468955456_48_4_48_65_4", `City updated for event ${eventId}: ${cityName}`));
   }, loadMoreEvents = () => {
     setDisplayedEventsCount((prev) => prev + 3);
   }, togglePopup = (type) => {
@@ -2988,7 +2988,7 @@ function Profile() {
             columnNumber: 15
           }, this),
           /* @__PURE__ */ jsxDEV15("p", { children: [
-            user?.aboutMe.length > 100 ? `${user.aboutMe.slice(0, 100)}...` : user.aboutMe,
+            user?.aboutMe ? user?.aboutMe.length > 100 ? `${user.aboutMe.slice(0, 100)}...` : user.aboutMe : "No about me information",
             user?.aboutMe.length > 100 && /* @__PURE__ */ jsxDEV15(
               "button",
               {
@@ -3000,7 +3000,7 @@ function Profile() {
               !1,
               {
                 fileName: "app/routes/profile.$userId.jsx",
-                lineNumber: 133,
+                lineNumber: 135,
                 columnNumber: 19
               },
               this
@@ -3028,12 +3028,12 @@ function Profile() {
               children: [
                 /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "Followers " }, void 0, !1, {
                   fileName: "app/routes/profile.$userId.jsx",
-                  lineNumber: 148,
+                  lineNumber: 150,
                   columnNumber: 15
                 }, this),
                 /* @__PURE__ */ jsxDEV15("p", { className: "flex justify-center", children: user.followers ? user.followers.length : 0 }, void 0, !1, {
                   fileName: "app/routes/profile.$userId.jsx",
-                  lineNumber: 149,
+                  lineNumber: 151,
                   columnNumber: 15
                 }, this)
               ]
@@ -3042,7 +3042,7 @@ function Profile() {
             !0,
             {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 144,
+              lineNumber: 146,
               columnNumber: 13
             },
             this
@@ -3055,12 +3055,12 @@ function Profile() {
               children: [
                 /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "Following " }, void 0, !1, {
                   fileName: "app/routes/profile.$userId.jsx",
-                  lineNumber: 157,
+                  lineNumber: 159,
                   columnNumber: 15
                 }, this),
                 /* @__PURE__ */ jsxDEV15("p", { className: "flex justify-center", children: user.following ? user.following.length : 0 }, void 0, !1, {
                   fileName: "app/routes/profile.$userId.jsx",
-                  lineNumber: 158,
+                  lineNumber: 160,
                   columnNumber: 15
                 }, this)
               ]
@@ -3069,14 +3069,14 @@ function Profile() {
             !0,
             {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 153,
+              lineNumber: 155,
               columnNumber: 13
             },
             this
           )
         ] }, void 0, !0, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 143,
+          lineNumber: 145,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
@@ -3087,12 +3087,12 @@ function Profile() {
       aboutMePopup && /* @__PURE__ */ jsxDEV15("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50", children: /* @__PURE__ */ jsxDEV15("div", { className: "bg-white shadow-lg p-4 rounded-lg w-96 relative", children: [
         /* @__PURE__ */ jsxDEV15("h3", { className: "text-lg font-semibold", children: "About Me" }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 167,
+          lineNumber: 169,
           columnNumber: 15
         }, this),
         /* @__PURE__ */ jsxDEV15("p", { className: "mt-2", children: user.aboutMe }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 168,
+          lineNumber: 170,
           columnNumber: 15
         }, this),
         /* @__PURE__ */ jsxDEV15(
@@ -3106,18 +3106,18 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 169,
+            lineNumber: 171,
             columnNumber: 15
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 166,
+        lineNumber: 168,
         columnNumber: 13
       }, this) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 165,
+        lineNumber: 167,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ jsxDEV15(
@@ -3127,7 +3127,7 @@ function Profile() {
           className: "items-center w-1/2 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto",
           children: /* @__PURE__ */ jsxDEV15("button", { className: "text-cancel flex flex-row font-semibold w-full justify-center", children: "Logout" }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 182,
+            lineNumber: 184,
             columnNumber: 11
           }, this)
         },
@@ -3135,7 +3135,7 @@ function Profile() {
         !1,
         {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 178,
+          lineNumber: 180,
           columnNumber: 9
         },
         this
@@ -3147,43 +3147,43 @@ function Profile() {
     }, this),
     /* @__PURE__ */ jsxDEV15("div", { className: "py-6", children: /* @__PURE__ */ jsxDEV15("h2", { className: "text-2xl font-semibold", children: "Liked posts" }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 188,
+      lineNumber: 190,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 187,
+      lineNumber: 189,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV15("div", { children: [
       eventsAttending.slice(0, displayedEventsCount).map((event) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "event-link", to: `/event/${event._id}`, children: [
         /* @__PURE__ */ jsxDEV15("div", { className: " md:hidden ", children: /* @__PURE__ */ jsxDEV15(EventCard2, { event }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 195,
+          lineNumber: 197,
           columnNumber: 17
         }, this) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 194,
+          lineNumber: 196,
           columnNumber: 15
         }, this),
         /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(EventCard, { event, onCityUpdate: handleCityUpdate }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 198,
+          lineNumber: 200,
           columnNumber: 17
         }, this) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 197,
+          lineNumber: 199,
           columnNumber: 15
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 193,
+        lineNumber: 195,
         columnNumber: 13
       }, this) }, event._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 192,
+        lineNumber: 194,
         columnNumber: 11
       }, this)),
-      eventsAttending.length > displayedEventsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
+      eventsAttending?.length > displayedEventsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
         "button",
         {
           className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
@@ -3194,52 +3194,52 @@ function Profile() {
         !1,
         {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 205,
+          lineNumber: 207,
           columnNumber: 13
         },
         this
       ) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 204,
+        lineNumber: 206,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 190,
+      lineNumber: 192,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV15("div", { className: "mb-16", children: [
       /* @__PURE__ */ jsxDEV15("h2", { className: "text-lg font-medium pt-6", children: "Posts by me" }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 215,
+        lineNumber: 217,
         columnNumber: 9
       }, this),
       events.slice(0, displayedEventsCount).map((event) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "event-link", to: `/event/${event._id}`, children: [
         /* @__PURE__ */ jsxDEV15("div", { className: " md:hidden ", children: /* @__PURE__ */ jsxDEV15(EventCard2, { event }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 220,
+          lineNumber: 222,
           columnNumber: 17
         }, this) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 219,
+          lineNumber: 221,
           columnNumber: 15
         }, this),
         /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(EventCard, { event, onCityUpdate: handleCityUpdate }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 223,
+          lineNumber: 225,
           columnNumber: 17
         }, this) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 222,
+          lineNumber: 224,
           columnNumber: 15
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 218,
+        lineNumber: 220,
         columnNumber: 13
       }, this) }, event._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 217,
+        lineNumber: 219,
         columnNumber: 11
       }, this)),
       /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: events.length > displayedEventsCount && /* @__PURE__ */ jsxDEV15(
@@ -3253,25 +3253,25 @@ function Profile() {
         !1,
         {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 230,
+          lineNumber: 232,
           columnNumber: 13
         },
         this
       ) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 228,
+        lineNumber: 230,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 214,
+      lineNumber: 216,
       columnNumber: 7
     }, this),
     popupList.visible && /* @__PURE__ */ jsxDEV15("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm shadow-lg p-4 z-50", children: /* @__PURE__ */ jsxDEV15("div", { className: "w-96 bg-white shadow-lg p-4 rounded-lg relative max-h-96 overflow-hidden", children: [
       /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-row justify-between", children: [
         /* @__PURE__ */ jsxDEV15("h3", { className: "text-xl font-semibold ", children: popupList.type === "followers" ? "Followers" : "Following" }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 244,
+          lineNumber: 246,
           columnNumber: 15
         }, this),
         /* @__PURE__ */ jsxDEV15(
@@ -3285,32 +3285,32 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 247,
+            lineNumber: 249,
             columnNumber: 15
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 243,
+        lineNumber: 245,
         columnNumber: 13
       }, this),
       /* @__PURE__ */ jsxDEV15("ul", { className: "list-disc ml-6", children: popupList.users.map((user2) => /* @__PURE__ */ jsxDEV15("li", { children: user2.name }, user2._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 258,
+        lineNumber: 260,
         columnNumber: 17
       }, this)) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 256,
+        lineNumber: 258,
         columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 242,
+      lineNumber: 244,
       columnNumber: 11
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 241,
+      lineNumber: 243,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
@@ -5251,7 +5251,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-J4WZBI3L.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-MYVIX6GQ.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-V5MKXUS6.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-JOK5RXIL.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-6XI6DDDC.js", imports: ["/build/_shared/chunk-Z3N7QXH6.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-YQP7X7M4.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EEW5Y7K2.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-KZKCTHJL.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-V5LVO3XQ.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUR4TJIJ.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-7U4TC3IB.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-UX74HLB4.js", imports: ["/build/_shared/chunk-Z3N7QXH6.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-YSFMHVTA.js", imports: ["/build/_shared/chunk-YQP7X7M4.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-A3V53LNU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-4RZ2CR7T.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-C3QOKBXN.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-ZR7MPNP5.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "08563cc7", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1734165651740 }, url: "/build/manifest-08563CC7.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-J4WZBI3L.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-MYVIX6GQ.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-V5MKXUS6.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-JOK5RXIL.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-6XI6DDDC.js", imports: ["/build/_shared/chunk-Z3N7QXH6.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-YQP7X7M4.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EEW5Y7K2.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-KZKCTHJL.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-V5LVO3XQ.js", imports: ["/build/_shared/chunk-3BWANBAK.js", "/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-VUR4TJIJ.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-7U4TC3IB.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-UX74HLB4.js", imports: ["/build/_shared/chunk-Z3N7QXH6.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-NY53D2FH.js", imports: ["/build/_shared/chunk-YQP7X7M4.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-A3V53LNU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-4RZ2CR7T.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-C3QOKBXN.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-ZR7MPNP5.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-EY6LMYCZ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/users._index": { id: "routes/users._index", parentId: "root", path: "users", index: !0, caseSensitive: void 0, module: "/build/routes/users._index-6AIM527Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "29e75891", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1734166518314 }, url: "/build/manifest-29E75891.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

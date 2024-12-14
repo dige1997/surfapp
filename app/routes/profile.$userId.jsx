@@ -126,9 +126,11 @@ export default function Profile() {
             <div className=" flex  flex-col p-2">
               <p className="font-semibold">About Me: </p>
               <p>
-                {user?.aboutMe.length > 100
-                  ? `${user.aboutMe.slice(0, 100)}...`
-                  : user.aboutMe}
+                {user?.aboutMe
+                  ? user?.aboutMe.length > 100
+                    ? `${user.aboutMe.slice(0, 100)}...`
+                    : user.aboutMe
+                  : "No about me information"}
                 {user?.aboutMe.length > 100 && (
                   <button
                     className="text-blue-500 underline ml-2"
@@ -200,7 +202,7 @@ export default function Profile() {
             </Link>
           </div>
         ))}
-        {eventsAttending.length > displayedEventsCount && (
+        {eventsAttending?.length > displayedEventsCount && (
           <div className="flex w-full">
             <button
               className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
