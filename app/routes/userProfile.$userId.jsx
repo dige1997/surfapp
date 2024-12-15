@@ -137,12 +137,26 @@ export default function UserProfile() {
         <div>
           <p className="text-lg font-semibold">About Me</p>
           <p>
-            {showFullAboutMe
-              ? userProfile.aboutMe
-              : `${userProfile.aboutMe.slice(0, 200)}... `}
-            <button onClick={toggleAboutMePopup} className="text-blue-500">
-              {showFullAboutMe ? "See Less" : "See More"}
-            </button>
+            {userProfile.aboutMe ? (
+              <>
+                {showFullAboutMe
+                  ? userProfile.aboutMe
+                  : `${userProfile.aboutMe.slice(0, 200)} `}
+                <button
+                  onClick={toggleAboutMePopup}
+                  className={`text-blue-500 ${
+                    userProfile.aboutMe.length > 200 ? "block" : "hidden"
+                  }`}
+                >
+                  {showFullAboutMe ? "See Less" : "See More"}
+                </button>
+              </>
+            ) : (
+              "No information provided"
+            )}
+          </p>
+          <p className="mt-auto h-full font-bold">
+            {authUser?.hobbies?.join(", ")}
           </p>
         </div>
 

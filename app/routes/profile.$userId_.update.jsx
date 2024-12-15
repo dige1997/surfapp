@@ -141,7 +141,7 @@ export default function UpdateProfile() {
           className="rounded-xl p-2  border-gray-400 border"
         />
         <label htmlFor="aboutMe">About Me</label>
-        <input
+        <textarea
           type="description"
           id="aboutMe"
           name="aboutMe"

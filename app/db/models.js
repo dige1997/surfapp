@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
+    hobbies: {
+      type: [String],
+    },
     avatarUrl: {
       type: String,
     },
@@ -104,6 +107,7 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     location: {
       type: String,
       required: true,

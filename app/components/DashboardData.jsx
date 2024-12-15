@@ -169,8 +169,8 @@ const DashboardData = () => {
           <div className="spinner"></div>
         </div>
       ) : (
-        <div className="flex flex-col p-4" id="outer-container">
-          <form className="flex justify-center mt-20" onSubmit={handleSearch}>
+        <div className="flex flex-col md:p-4" id="outer-container">
+          <form className="flex justify-center mt-10" onSubmit={handleSearch}>
             <input
               type="text"
               placeholder="Enter city name"
@@ -197,7 +197,7 @@ const DashboardData = () => {
             </button>
           </form>
           <div className="mt-10 p-4 flex flex-col justify-between items-center rounded-xl shadow-md h-full">
-            <div className="flex gap-10 p-4">
+            <div className="flex gap-10 pb-8 px-8 md:w-3/5 md:justify-between md:flex-row flex-col">
               <div>
                 <h1 className="text-5xl font-semibold mb-6 text-gray-800">
                   {city}, {country}
@@ -209,40 +209,91 @@ const DashboardData = () => {
                         weatherData.list[0].weather[0].description
                       )}
                   </p>
-                  <h2 className="text-5xl ml-4 font-medium">
+                  <h2 className="text-5xl ml-4 font-bold">
                     {weatherData && Math.round(weatherData.list[0].main.temp)}°C
                   </h2>
+                  <div className="pl-2 leading-5 items-center">
+                    <div className="flex-row flex gap-1">
+                      <p>Min: </p>
+                      <p>
+                        {weatherData &&
+                          Math.round(weatherData.list[0].main.temp_min)}
+                        °C
+                      </p>
+                    </div>
+                    <div className="flex-row flex gap-1">
+                      <p>Max: </p>
+                      <p>
+                        {weatherData &&
+                          Math.round(weatherData.list[0].main.temp_max)}
+                        °C
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <p className="text-xl text-gray-600">
                   {weatherData &&
                     weatherData.list[0].weather[0].description.toUpperCase()}
                 </p>
               </div>
-              <div className="flex flex-col justify-between ">
+              <div className="flex flex-row gap-20 justify-center md:flex-row md:gap-4 text-center ">
                 <div className="flex flex-col items-center">
                   <p className="text-sm text-gray-600">Wind</p>
-                  <p className="font-medium">
+                  <p className="font-bold">
                     {weatherData && Math.round(weatherData.list[0].wind.speed)}{" "}
                     m/s
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600">Gust</p>
+                  <p className="font-bold">
+                    {weatherData && Math.round(weatherData.list[0].wind.gust)}{" "}
+                    m/s
+                  </p>
+                  <p text-sm text-gray-600>
+                    Wind <br />
+                    direction
+                  </p>
+                  <p className="font-bold">
                     {weatherData &&
                       getWindDirection(weatherData.list[0].wind.deg)}
                   </p>
                 </div>
                 <div className="flex flex-col items-center">
                   <p className="text-sm text-gray-600">Humidity</p>
-                  <p className="font-medium">
+                  <p className="font-bold">
                     {weatherData && weatherData.list[0].main.humidity}%
                   </p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <p className="text-sm text-gray-600">Pressure</p>
-                  <p className="font-medium">
-                    {weatherData && weatherData.list[0].main.pressure} hPa
+                  <p className="text-sm text-gray-600">Sea level</p>
+                  <p className="font-bold">
+                    {weatherData && weatherData.list[0].main.sea_level}
                   </p>
                 </div>
               </div>
+            </div>
+            <div className="mt-10">
+              <button
+                className={`${
+                  activeTab === "wind" ? "bg-blue-700" : "bg-blue-500"
+                } text-white p-2 rounded-t-lg`}
+                onClick={() => setActiveTab("wind")}
+              >
+                Wind
+              </button>
+              <button
+                className={`${
+                  activeTab === "swell" ? "bg-blue-700" : "bg-blue-500"
+                } text-white p-2 rounded-t-lg`}
+                onClick={() => setActiveTab("swell")}
+              >
+                Swell
+              </button>
+              <button
+                className={`${
+                  activeTab === "temp" ? "bg-blue-700" : "bg-blue-500"
+                } text-white p-2 rounded-t-lg`}
+                onClick={() => setActiveTab("temp")}
+              >
+                Temperature
+              </button>
             </div>
             <IframeDisplay activeTab={activeTab} weatherData={weatherData} />
           </div>

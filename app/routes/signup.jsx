@@ -72,7 +72,7 @@ export default function SignUp() {
   return (
     <div
       id="sign-up-page"
-      className="flex flex-col justify-center items-center rounded-lg h-auto w-2/6 ml-auto mr-auto mt-24 mb-32 p-4 gap-3"
+      className="flex flex-col justify-center items-center rounded-lg h-auto w-80 ml-auto mr-auto mt-24 mb-32 p-4 gap-3"
     >
       <h1 className="text-2xl w-auto">Sign Up</h1>
       <Form

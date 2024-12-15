@@ -14,8 +14,9 @@ export async function loader({ request }) {
   const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
     .populate("followers", "_id name")
     .populate("following", "_id name")
+    .select("name lastname mail avatarUrl aboutMe hobbies")
     .populate("aboutMe");
-
+  console.log(userUpdated.hobbies);
   const events = await mongoose.models.Event.find({ creator: user._id })
     .populate("creator")
     .populate("attendees");
@@ -104,7 +105,7 @@ export default function Profile() {
             </Link>
           </Form>
         </div>
-        <div className="flex flex-row md:justify-between">
+        <div className="flex flex-row gap-4 md:justify-between justify-center">
           <div className="flex flex-col">
             <div
               style={{
@@ -114,22 +115,22 @@ export default function Profile() {
               className="w-20 h-20 rounded-full bg-gray-300"
             ></div>
             <div className="py-2">
-              <p className="font-semibold">Name: </p>
+              <p className="font-semibold"> </p>
               <p>{user?.name}</p>
             </div>
             <div>
-              <p className="font-semibold">Lastname: </p>
+              <p className="font-semibold"> </p>
               <p>{user?.lastname}</p>
             </div>
             <div className="py-2">
-              <p className="font-semibold">Mail: </p>
+              <p className="font-semibold"> </p>
               <p>{user?.mail}</p>
             </div>
           </div>
-          <div className="md:flex hidden flex-col w-full mt-auto">
+          <div className="md:flex hidden flex-col w-full ">
             <div className=" md:flex hidden flex-col p-2">
               <p className="font-semibold">About Me: </p>
-              <p>
+              <p className="">
                 {user?.aboutMe
                   ? user?.aboutMe.length > 100
                     ? `${user.aboutMe.slice(0, 100)}...`
@@ -143,6 +144,9 @@ export default function Profile() {
                     See More
                   </button>
                 )}
+              </p>
+              <p className="mt-auto h-full font-bold">
+                {user?.hobbies.join(", ")}
               </p>
             </div>
           </div>
@@ -184,6 +188,7 @@ export default function Profile() {
                   </button>
                 )}
               </p>
+              <p>{user?.hobbies.join(", ")}</p>
             </div>
           </div>
         </div>
@@ -203,7 +208,15 @@ export default function Profile() {
         )}
         <Form
           method="post"
-          className="items-center w-1/2 md:mt-0 mt-4 bg-gray-100 hover:bg-gray-200 rounded-xl p-2 m-auto"
+          className="items-center w-1/2 md:mt-0 mt-4 bg-rose-400 hover:bg-rose-300 rounded-xl p-2 m-auto"
+          onSubmit={(e) => {
+            const confirmed = window.confirm(
+              "Are you sure you want to log out?"
+            );
+            if (!confirmed) {
+              e.preventDefault();
+            }
+          }}
         >
           <button className="text-cancel flex flex-row font-semibold w-full justify-center">
             Logout
@@ -214,53 +227,70 @@ export default function Profile() {
         <h2 className="text-2xl font-semibold">Liked posts</h2>
       </div>
       <div className="flex flex-col justify-center w-full">
-        {eventsAttending.slice(0, displayedEventsCount).map((event) => (
-          <div key={event._id}>
-            <Link className="event-link" to={`/event/${event._id}`}>
-              <div className=" md:hidden ">
-                <EventListCards event={event} />
+        {eventsAttending && eventsAttending.length > 0 ? (
+          <>
+            {eventsAttending.slice(0, displayedEventsCount).map((event) => (
+              <div key={event._id}>
+                <Link className="event-link" to={`/event/${event._id}`}>
+                  <div className="md:hidden">
+                    <EventListCards event={event} />
+                  </div>
+                  <div className="hidden md:block">
+                    <EventCard event={event} onCityUpdate={handleCityUpdate} />
+                  </div>
+                </Link>
               </div>
-              <div className="hidden md:block">
-                <EventCard event={event} onCityUpdate={handleCityUpdate} />
+            ))}
+            {eventsAttending.length > displayedEventsCount && (
+              <div className="flex w-full">
+                <button
+                  className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
+                  onClick={loadMoreEvents}
+                >
+                  Load More
+                </button>
               </div>
-            </Link>
-          </div>
-        ))}
-        {eventsAttending?.length > displayedEventsCount && (
-          <div className="flex w-full">
-            <button
-              className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
-              onClick={loadMoreEvents}
-            >
-              Load More
-            </button>
+            )}
+          </>
+        ) : (
+          <div className="text-center text-2xl font-medium mt-4 text-gray-500">
+            No liked posts
           </div>
         )}
       </div>
+
       <div className="mb-16">
         <h2 className="text-lg font-medium pt-6">Posts by me</h2>
-        {events.slice(0, displayedEventsCount).map((event) => (
-          <div key={event._id}>
-            <Link className="event-link" to={`/event/${event._id}`}>
-              <div className=" md:hidden ">
-                <EventListCards event={event} />
+        {events && events.length > 0 ? (
+          <>
+            {events.slice(0, displayedEventsCount).map((event) => (
+              <div key={event._id}>
+                <Link className="event-link" to={`/event/${event._id}`}>
+                  <div className="md:hidden">
+                    <EventListCards event={event} />
+                  </div>
+                  <div className="hidden md:block">
+                    <EventCard event={event} onCityUpdate={handleCityUpdate} />
+                  </div>
+                </Link>
               </div>
-              <div className="hidden md:block">
-                <EventCard event={event} onCityUpdate={handleCityUpdate} />
-              </div>
-            </Link>
+            ))}
+            <div className="flex w-full">
+              {events.length > displayedEventsCount && (
+                <button
+                  className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
+                  onClick={loadMoreEvents}
+                >
+                  Load More
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="text-center mt-4 text-2xl font-medium text-gray-500">
+            No posts by me
           </div>
-        ))}
-        <div className="flex w-full">
-          {events.length > displayedEventsCount && (
-            <button
-              className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
-              onClick={loadMoreEvents}
-            >
-              Load More
-            </button>
-          )}
-        </div>
+        )}
       </div>
 
       {popupList.visible && (
