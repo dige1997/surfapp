@@ -226,7 +226,7 @@ export default function Event() {
                     }
                   }}
                 >
-                  Delete this event
+                  Delete this post
                 </button>
               </Form>
             </div>
