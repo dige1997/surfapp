@@ -11,7 +11,7 @@ export async function loader({ request, params }) {
   if (!authUser) {
     return redirect("/login");
   }
-
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   const userProfile = await mongoose.models.User.findById(params.userId)
     .populate("followers", "_id name") // Populate followers for the profile user
     .populate("following", "_id name"); // Populate following for the profile user
@@ -22,7 +22,7 @@ export async function loader({ request, params }) {
 
   const events = await mongoose.models.Event.find({ creator: userProfile._id }); // Fetch events by the user
 
-  return json({ userProfile, authUser, events });
+  return json({ userProfile, authUser, events, googleMapsApiKey });
 }
 
 export async function action({ request, params }) {
@@ -61,12 +61,13 @@ export async function action({ request, params }) {
     await userToFollow.save();
   }
 
-  return json({ success: true });
+  return json({ success: true }, { googleMapsApiKey });
 }
 
 export default function UserProfile() {
-  const { userProfile, authUser, events } = useLoaderData();
+  const { userProfile, authUser, events, googleMapsApiKey } = useLoaderData();
   const [eventCities, setEventCities] = useState({});
+
   const [followersCount, setFollowersCount] = useState(
     userProfile.followers.length
   );
@@ -186,7 +187,11 @@ export default function UserProfile() {
         <div className="">
           {events.map((event) => (
             <Link key={event._id} to={`/event/${event._id}`}>
-              <EventCard event={event} onCityUpdate={updateCity} />
+              <EventCard
+                event={event}
+                onCityUpdate={updateCity}
+                apiKey={googleMapsApiKey}
+              />
             </Link>
           ))}
         </div>

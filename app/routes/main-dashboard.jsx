@@ -7,18 +7,25 @@ import { useLoaderData } from "@remix-run/react";
 export const meta = () => {
   return [{ title: "Elevation" }];
 };
-
 export async function loader({ request }) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/main-dashboard",
-  });
+  const openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
+
+  const user = await authenticator.isAuthenticated(request);
   if (!user) {
-    return redirect("/dashboard");
+    // User is not authenticated, return null or some default data
+    return { isAuthenticated: false };
   }
+
+  // If authenticated, return the API keys and the flag
+  return {
+    isAuthenticated: true,
+    openWeatherApiKey,
+  };
 }
 
 export default function MainDashboard() {
-  const { apiKey } = useLoaderData();
+  // Access the API keys from loader data
+  const { openWeatherApiKey } = useLoaderData();
 
   return (
     <div className="page">
@@ -32,7 +39,7 @@ export default function MainDashboard() {
         </p>
       </div>
       <div className="page">
-        <DashboardData />
+        <DashboardData openWeatherApiKey={openWeatherApiKey} />
       </div>
     </div>
   );
