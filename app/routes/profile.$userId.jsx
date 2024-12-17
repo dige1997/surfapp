@@ -10,7 +10,7 @@ export async function loader({ request }) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
-
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   const userUpdated = await mongoose.models.User.findOne({ _id: user._id })
     .populate("followers", "_id name")
     .populate("following", "_id name")
@@ -27,7 +27,7 @@ export async function loader({ request }) {
     .populate("creator")
     .populate("attendees");
 
-  return { user: userUpdated, events, eventsAttending };
+  return { user: userUpdated, events, eventsAttending, googleMapsApiKey };
 }
 
 export async function action({ request }) {
@@ -43,7 +43,7 @@ export default function Profile() {
     users: [],
     type: "",
   });
-
+  const { googleMapsApiKey } = useLoaderData();
   const [aboutMePopup, setAboutMePopup] = useState(false);
   const handleCityUpdate = (eventId, cityName) => {
     setCityUpdates((prev) => ({
@@ -233,10 +233,18 @@ export default function Profile() {
               <div key={event._id}>
                 <Link className="event-link" to={`/event/${event._id}`}>
                   <div className="md:hidden">
-                    <EventListCards event={event} />
+                    <EventListCards
+                      event={event}
+                      onCityUpdate={handleCityUpdate}
+                      apiKey={googleMapsApiKey}
+                    />
                   </div>
                   <div className="hidden md:block">
-                    <EventCard event={event} onCityUpdate={handleCityUpdate} />
+                    <EventCard
+                      event={event}
+                      onCityUpdate={handleCityUpdate}
+                      apiKey={googleMapsApiKey}
+                    />
                   </div>
                 </Link>
               </div>
@@ -267,10 +275,14 @@ export default function Profile() {
               <div key={event._id}>
                 <Link className="event-link" to={`/event/${event._id}`}>
                   <div className="md:hidden">
-                    <EventListCards event={event} />
+                    <EventListCards event={event} apiKey={googleMapsApiKey} />
                   </div>
                   <div className="hidden md:block">
-                    <EventCard event={event} onCityUpdate={handleCityUpdate} />
+                    <EventCard
+                      event={event}
+                      onCityUpdate={handleCityUpdate}
+                      apiKey={googleMapsApiKey}
+                    />
                   </div>
                 </Link>
               </div>

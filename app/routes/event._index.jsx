@@ -13,29 +13,27 @@ export const meta = () => {
 
 export async function loader({ request }) {
   await authenticator.isAuthenticated(request);
-
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   try {
-    // Ensure .find() doesn't fail
     const events = await mongoose.models.Event.find()
       .populate("creator")
       .populate("attendees")
       .sort({ createdAt: -1 });
 
-    return json({ events: events || [] }); // Return an empty array if events is undefined
+    return json({ events: events || [], googleMapsApiKey }); // Return an empty array if events is undefined
   } catch (error) {
     console.error("Error fetching events:", error);
-    return json({ events: [] }); // Return empty array in case of an error
+    return json({ googleMapsApiKey, events: [] }); // Return empty array in case of an error
   }
 }
 
 export default function Index() {
-  const { events } = useLoaderData();
+  const { events, googleMapsApiKey } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
   const [eventCities, setEventCities] = useState({});
   const [displayedEventsCount, setDisplayedEventsCount] = useState(6);
   const [sortOption, setSortOption] = useState("newest"); // Sorting options
 
-  // Update the city in the eventCities state
   const updateCity = (eventId, city) => {
     setEventCities((prev) => ({
       ...prev,
@@ -132,7 +130,11 @@ export default function Index() {
                   to={`/event/${event._id}`}
                 >
                   <div className="flex m-auto">
-                    <EventList event={event} onCityUpdate={updateCity} />
+                    <EventList
+                      event={event}
+                      onCityUpdate={updateCity}
+                      apiKey={googleMapsApiKey}
+                    />
                   </div>
                 </Link>
               ))}

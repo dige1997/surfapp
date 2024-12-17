@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function EventCard({ event, onCityUpdate }) {
+export default function EventCard({ event, onCityUpdate, apiKey }) {
   const [city, setCity] = useState("Fetching...");
-  const apiKey = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
 
   const normalizeCityName = (cityName) => {
     return cityName
@@ -13,6 +12,12 @@ export default function EventCard({ event, onCityUpdate }) {
   };
 
   const fetchCityFromCoordinates = async (lat, lng) => {
+    if (!apiKey) {
+      console.error("API key is not defined.");
+      setCity("API key not available");
+      return;
+    }
+
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
 
     try {

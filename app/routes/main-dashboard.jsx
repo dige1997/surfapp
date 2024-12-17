@@ -18,8 +18,7 @@ export async function loader({ request }) {
 }
 
 export default function MainDashboard() {
-  // Get the loader data
-  useLoaderData();
+  const { apiKey } = useLoaderData();
 
   return (
     <div className="page">

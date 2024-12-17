@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLoaderData } from "@remix-run/react";
 
 export default function EventCard({ event }) {
   const [city, setCity] = useState("Fetching...");
-  const apiKey = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
-
+  const { googleMapsApiKey } = useLoaderData();
   const normalizeCityName = (cityName) => {
     return cityName
       .normalize("NFD")
@@ -13,7 +13,7 @@ export default function EventCard({ event }) {
   };
 
   const fetchCityFromCoordinates = async (lat, lng) => {
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${googleMapsApiKey}`;
 
     try {
       const response = await axios.get(url);

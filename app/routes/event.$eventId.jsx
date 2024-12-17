@@ -1,12 +1,10 @@
-import { Form, useLoaderData, useActionData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import mongoose from "mongoose";
 import { useEffect, useState, useRef } from "react";
 import { authenticator } from "../services/auth.server";
-import { GoogleMapLoader } from "../components/GoogleMapLoader";
 import { NavLink } from "react-router-dom";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
 const MAP_ID = "71f267d426ae7773";
 
 export function meta({ data }) {
@@ -19,10 +17,12 @@ export function meta({ data }) {
 
 export async function loader({ request, params }) {
   const authUser = await authenticator.isAuthenticated(request);
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+
   const event = await mongoose.models.Event.findById(params.eventId)
     .populate("attendees")
     .populate("creator");
-  return json({ event, authUser });
+  return json({ event, authUser, googleMapsApiKey });
 }
 
 export async function action({ request, params }) {
@@ -51,7 +51,7 @@ export async function action({ request, params }) {
 }
 
 export default function Event() {
-  const { event, authUser } = useLoaderData();
+  const { event, authUser, googleMapsApiKey } = useLoaderData();
   const [city, setCity] = useState(null);
   const mapRef = useRef(null);
 
@@ -62,11 +62,46 @@ export default function Event() {
       }
     : null;
 
+  // Dynamically load Google Maps script
+  useEffect(() => {
+    if (!googleMapsApiKey || !location) return;
+
+    const loadGoogleMapsScript = () => {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}`;
+      script.async = true;
+      script.onload = initializeMap;
+      document.body.appendChild(script);
+    };
+
+    const initializeMap = () => {
+      if (window.google && mapRef.current) {
+        const map = new window.google.maps.Map(mapRef.current, {
+          center: location,
+          zoom: 12,
+          mapId: MAP_ID,
+        });
+
+        new window.google.maps.Marker({
+          position: location,
+          map,
+          title: "Event Location",
+        });
+      }
+    };
+
+    if (!window.google) {
+      loadGoogleMapsScript();
+    } else {
+      initializeMap();
+    }
+  }, [googleMapsApiKey, location]);
+
+  // Fetch city name
   useEffect(() => {
     if (location) {
       const fetchCityName = async () => {
-        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${GOOGLE_MAPS_API_KEY}
-`;
+        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${googleMapsApiKey}`;
         try {
           const response = await fetch(geocodeUrl);
           const data = await response.json();
@@ -100,37 +135,6 @@ export default function Event() {
         }
       };
       fetchCityName();
-    }
-  }, [location]);
-
-  useEffect(() => {
-    if (location && mapRef.current) {
-      const map = new window.google.maps.Map(mapRef.current, {
-        center: location,
-        zoom: 12,
-        mapId: MAP_ID,
-      });
-
-      if (window.google.maps.marker?.AdvancedMarkerView) {
-        const advancedMarker = new window.google.maps.marker.AdvancedMarkerView(
-          {
-            position: location,
-            map,
-            content: `<div style="background-color: #fff; border: 2px solid #007BFF; border-radius: 8px; padding: 8px; font-size: 14px; text-align: center;">Event Location</div>`,
-          }
-        );
-
-        advancedMarker.addListener("click", () => {
-          alert("You clicked the marker!");
-        });
-      } else {
-        console.warn("AdvancedMarkerView is not available.");
-        new window.google.maps.Marker({
-          position: location,
-          map,
-          title: "Event Location",
-        });
-      }
     }
   }, [location]);
 
@@ -174,10 +178,9 @@ export default function Event() {
       </div>
 
       {location && (
-        <GoogleMapLoader>
-          <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
-        </GoogleMapLoader>
+        <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
       )}
+
       <div className="flex items-center gap-4 mt-4 justify-between">
         <div className="flex gap-2 items-center">
           <p>💙 {event.attendees.length}</p>

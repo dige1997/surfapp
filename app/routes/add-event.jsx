@@ -1,18 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "@remix-run/react";
 import { Form } from "@remix-run/react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { authenticator } from "../services/auth.server";
 import mongoose from "mongoose";
 import { redirect } from "@remix-run/node";
-import { GoogleMapLoader } from "../components/GoogleMapLoader";
+import { useLoaderData } from "@remix-run/react";
 
 const MAP_ID = "71f267d426ae7773";
 
 export async function loader({ request }) {
-  return await authenticator.isAuthenticated(request, {
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+
+  // Check if the API key is present to avoid issues
+  if (!googleMapsApiKey) {
+    throw new Error("Google Maps API Key is missing.");
+  }
+
+  const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
+
+  return { googleMapsApiKey, user };
 }
 
 export default function AddEvent() {
@@ -23,7 +32,10 @@ export default function AddEvent() {
   const [center] = useState({ lat: 41.0082, lng: 28.9784 }); // Istanbul coordinates
   const mapRef = useRef();
   const navigate = useNavigate();
-
+  const { googleMapsApiKey } = useLoaderData(); // API key passed from loader
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey, // Use the key here
+  });
   const handleMapClick = (event) => {
     setLocation({
       lat: event.latLng.lat(),
@@ -35,7 +47,7 @@ export default function AddEvent() {
 
   useEffect(() => {
     if (location && mapRef.current) {
-      mapRef.current.panTo(location); // Automatically pan to the selected location
+      mapRef.current.panTo(location);
     }
   }, [location]);
 
@@ -57,9 +69,6 @@ export default function AddEvent() {
           type="text"
           placeholder="Write a title..."
           className="rounded-xl p-2 border-gray-400 border"
-          onInvalid={(e) => {
-            e.target.setCustomValidity("Please enter a title for your post.");
-          }}
         />
 
         <label htmlFor="description">Description</label>
@@ -69,11 +78,6 @@ export default function AddEvent() {
           name="description"
           placeholder="Write a description..."
           className="rounded-xl p-2 border-gray-400 border"
-          onInvalid={(e) => {
-            e.target.setCustomValidity(
-              "Please enter a description for your post."
-            );
-          }}
         />
 
         <label htmlFor="date">Date</label>
@@ -95,12 +99,14 @@ export default function AddEvent() {
           value={location ? `${location.lat}, ${location.lng}` : ""}
           className="rounded-xl p-2 border-gray-400 border"
         />
+
         <div>
           <p>Click on the map to select a location.</p>
         </div>
 
-        <GoogleMapLoader>
+        {isLoaded ? (
           <GoogleMap
+            apiKey={googleMapsApiKey}
             mapContainerStyle={{ width: "100%", height: "400px" }}
             center={center}
             zoom={12}
@@ -116,7 +122,9 @@ export default function AddEvent() {
               <Marker position={location} title="Selected Location" />
             )}
           </GoogleMap>
-        </GoogleMapLoader>
+        ) : (
+          <p>Loading map...</p>
+        )}
 
         <label htmlFor="image">Image URL</label>
         <input

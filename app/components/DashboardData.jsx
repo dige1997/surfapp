@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IframeDisplay } from "./IframeDisplay"; // Import the IframeDisplay component
+import { useLoaderData } from "@remix-run/react";
 
-const DashboardData = () => {
+const DashboardData = ({ apiKey }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [city, setCity] = useState("Loading...");
   const [country, setCountry] = useState("");
@@ -10,8 +11,6 @@ const DashboardData = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("wind");
   const [isOffline, setIsOffline] = useState(false);
-
-  const apiKey = "84c59fa875b07f0e54b6dd1ce011f187";
 
   useEffect(() => {
     // Run only on the client side
@@ -47,7 +46,7 @@ const DashboardData = () => {
     }
   }, [city]);
 
-  const fetchWeatherData = async (city) => {
+  const fetchWeatherData = async (city, apiKey) => {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
     setLoading(true);
     try {
@@ -60,7 +59,7 @@ const DashboardData = () => {
       setWeatherData(data);
       setError("");
       setCountry(data.city.country);
-      localStorage.setItem(city, JSON.stringify(data)); // Only store data when it’s successfully fetched
+      localStorage.setItem(city, JSON.stringify(data));
     } catch (error) {
       console.error("Error fetching weather data:", error);
       setError("Could not fetch weather data. Please try another city.");
@@ -117,10 +116,10 @@ const DashboardData = () => {
         setError("");
         setLoading(false);
       } else if (city !== "Loading...") {
-        fetchWeatherData(city); // Only fetch if data is not in local storage or user is online
+        fetchWeatherData(city, apiKey); // Only fetch if data is not in local storage or user is online
       }
     }
-  }, [city, isOffline]);
+  }, [city, isOffline, apiKey]);
 
   const handleSearch = (e) => {
     e.preventDefault();

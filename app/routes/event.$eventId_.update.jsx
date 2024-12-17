@@ -10,6 +10,7 @@ import { GoogleMapLoader } from "../components/GoogleMapLoader";
 const MAP_ID = "71f267d426ae7773";
 
 export async function loader({ request, params }) {
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin",
   });
@@ -26,11 +27,11 @@ export async function loader({ request, params }) {
     return redirect("/dashboard");
   }
 
-  return json({ event });
+  return json({ event, googleMapsApiKey });
 }
 
 export default function UpdateEvent() {
-  const { event } = useLoaderData();
+  const { event, googleMapsApiKey } = useLoaderData();
   const [image, setImage] = useState(event.image);
   const [location, setLocation] = useState(
     event.location
@@ -146,7 +147,7 @@ export default function UpdateEvent() {
           className="rounded-xl p-2 border-gray-400 border"
         />
 
-        <GoogleMapLoader>
+        <GoogleMapLoader apiKey={googleMapsApiKey}>
           <GoogleMap
             mapContainerStyle={{ width: "100%", height: "400px" }}
             center={parsedLocation}

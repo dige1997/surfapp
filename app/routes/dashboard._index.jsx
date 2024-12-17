@@ -1,4 +1,4 @@
-import { useState } from "react"; // Import useState
+import { useState } from "react";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import mongoose from "mongoose";
@@ -11,24 +11,31 @@ export const meta = () => {
   return [{ title: "Remix Post App" }];
 };
 
-export async function loader({ request }) {
-  const user = await authenticator.isAuthenticated(request);
-  if (!user) {
-    return json({ mostLikedEvents: [] });
-  }
+export const loader = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/main-dashboard",
+  });
 
-  // Fetch the top 3 most liked events
+  const openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+
+  // Fetch events and API keys
   const mostLikedEvents = await mongoose.models.Event.find()
-    .sort({ attendees: -1 }) // Sort by attendees array length in descending order
-    .limit(3) // Limit to 3 events
-    .populate("creator") // Populate creator field
-    .populate("attendees"); // Populate attendees field
+    .sort({ attendees: -1 })
+    .limit(3)
+    .populate("creator")
+    .populate("attendees");
 
-  return json({ mostLikedEvents }); // Return the most liked events
-}
+  return json({
+    mostLikedEvents,
+    openWeatherApiKey,
+    googleMapsApiKey, // API keys securely passed here
+  });
+};
 
 export default function Index() {
-  const { mostLikedEvents } = useLoaderData();
+  const { mostLikedEvents, openWeatherApiKey, googleMapsApiKey } =
+    useLoaderData();
   const [eventCities, setEventCities] = useState({}); // Initialize the state for event cities
 
   // Handle the case where there are no events
@@ -51,7 +58,7 @@ export default function Index() {
 
   return (
     <div className="page">
-      <DashboardData />
+      <DashboardData apiKey={openWeatherApiKey} />{" "}
       <div className="md:p-8 p-4">
         <h2 className="font-bold text-2xl">Most liked posts</h2>
         {mostLikedEvents.map((event) => (
@@ -64,7 +71,11 @@ export default function Index() {
               <EventListCards event={event} />
             </div>
             <div className="hidden md:flex w-full justify-center">
-              <EventCard event={event} onCityUpdate={updateCity} />
+              <EventCard
+                event={event}
+                onCityUpdate={updateCity}
+                apiKey={googleMapsApiKey}
+              />
             </div>
           </Link>
         ))}

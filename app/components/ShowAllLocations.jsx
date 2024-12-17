@@ -1,17 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAJRJzkSO54nHodtQJF-xAPcEwL5q7_NHA";
-const MAP_ID = "71f267d426ae7773";
-
-export default function ShowAllLocations({ events }) {
+export default function ShowAllLocations({ events, apiKey }) {
   const [locations, setLocations] = useState([]);
   const mapRef = useRef(null);
   const infoWindowRef = useRef(null); // Reference for the InfoWindow
   const geocoderRef = useRef(null); // Reference for Geocoding
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: apiKey,
   });
 
   useEffect(() => {
@@ -29,7 +26,7 @@ export default function ShowAllLocations({ events }) {
       const map = new window.google.maps.Map(mapRef.current, {
         center: locations[0], // Center map at the first location
         zoom: 8,
-        mapId: MAP_ID,
+        mapId: "71f267d426ae7773", // Your Map ID
       });
 
       // Initialize InfoWindow and Geocoder
