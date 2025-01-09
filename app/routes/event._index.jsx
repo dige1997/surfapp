@@ -52,11 +52,14 @@ export default function Index() {
       const searchTermLower = searchTerm.toLowerCase();
 
       return (
-        Object.values(event).some((value) =>
-          value.toString().toLowerCase().includes(searchTermLower)
+        Object.values(event).some(
+          (value) =>
+            value != null && // Ensure value is not null or undefined
+            value.toString().toLowerCase().includes(searchTermLower)
         ) || city.includes(searchTermLower)
       );
     })
+
     .sort((a, b) => {
       if (sortOption === "newest")
         return new Date(b.createdAt) - new Date(a.createdAt);

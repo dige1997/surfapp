@@ -25,7 +25,7 @@ export default function ShowAllLocations({ events, apiKey }) {
     if (isLoaded && locations.length > 0 && mapRef.current) {
       const map = new window.google.maps.Map(mapRef.current, {
         center: locations[0], // Center map at the first location
-        zoom: 8,
+        zoom: 2,
         mapId: "71f267d426ae7773", // Your Map ID
       });
 
