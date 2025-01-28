@@ -19,15 +19,15 @@ export async function loader({ request }) {
   console.log(userUpdated.hobbies);
   const posts = await mongoose.models.Post.find({ creator: user._id })
     .populate("creator")
-    .populate("attendees");
+    .populate("likes");
 
-  const postsAttending = await mongoose.models.Post.find({
-    attendees: user._id,
+  const postsLiked = await mongoose.models.Post.find({
+    likes: user._id,
   })
     .populate("creator")
-    .populate("attendees");
+    .populate("likes");
 
-  return { user: userUpdated, posts, postsAttending, googleMapsApiKey };
+  return { user: userUpdated, posts, postsLiked, googleMapsApiKey };
 }
 
 export async function action({ request }) {
@@ -35,7 +35,7 @@ export async function action({ request }) {
 }
 
 export default function Profile() {
-  const { user, posts, postsAttending } = useLoaderData();
+  const { user, posts, postsLiked } = useLoaderData();
   const [cityUpdates, setCityUpdates] = useState({});
   const [displayedPostsCount, setDisplayedPostsCount] = useState(3);
   const [popupList, setPopupList] = useState({
@@ -227,9 +227,9 @@ export default function Profile() {
         <h2 className="text-2xl font-semibold">Liked posts</h2>
       </div>
       <div className="flex flex-col justify-center w-full">
-        {postsAttending && postsAttending.length > 0 ? (
+        {postsLiked && postsLiked.length > 0 ? (
           <>
-            {postsAttending.slice(0, displayedPostsCount).map((post) => (
+            {postsLiked.slice(0, displayedPostsCount).map((post) => (
               <div key={post._id}>
                 <Link className="post-link" to={`/post/${post._id}`}>
                   <div className="md:hidden">
@@ -249,7 +249,7 @@ export default function Profile() {
                 </Link>
               </div>
             ))}
-            {postsAttending.length > displayedPostsCount && (
+            {postsLiked.length > displayedPostsCount && (
               <div className="flex w-full">
                 <button
                   className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"

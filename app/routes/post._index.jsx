@@ -17,7 +17,7 @@ export async function loader({ request }) {
   try {
     const posts = await mongoose.models.Post.find()
       .populate("creator")
-      .populate("attendees")
+      .populate("likes")
       .sort({ createdAt: -1 });
 
     return json({ posts: posts || [], googleMapsApiKey }); // Return an empty array if posts is undefined
@@ -66,7 +66,7 @@ export default function Index() {
       if (sortOption === "oldest")
         return new Date(a.createdAt) - new Date(b.createdAt);
       if (sortOption === "mostLikes")
-        return (b.attendees?.length || 0) - (a.attendees?.length || 0);
+        return (b.likes?.length || 0) - (a.likes?.length || 0);
       return 0; // Default to no additional sorting
     })
     .slice(0, displayedPostsCount);

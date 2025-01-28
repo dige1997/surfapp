@@ -20,7 +20,7 @@ export async function loader({ request, params }) {
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 
   const post = await mongoose.models.Post.findById(params.postId)
-    .populate("attendees")
+    .populate("likes")
     .populate("creator");
   return json({ post, authUser, googleMapsApiKey });
 }
@@ -34,16 +34,16 @@ export async function action({ request, params }) {
     throw new Error("User not authenticated");
   }
 
-  const postId = params.eventId;
+  const postId = params.postId;
   const Post = mongoose.models.Post;
 
-  if (action === "attend") {
+  if (action === "like") {
     await Post.findByIdAndUpdate(postId, {
-      $addToSet: { attendees: authUser._id },
+      $addToSet: { likes: authUser._id },
     });
-  } else if (action === "unattend") {
+  } else if (action === "unlike") {
     await Post.findByIdAndUpdate(postId, {
-      $pull: { attendees: authUser._id },
+      $pull: { likes: authUser._id },
     });
   }
 
@@ -138,9 +138,7 @@ export default function Post() {
     }
   }, [location]);
 
-  const attending = post?.attendees?.some(
-    (attendee) => attendee._id === authUser?._id
-  );
+  const liked = post?.likes?.some((userLike) => userLike._id === authUser?._id);
 
   return (
     <div
@@ -183,13 +181,13 @@ export default function Post() {
 
       <div className="flex items-center gap-4 mt-4 justify-between">
         <div className="flex gap-2 items-center">
-          <p>💙 {post.attendees.length}</p>
-          {!attending && authUser ? (
+          <p>💙 {post.likes.length}</p>
+          {!liked && authUser ? (
             <Form method="post">
               <button
                 type="submit"
                 name="_action"
-                value="attend"
+                value="like"
                 className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
               >
                 Like
@@ -200,7 +198,7 @@ export default function Post() {
               <button
                 type="submit"
                 name="_action"
-                value="unattend"
+                value="unlike"
                 className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
               >
                 Unlike

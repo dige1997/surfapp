@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
-    postsAttending: [
+    postsLiked: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",
@@ -119,7 +119,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    attendees: [
+    likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -225,7 +225,7 @@ async function insertData() {
       location: "55.676098, 12.568337",
       creator: test._id,
       image: "https://source.unsplash.com/random",
-      attendees: [test2._id],
+      likes: [test2._id],
     },
     {
       date: new Date(),
@@ -234,7 +234,7 @@ async function insertData() {
       location: "55.676098, 12.568337",
       creator: test._id,
       image: "https://source.unsplash.com/random",
-      attendees: [test2._id],
+      likes: [test2._id],
     },
   ]);
 }

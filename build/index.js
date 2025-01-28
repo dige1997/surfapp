@@ -115,7 +115,7 @@ var userSchema = new mongoose2.Schema(
         ref: "Post"
       }
     ],
-    postsAttending: [
+    postsLiked: [
       {
         type: mongoose2.Schema.Types.ObjectId,
         ref: "Post"
@@ -177,7 +177,7 @@ var User = mongoose2.model("User", userSchema), postSchema = new mongoose2.Schem
       type: String,
       required: !0
     },
-    attendees: [
+    likes: [
       {
         type: mongoose2.Schema.Types.ObjectId,
         ref: "User"
@@ -239,7 +239,7 @@ async function insertData() {
       location: "55.676098, 12.568337",
       creator: test._id,
       image: "https://source.unsplash.com/random",
-      attendees: [test2._id]
+      likes: [test2._id]
     },
     {
       date: /* @__PURE__ */ new Date(),
@@ -248,7 +248,7 @@ async function insertData() {
       location: "55.676098, 12.568337",
       creator: test._id,
       image: "https://source.unsplash.com/random",
-      attendees: [test2._id]
+      likes: [test2._id]
     }
   ]);
 }
@@ -1374,16 +1374,16 @@ var MAP_ID = "71f267d426ae7773";
 async function loader4({ request, params }) {
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
-  }), event = await mongoose6.models.Event.findById(params.eventId).populate(
+  }), post = await mongoose6.models.Post.findById(params.postId).populate(
     "creator"
   );
-  if (!event)
-    throw new Response("Event not found", { status: 404 });
-  return event.creator._id.toString() !== user._id.toString() ? redirect2("/dashboard") : json2({ event, googleMapsApiKey: googleMapsApiKey2 });
+  if (!post)
+    throw new Response("Post not found", { status: 404 });
+  return post.creator._id.toString() !== user._id.toString() ? redirect2("/dashboard") : json2({ post, googleMapsApiKey: googleMapsApiKey2 });
 }
 function UpdateEvent() {
-  let { event, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData3(), [image, setImage] = useState3(event.image), [location, setLocation] = useState3(
-    event.location ? Array.isArray(event.location) ? event.location : event.location.split(",").map((coord) => parseFloat(coord.trim())) : null
+  let { post, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData3(), [image, setImage] = useState3(post.image), [location, setLocation] = useState3(
+    post.location ? Array.isArray(post.location) ? post.location : post.location.split(",").map((coord) => parseFloat(coord.trim())) : null
   ), [center, setCenter] = useState3(
     location ? { lat: location[0], lng: location[1] } : { lat: 41.0082, lng: 28.9784 }
   ), mapRef = useRef3(null), markerRef = useRef3(null), navigate = useNavigate2(), handleMapClick = (e) => {
@@ -1404,7 +1404,7 @@ function UpdateEvent() {
   }, [center]);
   let parsedLocation = location ? { lat: location[0], lng: location[1] } : { lat: 41.0082, lng: 28.9784 };
   return /* @__PURE__ */ jsxDEV8("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
-    /* @__PURE__ */ jsxDEV8("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Event" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV8("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Post" }, void 0, !1, {
       fileName: "app/routes/post.$postId_.update.jsx",
       lineNumber: 100,
       columnNumber: 7
@@ -1412,7 +1412,7 @@ function UpdateEvent() {
     /* @__PURE__ */ jsxDEV8(
       Form2,
       {
-        id: "event-form",
+        id: "post-form",
         method: "post",
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
@@ -1428,7 +1428,7 @@ function UpdateEvent() {
               id: "title",
               name: "title",
               type: "text",
-              defaultValue: event.title,
+              defaultValue: post.title,
               placeholder: "Write a title...",
               className: "rounded-xl p-2 border-gray-400 border"
             },
@@ -1452,7 +1452,7 @@ function UpdateEvent() {
               required: !0,
               id: "description",
               name: "description",
-              defaultValue: event.description,
+              defaultValue: post.description,
               placeholder: "Write a description...",
               className: "rounded-xl p-2 border-gray-400 border"
             },
@@ -1477,7 +1477,7 @@ function UpdateEvent() {
               id: "date",
               name: "date",
               type: "date",
-              defaultValue: event.date.split("T")[0],
+              defaultValue: post.date.split("T")[0],
               className: "rounded-xl p-2 border-gray-400 border"
             },
             void 0,
@@ -1552,7 +1552,7 @@ function UpdateEvent() {
               id: "image",
               name: "image",
               type: "url",
-              defaultValue: event.image,
+              defaultValue: post.image,
               placeholder: "Paste an image URL...",
               onChange: (e) => setImage(e.target.value),
               className: "rounded-xl p-2 border-gray-400 border"
@@ -1647,11 +1647,11 @@ function UpdateEvent() {
 async function action3({ request, params }) {
   let authUser = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
-  }), eventToUpdate = await mongoose6.models.Event.findById(params.eventId);
-  if (!eventToUpdate || eventToUpdate.creator.toString() !== authUser._id.toString())
+  }), postToUpdate = await mongoose6.models.Post.findById(params.postId);
+  if (!postToUpdate || postToUpdate.creator.toString() !== authUser._id.toString())
     return redirect2("/dashboard");
-  let formData = await request.formData(), updatedEvent = Object.fromEntries(formData);
-  return Object.assign(eventToUpdate, updatedEvent), eventToUpdate.location = updatedEvent.location, await eventToUpdate.save(), redirect2(`/event/${params.eventId}`);
+  let formData = await request.formData(), updatedPost = Object.fromEntries(formData);
+  return Object.assign(postToUpdate, updatedPost), postToUpdate.location = updatedPost.location, await postToUpdate.save(), redirect2(`/post/${params.postId}`);
 }
 
 // app/routes/userProfile.$userId.jsx
@@ -1796,7 +1796,7 @@ function EventCard({ post, onCityUpdate, apiKey }) {
       /* @__PURE__ */ jsxDEV9("div", { className: "mt-4 flex justify-between items-center", children: [
         /* @__PURE__ */ jsxDEV9("p", { className: "text-sm font-semibold text-gray-700", children: [
           "Likes: ",
-          post.attendees?.length || 0
+          post.likes?.length || 0
         ] }, void 0, !0, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 105,
@@ -2670,7 +2670,7 @@ function EventCard2({ post }) {
       }, this),
       /* @__PURE__ */ jsxDEV13("p", { className: "mt-4 text-sm text-gray-800 font-medium flex items-center", children: [
         "\u2764\uFE0F Likes: ",
-        post.attendees?.length || 0
+        post.likes?.length || 0
       ] }, void 0, !0, {
         fileName: "app/components/EventListCards.jsx",
         lineNumber: 105,
@@ -2702,7 +2702,7 @@ import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 var meta2 = () => [{ title: "Remix Post App" }], loader6 = async ({ request }) => {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/main-dashboard"
-  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY, googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, mostLikedPosts = await mongoose8.models.Post.find().sort({ attendees: -1 }).limit(3).populate("creator").populate("attendees");
+  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY, googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, mostLikedPosts = await mongoose8.models.Post.find().sort({ likes: -1 }).limit(3).populate("creator").populate("likes");
   return json4({
     mostLikedPosts,
     openWeatherApiKey,
@@ -2812,16 +2812,16 @@ async function loader7({ request }) {
     failureRedirect: "/signin"
   }), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, userUpdated = await mongoose9.models.User.findOne({ _id: user._id }).populate("followers", "_id name").populate("following", "_id name").select("name lastname mail avatarUrl aboutMe hobbies").populate("aboutMe");
   console.log(userUpdated.hobbies);
-  let posts = await mongoose9.models.Post.find({ creator: user._id }).populate("creator").populate("attendees"), postsAttending = await mongoose9.models.Post.find({
-    attendees: user._id
-  }).populate("creator").populate("attendees");
-  return { user: userUpdated, posts, postsAttending, googleMapsApiKey: googleMapsApiKey2 };
+  let posts = await mongoose9.models.Post.find({ creator: user._id }).populate("creator").populate("likes"), postsLiked = await mongoose9.models.Post.find({
+    likes: user._id
+  }).populate("creator").populate("likes");
+  return { user: userUpdated, posts, postsLiked, googleMapsApiKey: googleMapsApiKey2 };
 }
 async function action5({ request }) {
   await authenticator.logout(request, { redirectTo: "/signin" });
 }
 function Profile() {
-  let { user, posts, postsAttending } = useLoaderData8(), [cityUpdates, setCityUpdates] = useState9({}), [displayedPostsCount, setDisplayedPostsCount] = useState9(3), [popupList, setPopupList] = useState9({
+  let { user, posts, postsLiked } = useLoaderData8(), [cityUpdates, setCityUpdates] = useState9({}), [displayedPostsCount, setDisplayedPostsCount] = useState9(3), [popupList, setPopupList] = useState9({
     visible: !1,
     users: [],
     type: ""
@@ -3233,8 +3233,8 @@ function Profile() {
       lineNumber: 226,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col justify-center w-full", children: postsAttending && postsAttending.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
-      postsAttending.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
+    /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col justify-center w-full", children: postsLiked && postsLiked.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
+      postsLiked.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
         /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(
           EventCard2,
           {
@@ -3284,7 +3284,7 @@ function Profile() {
         lineNumber: 233,
         columnNumber: 15
       }, this)),
-      postsAttending.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
+      postsLiked.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
         "button",
         {
           className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
@@ -3537,18 +3537,18 @@ function meta4({ data }) {
   ];
 }
 async function loader9({ request, params }) {
-  let authUser = await authenticator.isAuthenticated(request), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, post = await mongoose10.models.Post.findById(params.postId).populate("attendees").populate("creator");
+  let authUser = await authenticator.isAuthenticated(request), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, post = await mongoose10.models.Post.findById(params.postId).populate("likes").populate("creator");
   return json6({ post, authUser, googleMapsApiKey: googleMapsApiKey2 });
 }
 async function action6({ request, params }) {
   let action11 = new URLSearchParams(await request.text()).get("_action"), authUser = await authenticator.isAuthenticated(request);
   if (!authUser)
     throw new Error("User not authenticated");
-  let postId = params.eventId, Post3 = mongoose10.models.Post;
-  return action11 === "attend" ? await Post3.findByIdAndUpdate(postId, {
-    $addToSet: { attendees: authUser._id }
-  }) : action11 === "unattend" && await Post3.findByIdAndUpdate(postId, {
-    $pull: { attendees: authUser._id }
+  let postId = params.postId, Post3 = mongoose10.models.Post;
+  return action11 === "like" ? await Post3.findByIdAndUpdate(postId, {
+    $addToSet: { likes: authUser._id }
+  }) : action11 === "unlike" && await Post3.findByIdAndUpdate(postId, {
+    $pull: { likes: authUser._id }
   }), redirect5(`/post/${postId}`);
 }
 function Post2() {
@@ -3606,9 +3606,7 @@ function Post2() {
       }
     })();
   }, [location]);
-  let attending = post?.attendees?.some(
-    (attendee) => attendee._id === authUser?._id
-  );
+  let liked = post?.likes?.some((userLike) => userLike._id === authUser?._id);
   return /* @__PURE__ */ jsxDEV17(
     "div",
     {
@@ -3629,7 +3627,7 @@ function Post2() {
           !1,
           {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 150,
+            lineNumber: 148,
             columnNumber: 7
           },
           this
@@ -3637,7 +3635,7 @@ function Post2() {
         /* @__PURE__ */ jsxDEV17("div", { className: "my-4", children: [
           /* @__PURE__ */ jsxDEV17("h1", { className: "text-3xl", children: post.title }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 159,
+            lineNumber: 157,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV17("p", { className: "text-gray-500", children: [
@@ -3654,77 +3652,77 @@ function Post2() {
               !1,
               {
                 fileName: "app/routes/post.$postId.jsx",
-                lineNumber: 162,
+                lineNumber: 160,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 160,
+            lineNumber: 158,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 158,
+          lineNumber: 156,
           columnNumber: 7
         }, this),
         /* @__PURE__ */ jsxDEV17("h3", { className: "text-gray-500 font-bold", children: "Description" }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 170,
+          lineNumber: 168,
           columnNumber: 7
         }, this),
         /* @__PURE__ */ jsxDEV17("p", { children: post.description }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 171,
+          lineNumber: 169,
           columnNumber: 7
         }, this),
         /* @__PURE__ */ jsxDEV17("div", { className: "flex flex-col my-2", children: [
           /* @__PURE__ */ jsxDEV17("p", { children: "Date" }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 173,
+            lineNumber: 171,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV17("p", { className: "", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 174,
+            lineNumber: 172,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 172,
+          lineNumber: 170,
           columnNumber: 7
         }, this),
         /* @__PURE__ */ jsxDEV17("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV17("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 177,
+          lineNumber: 175,
           columnNumber: 9
         }, this) }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 176,
+          lineNumber: 174,
           columnNumber: 7
         }, this),
         location && /* @__PURE__ */ jsxDEV17("div", { ref: mapRef, style: { width: "100%", height: "400px" } }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 181,
+          lineNumber: 179,
           columnNumber: 9
         }, this),
         /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-4 mt-4 justify-between", children: [
           /* @__PURE__ */ jsxDEV17("div", { className: "flex gap-2 items-center", children: [
             /* @__PURE__ */ jsxDEV17("p", { children: [
               "\u{1F499} ",
-              post.attendees.length
+              post.likes.length
             ] }, void 0, !0, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 186,
+              lineNumber: 184,
               columnNumber: 11
             }, this),
-            !attending && authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
+            !liked && authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
               "button",
               {
                 type: "submit",
                 name: "_action",
-                value: "attend",
+                value: "like",
                 className: "px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600",
                 children: "Like"
               },
@@ -3732,20 +3730,20 @@ function Post2() {
               !1,
               {
                 fileName: "app/routes/post.$postId.jsx",
-                lineNumber: 189,
+                lineNumber: 187,
                 columnNumber: 15
               },
               this
             ) }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 188,
+              lineNumber: 186,
               columnNumber: 13
             }, this) : authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
               "button",
               {
                 type: "submit",
                 name: "_action",
-                value: "unattend",
+                value: "unlike",
                 className: "px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600",
                 children: "Unlike"
               },
@@ -3753,28 +3751,28 @@ function Post2() {
               !1,
               {
                 fileName: "app/routes/post.$postId.jsx",
-                lineNumber: 200,
+                lineNumber: 198,
                 columnNumber: 15
               },
               this
             ) }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 199,
+              lineNumber: 197,
               columnNumber: 13
             }, this) : null
           ] }, void 0, !0, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 185,
+            lineNumber: 183,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV17("div", { children: authUser?._id === post?.creator?._id && /* @__PURE__ */ jsxDEV17("div", { className: "flex py-4", children: [
             /* @__PURE__ */ jsxDEV17(Form4, { action: "update", children: /* @__PURE__ */ jsxDEV17("button", { className: "px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600", children: "Update" }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 215,
+              lineNumber: 213,
               columnNumber: 17
             }, this) }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 214,
+              lineNumber: 212,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ jsxDEV17(Form4, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV17(
@@ -3792,27 +3790,27 @@ function Post2() {
               !1,
               {
                 fileName: "app/routes/post.$postId.jsx",
-                lineNumber: 220,
+                lineNumber: 218,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 219,
+              lineNumber: 217,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 213,
+            lineNumber: 211,
             columnNumber: 13
           }, this) }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
-            lineNumber: 211,
+            lineNumber: 209,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/post.$postId.jsx",
-          lineNumber: 184,
+          lineNumber: 182,
           columnNumber: 7
         }, this)
       ]
@@ -3821,7 +3819,7 @@ function Post2() {
     !0,
     {
       fileName: "app/routes/post.$postId.jsx",
-      lineNumber: 146,
+      lineNumber: 144,
       columnNumber: 5
     },
     this
@@ -3922,7 +3920,7 @@ function EventList({ post, onCityUpdate }) {
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: "ml-4 text-right flex-shrink-0", children: /* @__PURE__ */ jsxDEV18("p", { className: "mt-1 text-xs text-gray-500", children: [
       "Likes: ",
-      post.attendees?.length || 0
+      post.likes?.length || 0
     ] }, void 0, !0, {
       fileName: "app/components/EventList.jsx",
       lineNumber: 81,
@@ -3946,7 +3944,7 @@ async function loader10({ request }) {
   await authenticator.isAuthenticated(request);
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
   try {
-    let posts = await mongoose11.models.Post.find().populate("creator").populate("attendees").sort({ createdAt: -1 });
+    let posts = await mongoose11.models.Post.find().populate("creator").populate("likes").sort({ createdAt: -1 });
     return json7({ posts: posts || [], googleMapsApiKey: googleMapsApiKey2 });
   } catch (error) {
     return console.error("Error fetching posts:", error), json7({ googleMapsApiKey: googleMapsApiKey2, posts: [] });
@@ -3966,7 +3964,7 @@ function Index2() {
       (value) => value != null && // Ensure value is not null or undefined
       value.toString().toLowerCase().includes(searchTermLower)
     ) || city.includes(searchTermLower);
-  }).sort((a, b) => sortOption === "newest" ? new Date(b.createdAt) - new Date(a.createdAt) : sortOption === "oldest" ? new Date(a.createdAt) - new Date(b.createdAt) : sortOption === "mostLikes" ? (b.attendees?.length || 0) - (a.attendees?.length || 0) : 0).slice(0, displayedPostsCount);
+  }).sort((a, b) => sortOption === "newest" ? new Date(b.createdAt) - new Date(a.createdAt) : sortOption === "oldest" ? new Date(a.createdAt) - new Date(b.createdAt) : sortOption === "mostLikes" ? (b.likes?.length || 0) - (a.likes?.length || 0) : 0).slice(0, displayedPostsCount);
   return /* @__PURE__ */ jsxDEV19("div", { className: "page", children: /* @__PURE__ */ jsxDEV19("div", { className: "w-full flex justify-center flex-col", children: [
     /* @__PURE__ */ jsxDEV19("div", { className: " flex  flex-col mx-auto p-6", children: [
       /* @__PURE__ */ jsxDEV19("h2", { className: "font-bold text-4xl text-gray-950", children: "Discover new surfspots" }, void 0, !1, {
@@ -5332,7 +5330,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FL56NXSS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-WMP7ZVXR.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-SQXAPPWT.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-H7VEGSE7.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-2FEAP7NO.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EQQOEKGK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-DY4BUE7J.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-PRRMTNMR.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId": { id: "routes/post.$postId", parentId: "root", path: "post/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId-T7MJKSEN.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId.destroy": { id: "routes/post.$postId.destroy", parentId: "routes/post.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId.destroy-3KSGAYW2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId_.update": { id: "routes/post.$postId_.update", parentId: "root", path: "post/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId_.update-ZIMC2IBS.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post._index": { id: "routes/post._index", parentId: "root", path: "post", index: !0, caseSensitive: void 0, module: "/build/routes/post._index-MB2FGHZI.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-ZVNMBAKA.js", imports: ["/build/_shared/chunk-2FEAP7NO.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-TVENGSNV.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-Q5ANUNVF.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-3V47L23U.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "01c0ed32", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1738090947330 }, url: "/build/manifest-01C0ED32.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FL56NXSS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-WMP7ZVXR.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-SQXAPPWT.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-OFE57LLE.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EQQOEKGK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-DY4BUE7J.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-PRRMTNMR.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId": { id: "routes/post.$postId", parentId: "root", path: "post/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId-N4GVIY2A.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId.destroy": { id: "routes/post.$postId.destroy", parentId: "routes/post.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId.destroy-3KSGAYW2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId_.update": { id: "routes/post.$postId_.update", parentId: "root", path: "post/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId_.update-A2NKZ7CZ.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post._index": { id: "routes/post._index", parentId: "root", path: "post", index: !0, caseSensitive: void 0, module: "/build/routes/post._index-WNE63U7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-VVBIWGB7.js", imports: ["/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-TVENGSNV.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-Q5ANUNVF.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-ANUWXBKX.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "c65f54c7", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1738093685327 }, url: "/build/manifest-C65F54C7.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

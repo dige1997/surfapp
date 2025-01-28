@@ -21,10 +21,10 @@ export const loader = async ({ request }) => {
 
   // Fetch posts and API keys
   const mostLikedPosts = await mongoose.models.Post.find()
-    .sort({ attendees: -1 })
+    .sort({ likes: -1 })
     .limit(3)
     .populate("creator")
-    .populate("attendees");
+    .populate("likes");
 
   return json({
     mostLikedPosts,

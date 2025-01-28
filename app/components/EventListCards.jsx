@@ -103,7 +103,7 @@ export default function EventCard({ post }) {
 
         {/* Likes */}
         <p className="mt-4 text-sm text-gray-800 font-medium flex items-center">
-          ❤️ Likes: {post.attendees?.length || 0}
+          ❤️ Likes: {post.likes?.length || 0}
         </p>
       </div>
 

@@ -103,7 +103,7 @@ export default function EventCard({ post, onCityUpdate, apiKey }) {
         </div>
         <div className="mt-4 flex justify-between items-center">
           <p className="text-sm font-semibold text-gray-700">
-            Likes: {post.attendees?.length || 0}
+            Likes: {post.likes?.length || 0}
           </p>
           <button className="text-sm text-blue-500 hover:underline">
             View Details

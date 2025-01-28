@@ -79,7 +79,7 @@ export default function EventList({ post, onCityUpdate }) {
       </div>
       <div className="ml-4 text-right flex-shrink-0">
         <p className="mt-1 text-xs text-gray-500">
-          Likes: {post.attendees?.length || 0}
+          Likes: {post.likes?.length || 0}
         </p>
       </div>
     </article>
