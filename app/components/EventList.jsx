@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLoaderData } from "@remix-run/react";
 
-export default function EventList({ event, onCityUpdate }) {
+export default function EventList({ post, onCityUpdate }) {
   const [city, setCity] = useState(null);
   const { googleMapsApiKey } = useLoaderData();
 
@@ -34,7 +34,7 @@ export default function EventList({ event, onCityUpdate }) {
 
         const normalizedCity = normalizeCityName(nearestCity);
         setCity(normalizedCity);
-        onCityUpdate(event._id, normalizedCity);
+        onCityUpdate(post._id, normalizedCity);
       } else {
         setCity("Unknown location");
       }
@@ -45,8 +45,8 @@ export default function EventList({ event, onCityUpdate }) {
   };
 
   useEffect(() => {
-    if (event.location) {
-      const [lat, lng] = event.location
+    if (post.location) {
+      const [lat, lng] = post.location
         .split(",")
         .map((coord) => parseFloat(coord.trim()));
       if (!isNaN(lat) && !isNaN(lng)) {
@@ -55,31 +55,31 @@ export default function EventList({ event, onCityUpdate }) {
         setCity("No location available");
       }
     }
-  }, [event.location]);
+  }, [post.location]);
 
   return (
     <article className="flex w-full items-center my-2 px-4 py-2 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow">
       <div
         className="w-16 h-16 rounded-md bg-cover bg-center flex-shrink-0"
         style={{
-          backgroundImage: `url(${event?.image})`,
+          backgroundImage: `url(${post?.image})`,
         }}
       ></div>
       <div className="ml-4 flex-1">
         <h2 className="text-sm font-semibold text-gray-800 truncate">
-          {event.title}
+          {post.title}
         </h2>
         <p className="text-xs text-gray-500">
-          By {event?.creator?.name} • {city || "Fetching city..."}
+          By {post?.creator?.name} • {city || "Fetching city..."}
         </p>
         <p className="text-xs text-gray-600 mt-1">
           <span className="font-medium">Date:</span>{" "}
-          {new Date(event.date).toLocaleDateString("en-GB")}
+          {new Date(post.date).toLocaleDateString("en-GB")}
         </p>
       </div>
       <div className="ml-4 text-right flex-shrink-0">
         <p className="mt-1 text-xs text-gray-500">
-          Likes: {event.attendees?.length || 0}
+          Likes: {post.attendees?.length || 0}
         </p>
       </div>
     </article>

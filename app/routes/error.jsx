@@ -21,7 +21,7 @@ export default function Example() {
             Sorry, we couldn’t find the page you’re looking for.
           </p>
           <div className="mt-10 flex justify-center">
-            <Link to="/event" className="text-sm font-semibold leading-7 ">
+            <Link to="/post" className="text-sm font-semibold leading-7 ">
               <span aria-hidden="true">&larr;</span> Back to home
             </Link>
           </div>

@@ -20,9 +20,9 @@ export async function loader({ request, params }) {
     throw new Response("User not found", { status: 404 });
   }
 
-  const events = await mongoose.models.Event.find({ creator: userProfile._id }); // Fetch events by the user
+  const posts = await mongoose.models.Post.find({ creator: userProfile._id }); // Fetch posts by the user
 
-  return json({ userProfile, authUser, events, googleMapsApiKey });
+  return json({ userProfile, authUser, posts, googleMapsApiKey });
 }
 
 export async function action({ request, params }) {
@@ -65,8 +65,8 @@ export async function action({ request, params }) {
 }
 
 export default function UserProfile() {
-  const { userProfile, authUser, events, googleMapsApiKey } = useLoaderData();
-  const [eventCities, setEventCities] = useState({});
+  const { userProfile, authUser, posts, googleMapsApiKey } = useLoaderData();
+  const [postCities, setPostCities] = useState({});
 
   const [followersCount, setFollowersCount] = useState(
     userProfile.followers.length
@@ -99,10 +99,10 @@ export default function UserProfile() {
     }
   };
 
-  const updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  const updateCity = (postId, city) => {
+    setPostsCities((prev) => ({
       ...prev,
-      [eventId]: city,
+      [postId]: city,
     }));
   };
 
@@ -183,12 +183,12 @@ export default function UserProfile() {
       </div>
 
       <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-4">Created Events</h2>
+        <h2 className="text-xl font-semibold mb-4">Created Posts</h2>
         <div className="">
-          {events.map((event) => (
-            <Link key={event._id} to={`/event/${event._id}`}>
+          {posts.map((post) => (
+            <Link key={post._id} to={`/post/${post._id}`}>
               <EventCard
-                event={event}
+                post={post}
                 onCityUpdate={updateCity}
                 apiKey={googleMapsApiKey}
               />

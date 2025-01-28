@@ -17,17 +17,17 @@ export async function loader({ request }) {
     .select("name lastname mail avatarUrl aboutMe hobbies")
     .populate("aboutMe");
   console.log(userUpdated.hobbies);
-  const events = await mongoose.models.Event.find({ creator: user._id })
+  const posts = await mongoose.models.Post.find({ creator: user._id })
     .populate("creator")
     .populate("attendees");
 
-  const eventsAttending = await mongoose.models.Event.find({
+  const postsAttending = await mongoose.models.Post.find({
     attendees: user._id,
   })
     .populate("creator")
     .populate("attendees");
 
-  return { user: userUpdated, events, eventsAttending, googleMapsApiKey };
+  return { user: userUpdated, posts, postsAttending, googleMapsApiKey };
 }
 
 export async function action({ request }) {
@@ -35,9 +35,9 @@ export async function action({ request }) {
 }
 
 export default function Profile() {
-  const { user, events, eventsAttending } = useLoaderData();
+  const { user, posts, postsAttending } = useLoaderData();
   const [cityUpdates, setCityUpdates] = useState({});
-  const [displayedEventsCount, setDisplayedEventsCount] = useState(3);
+  const [displayedPostsCount, setDisplayedPostsCount] = useState(3);
   const [popupList, setPopupList] = useState({
     visible: false,
     users: [],
@@ -45,16 +45,16 @@ export default function Profile() {
   });
   const { googleMapsApiKey } = useLoaderData();
   const [aboutMePopup, setAboutMePopup] = useState(false);
-  const handleCityUpdate = (eventId, cityName) => {
+  const handleCityUpdate = (postId, cityName) => {
     setCityUpdates((prev) => ({
       ...prev,
-      [eventId]: cityName,
+      [postId]: cityName,
     }));
-    console.log(`City updated for event ${eventId}: ${cityName}`);
+    console.log(`City updated for psot ${postId}: ${cityName}`);
   };
 
-  const loadMoreEvents = () => {
-    setDisplayedEventsCount((prev) => prev + 3);
+  const loadMorePosts = () => {
+    setDisplayedPostsCount((prev) => prev + 3);
   };
 
   const togglePopup = (type) => {
@@ -227,21 +227,21 @@ export default function Profile() {
         <h2 className="text-2xl font-semibold">Liked posts</h2>
       </div>
       <div className="flex flex-col justify-center w-full">
-        {eventsAttending && eventsAttending.length > 0 ? (
+        {postsAttending && postsAttending.length > 0 ? (
           <>
-            {eventsAttending.slice(0, displayedEventsCount).map((event) => (
-              <div key={event._id}>
-                <Link className="event-link" to={`/event/${event._id}`}>
+            {postsAttending.slice(0, displayedPostsCount).map((post) => (
+              <div key={post._id}>
+                <Link className="post-link" to={`/post/${post._id}`}>
                   <div className="md:hidden">
                     <EventListCards
-                      event={event}
+                      post={post}
                       onCityUpdate={handleCityUpdate}
                       apiKey={googleMapsApiKey}
                     />
                   </div>
                   <div className="hidden md:block">
                     <EventCard
-                      event={event}
+                      post={post}
                       onCityUpdate={handleCityUpdate}
                       apiKey={googleMapsApiKey}
                     />
@@ -249,11 +249,11 @@ export default function Profile() {
                 </Link>
               </div>
             ))}
-            {eventsAttending.length > displayedEventsCount && (
+            {postsAttending.length > displayedPostsCount && (
               <div className="flex w-full">
                 <button
                   className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
-                  onClick={loadMoreEvents}
+                  onClick={loadMorePosts}
                 >
                   Load More
                 </button>
@@ -269,17 +269,17 @@ export default function Profile() {
 
       <div className="mb-16">
         <h2 className="text-lg font-medium pt-6">Posts by me</h2>
-        {events && events.length > 0 ? (
+        {posts && posts.length > 0 ? (
           <>
-            {events.slice(0, displayedEventsCount).map((event) => (
-              <div key={event._id}>
-                <Link className="event-link" to={`/event/${event._id}`}>
+            {posts.slice(0, displayedPostsCount).map((post) => (
+              <div key={post._id}>
+                <Link className="post-link" to={`/post/${post._id}`}>
                   <div className="md:hidden">
-                    <EventListCards event={event} apiKey={googleMapsApiKey} />
+                    <EventListCards post={post} apiKey={googleMapsApiKey} />
                   </div>
                   <div className="hidden md:block">
                     <EventCard
-                      event={event}
+                      post={post}
                       onCityUpdate={handleCityUpdate}
                       apiKey={googleMapsApiKey}
                     />
@@ -288,10 +288,10 @@ export default function Profile() {
               </div>
             ))}
             <div className="flex w-full">
-              {events.length > displayedEventsCount && (
+              {posts.length > displayedPostsCount && (
                 <button
                   className="bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto"
-                  onClick={loadMoreEvents}
+                  onClick={loadMorePosts}
                 >
                   Load More
                 </button>

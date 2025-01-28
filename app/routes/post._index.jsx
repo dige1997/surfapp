@@ -15,44 +15,44 @@ export async function loader({ request }) {
   await authenticator.isAuthenticated(request);
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   try {
-    const events = await mongoose.models.Event.find()
+    const posts = await mongoose.models.Post.find()
       .populate("creator")
       .populate("attendees")
       .sort({ createdAt: -1 });
 
-    return json({ events: events || [], googleMapsApiKey }); // Return an empty array if events is undefined
+    return json({ posts: posts || [], googleMapsApiKey }); // Return an empty array if posts is undefined
   } catch (error) {
-    console.error("Error fetching events:", error);
-    return json({ googleMapsApiKey, events: [] }); // Return empty array in case of an error
+    console.error("Error fetching posts:", error);
+    return json({ googleMapsApiKey, posts: [] }); // Return empty array in case of an error
   }
 }
 
 export default function Index() {
-  const { events, googleMapsApiKey } = useLoaderData();
+  const { posts, googleMapsApiKey } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
-  const [eventCities, setEventCities] = useState({});
-  const [displayedEventsCount, setDisplayedEventsCount] = useState(6);
+  const [postCities, setPostCities] = useState({});
+  const [displayedPostsCount, setDisplayedPostsCount] = useState(6);
   const [sortOption, setSortOption] = useState("newest"); // Sorting options
 
-  const updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  const updateCity = (postId, city) => {
+    setPostCities((prev) => ({
       ...prev,
-      [eventId]: city,
+      [postId]: city,
     }));
   };
 
-  const loadMoreEvents = () => {
-    setDisplayedEventsCount((prevCount) => prevCount + 6);
+  const loadMorePosts = () => {
+    setDisplayedPostsCount((prevCount) => prevCount + 6);
   };
 
-  // Sort and filter events
-  const sortedAndFilteredEvents = events
-    .filter((event) => {
-      const city = (eventCities[event._id] || "").toLowerCase();
+  // Sort and filter posts
+  const sortedAndFilteredPosts = posts
+    .filter((post) => {
+      const city = (postCities[post._id] || "").toLowerCase();
       const searchTermLower = searchTerm.toLowerCase();
 
       return (
-        Object.values(event).some(
+        Object.values(post).some(
           (value) =>
             value != null && // Ensure value is not null or undefined
             value.toString().toLowerCase().includes(searchTermLower)
@@ -69,7 +69,7 @@ export default function Index() {
         return (b.attendees?.length || 0) - (a.attendees?.length || 0);
       return 0; // Default to no additional sorting
     })
-    .slice(0, displayedEventsCount);
+    .slice(0, displayedPostsCount);
 
   return (
     <div className="page">
@@ -126,15 +126,15 @@ export default function Index() {
 
           <div className="flex justify-center w-full flex-col">
             <section className="grid-cols-1 ">
-              {sortedAndFilteredEvents.map((event) => (
+              {sortedAndFilteredPosts.map((post) => (
                 <Link
-                  key={event._id}
-                  className="event-link"
-                  to={`/event/${event._id}`}
+                  key={post._id}
+                  className="post-link"
+                  to={`/post/${post._id}`}
                 >
                   <div className="flex m-auto">
                     <EventList
-                      event={event}
+                      post={post}
                       onCityUpdate={updateCity}
                       apiKey={googleMapsApiKey}
                     />
@@ -142,10 +142,10 @@ export default function Index() {
                 </Link>
               ))}
             </section>
-            {events.length > displayedEventsCount && (
+            {posts.length > displayedPostsCount && (
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto mt-4"
-                onClick={loadMoreEvents}
+                onClick={loadMorePosts}
               >
                 Load More
               </button>

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 export function meta() {
   return [
     {
-      title: "Trailblaze - Update event",
+      title: "Trailblaze - Update Profile",
     },
   ];
 }

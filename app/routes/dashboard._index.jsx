@@ -19,27 +19,27 @@ export const loader = async ({ request }) => {
   const openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 
-  // Fetch events and API keys
-  const mostLikedEvents = await mongoose.models.Event.find()
+  // Fetch posts and API keys
+  const mostLikedPosts = await mongoose.models.Post.find()
     .sort({ attendees: -1 })
     .limit(3)
     .populate("creator")
     .populate("attendees");
 
   return json({
-    mostLikedEvents,
+    mostLikedPosts,
     openWeatherApiKey,
     googleMapsApiKey, // API keys securely passed here
   });
 };
 
 export default function Index() {
-  const { mostLikedEvents, openWeatherApiKey, googleMapsApiKey } =
+  const { mostLikedPosts, openWeatherApiKey, googleMapsApiKey } =
     useLoaderData();
-  const [eventCities, setEventCities] = useState({}); // Initialize the state for event cities
+  const [postCities, setPostCities] = useState({}); // Initialize the state for post cities
 
-  // Handle the case where there are no events
-  if (!mostLikedEvents || mostLikedEvents.length === 0) {
+  // Handle the case where there are no posts
+  if (!mostLikedPosts || mostLikedPosts.length === 0) {
     return (
       <div className="page">
         <DashboardData />
@@ -48,11 +48,11 @@ export default function Index() {
     );
   }
 
-  // Update city for a specific event
-  const updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  // Update city for a specific post
+  const updateCity = (postId, city) => {
+    setPostCities((prev) => ({
       ...prev,
-      [eventId]: city,
+      [postId]: city,
     }));
   };
 
@@ -61,18 +61,14 @@ export default function Index() {
       <DashboardData apiKey={openWeatherApiKey} />{" "}
       <div className="md:p-8 p-4">
         <h2 className="font-bold text-2xl">Most liked posts</h2>
-        {mostLikedEvents.map((event) => (
-          <Link
-            key={event._id}
-            className="event-link"
-            to={`/event/${event._id}`}
-          >
+        {mostLikedPosts.map((post) => (
+          <Link key={post._id} className="post-link" to={`/post/${post._id}`}>
             <div className="md:hidden w-full flex justify-center">
-              <EventListCards event={event} />
+              <EventListCards post={post} />
             </div>
             <div className="hidden md:flex w-full justify-center">
               <EventCard
-                event={event}
+                post={post}
                 onCityUpdate={updateCity}
                 apiKey={googleMapsApiKey}
               />

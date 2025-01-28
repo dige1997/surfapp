@@ -109,16 +109,16 @@ var userSchema = new mongoose2.Schema(
     aboutMe: {
       type: String
     },
-    eventsCreated: [
+    postsCreated: [
       {
         type: mongoose2.Schema.Types.ObjectId,
-        ref: "Event"
+        ref: "Post"
       }
     ],
-    eventsAttending: [
+    postsAttending: [
       {
         type: mongoose2.Schema.Types.ObjectId,
-        ref: "Event"
+        ref: "Post"
       }
     ],
     following: [
@@ -139,20 +139,18 @@ var userSchema = new mongoose2.Schema(
 userSchema.methods.follow = async function(userId) {
   if (!this.following.includes(userId)) {
     this.following.push(userId), await this.save();
-    let userToFollow = await User.findById(userId);
+    let userToFollow = await mongoose2.models.User.findById(userId);
     userToFollow && !userToFollow.followers.includes(this._id) && (userToFollow.followers.push(this._id), await userToFollow.save());
   }
 };
 userSchema.methods.unfollow = async function(userId) {
   if (this.following.includes(userId)) {
     this.following.pull(userId), await this.save();
-    let userToUnfollow = await User.findById(userId);
+    let userToUnfollow = await mongoose2.models.User.findById(userId);
     userToUnfollow && userToUnfollow.followers.includes(this._id) && (userToUnfollow.followers.pull(this._id), await userToUnfollow.save());
   }
 };
-var User = mongoose2.model("User", userSchema);
-mongoose2.model("User", userSchema);
-var eventSchema = new mongoose2.Schema(
+var User = mongoose2.model("User", userSchema), postSchema = new mongoose2.Schema(
   {
     date: {
       type: Date,
@@ -171,9 +169,9 @@ var eventSchema = new mongoose2.Schema(
       required: !0
     },
     creator: {
-      required: !0,
       type: mongoose2.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      required: !0
     },
     image: {
       type: String,
@@ -188,8 +186,7 @@ var eventSchema = new mongoose2.Schema(
   },
   { timestamps: !0 }
 );
-eventSchema.index({ title: "text", description: "text" });
-mongoose2.model("Event", eventSchema);
+postSchema.index({ title: "text", description: "text" });
 userSchema.pre("save", async function(next) {
   let user = this;
   if (!user.isModified("password"))
@@ -197,58 +194,63 @@ userSchema.pre("save", async function(next) {
   let salt = await bcrypt2.genSalt(10);
   user.password = await bcrypt2.hash(user.password, salt), user.name = user.name.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" "), next();
 });
-eventSchema.pre("save", async function(next) {
-  let event = this;
-  event.title = event.title.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-  let creator = await User.findById(event.creator);
-  creator.eventsCreated.includes(event._id) || (creator.eventsCreated.push(event._id), await creator.save()), next();
+postSchema.pre("save", async function(next) {
+  let post = this;
+  post.title = post.title.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  let creator = await mongoose2.models.User.findById(post.creator);
+  creator && !creator.postsCreated.includes(post._id) && (creator.postsCreated.push(post._id), await creator.save()), next();
 });
-var models = [
+var Post = mongoose2.model("Post", postSchema), models = [
   { name: "User", schema: userSchema, collection: "users" },
-  { name: "Event", schema: eventSchema, collection: "event" }
+  { name: "Post", schema: postSchema, collection: "posts" }
 ];
 async function initData() {
-  let userCount = await mongoose2.models.User.countDocuments(), eventCount = await mongoose2.models.Event.countDocuments();
-  (userCount === 0 || eventCount === 0) && await insertData();
+  let userCount = await mongoose2.models.User.countDocuments(), postCount = await mongoose2.models.Post.countDocuments();
+  (userCount === 0 || postCount === 0) && await insertData();
 }
 async function insertData() {
-  let User2 = mongoose2.models.User, Event2 = mongoose2.models.Event;
-  console.log("Dropping collections..."), console.log("Inserting data...");
+  let User2 = mongoose2.models.User, Post3 = mongoose2.models.Post;
+  console.log("Dropping collections..."), await Promise.all([
+    mongoose2.connection.dropCollection("users").catch(() => {
+    }),
+    mongoose2.connection.dropCollection("posts").catch(() => {
+    })
+  ]), console.log("Inserting data...");
   let test = await User2.create({
     mail: "test@test.dk",
     name: "Tester",
     lastname: "Testesen",
-    eventsCreated: [],
-    eventsAttending: [],
     password: await hashPassword("1234"),
-    followers: [test2._id],
-    following: [test2._id]
-  });
-  console.log(test);
-  let test2 = await User2.create({
+    followers: [],
+    following: []
+  }), test2 = await User2.create({
     mail: "test2@test2.dk",
     name: "Tester",
     lastname: "Testesen",
-    eventsCreated: [],
-    eventsAttending: [],
-    password: await hashPassword("1234")
-  }), event1 = await Event2.create({
-    date: /* @__PURE__ */ new Date(),
-    title: "Event 1",
-    description: "Description 1",
-    location: "55.676098, 12.568337",
-    creator: test._id,
-    image: "https://source.unsplash.com/random",
-    attendees: [test2._id]
-  }), event2 = await Event2.create({
-    date: /* @__PURE__ */ new Date(),
-    title: "Event 2",
-    description: "Description 2",
-    location: "55.676098, 12.568337",
-    creator: test._id,
-    image: "https://source.unsplash.com/random",
-    attendees: [test2._id]
+    password: await hashPassword("1234"),
+    followers: [test._id],
+    following: [test._id]
   });
+  await Post3.create([
+    {
+      date: /* @__PURE__ */ new Date(),
+      title: "Post 1",
+      description: "Description 1",
+      location: "55.676098, 12.568337",
+      creator: test._id,
+      image: "https://source.unsplash.com/random",
+      attendees: [test2._id]
+    },
+    {
+      date: /* @__PURE__ */ new Date(),
+      title: "Post 2",
+      description: "Description 2",
+      location: "55.676098, 12.568337",
+      creator: test._id,
+      image: "https://source.unsplash.com/random",
+      attendees: [test2._id]
+    }
+  ]);
 }
 
 // app/db/db-connect.server.js
@@ -404,7 +406,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-HEOGM2FW.css";
+var tailwind_default = "/build/_assets/tailwind-5TSJANNW.css";
 
 // app/components/Nav.jsx
 import { useState, useEffect, useRef } from "react";
@@ -496,7 +498,7 @@ function Nav({ user }) {
           /* @__PURE__ */ jsxDEV2(
             NavLink,
             {
-              to: "/event",
+              to: "/post",
               className: ({ isActive }) => `text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ${isActive ? "bg-gray-900 text-white" : ""}`,
               onClick: handleLinkClick,
               children: "All posts"
@@ -762,7 +764,7 @@ function Nav2() {
 // app/components/footer.jsx
 import { jsxDEV as jsxDEV4 } from "react/jsx-dev-runtime";
 function Footer() {
-  return /* @__PURE__ */ jsxDEV4("footer", { className: "bg-gray-100 text-white p-4 mt-6 flex flex-col justify-center items-center", children: [
+  return /* @__PURE__ */ jsxDEV4("footer", { className: " bottom-0 mb-0  bg-gray-100 text-white p-4 mt-6 flex flex-col justify-center items-center", children: [
     /* @__PURE__ */ jsxDEV4("p", { children: "\xA9 2024 Evelation - Nicolai Dige" }, void 0, !1, {
       fileName: "app/components/footer.jsx",
       lineNumber: 4,
@@ -891,7 +893,7 @@ import { jsxDEV as jsxDEV6 } from "react/jsx-dev-runtime";
 function meta() {
   return [
     {
-      title: "Trailblaze - Update event"
+      title: "Trailblaze - Update Profile"
     }
   ];
 }
@@ -1310,9 +1312,9 @@ async function action({ request }) {
   }
 }
 
-// app/routes/event.$eventId.destroy.jsx
-var event_eventId_destroy_exports = {};
-__export(event_eventId_destroy_exports, {
+// app/routes/post.$postId.destroy.jsx
+var post_postId_destroy_exports = {};
+__export(post_postId_destroy_exports, {
   action: () => action2,
   loader: () => loader3
 });
@@ -1333,9 +1335,9 @@ async function action2({ request, params }) {
   });
 }
 
-// app/routes/event.$eventId_.update.jsx
-var event_eventId_update_exports = {};
-__export(event_eventId_update_exports, {
+// app/routes/post.$postId_.update.jsx
+var post_postId_update_exports = {};
+__export(post_postId_update_exports, {
   action: () => action3,
   default: () => UpdateEvent,
   loader: () => loader4
@@ -1366,7 +1368,7 @@ function GoogleMapLoader({ children }) {
   }, this);
 }
 
-// app/routes/event.$eventId_.update.jsx
+// app/routes/post.$postId_.update.jsx
 import { jsxDEV as jsxDEV8 } from "react/jsx-dev-runtime";
 var MAP_ID = "71f267d426ae7773";
 async function loader4({ request, params }) {
@@ -1403,7 +1405,7 @@ function UpdateEvent() {
   let parsedLocation = location ? { lat: location[0], lng: location[1] } : { lat: 41.0082, lng: 28.9784 };
   return /* @__PURE__ */ jsxDEV8("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
     /* @__PURE__ */ jsxDEV8("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Event" }, void 0, !1, {
-      fileName: "app/routes/event.$eventId_.update.jsx",
+      fileName: "app/routes/post.$postId_.update.jsx",
       lineNumber: 100,
       columnNumber: 7
     }, this),
@@ -1415,7 +1417,7 @@ function UpdateEvent() {
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 108,
             columnNumber: 9
           }, this),
@@ -1433,14 +1435,14 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 109,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 119,
             columnNumber: 9
           }, this),
@@ -1457,14 +1459,14 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 120,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 129,
             columnNumber: 9
           }, this),
@@ -1481,14 +1483,14 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 130,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 139,
             columnNumber: 9
           }, this),
@@ -1506,7 +1508,7 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 140,
               columnNumber: 9
             },
@@ -1528,18 +1530,18 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 151,
               columnNumber: 11
             },
             this
           ) }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 150,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 167,
             columnNumber: 9
           }, this),
@@ -1558,14 +1560,14 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 168,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV8("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 179,
             columnNumber: 9
           }, this),
@@ -1580,7 +1582,7 @@ function UpdateEvent() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event.$eventId_.update.jsx",
+              fileName: "app/routes/post.$postId_.update.jsx",
               lineNumber: 180,
               columnNumber: 9
             },
@@ -1597,7 +1599,7 @@ function UpdateEvent() {
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId_.update.jsx",
+                fileName: "app/routes/post.$postId_.update.jsx",
                 lineNumber: 188,
                 columnNumber: 11
               },
@@ -1614,14 +1616,14 @@ function UpdateEvent() {
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId_.update.jsx",
+                fileName: "app/routes/post.$postId_.update.jsx",
                 lineNumber: 194,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
-            fileName: "app/routes/event.$eventId_.update.jsx",
+            fileName: "app/routes/post.$postId_.update.jsx",
             lineNumber: 187,
             columnNumber: 9
           }, this)
@@ -1630,14 +1632,14 @@ function UpdateEvent() {
       void 0,
       !0,
       {
-        fileName: "app/routes/event.$eventId_.update.jsx",
+        fileName: "app/routes/post.$postId_.update.jsx",
         lineNumber: 103,
         columnNumber: 7
       },
       this
     )
   ] }, void 0, !0, {
-    fileName: "app/routes/event.$eventId_.update.jsx",
+    fileName: "app/routes/post.$postId_.update.jsx",
     lineNumber: 99,
     columnNumber: 5
   }, this);
@@ -1668,7 +1670,7 @@ import mongoose7 from "mongoose";
 import { useEffect as useEffect4, useState as useState4 } from "react";
 import axios from "axios";
 import { jsxDEV as jsxDEV9 } from "react/jsx-dev-runtime";
-function EventCard({ event, onCityUpdate, apiKey }) {
+function EventCard({ post, onCityUpdate, apiKey }) {
   let [city, setCity] = useState4("Fetching..."), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     if (!apiKey) {
       console.error("API key is not defined."), setCity("API key not available");
@@ -1683,7 +1685,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
         )?.long_name || addressComponents.find(
           (component) => component.types.includes("administrative_area_level_1")
         )?.long_name || "Unknown location", normalizedCity = normalizeCityName(nearestCity);
-        setCity(normalizedCity), onCityUpdate(event._id, normalizedCity);
+        setCity(normalizedCity), onCityUpdate(post._id, normalizedCity);
       } else
         console.error("No results found in API response:", response.data), setCity("Unknown location");
     } catch (error) {
@@ -1691,18 +1693,18 @@ function EventCard({ event, onCityUpdate, apiKey }) {
     }
   };
   return useEffect4(() => {
-    if (event.location) {
-      let [lat, lng] = event.location.split(",").map((coord) => parseFloat(coord.trim()));
-      !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", event.location), setCity("Invalid location data"));
+    if (post.location) {
+      let [lat, lng] = post.location.split(",").map((coord) => parseFloat(coord.trim()));
+      !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", post.location), setCity("Invalid location data"));
     } else
       setCity("No location available");
-  }, [event.location]), /* @__PURE__ */ jsxDEV9("article", { className: "flex my-2 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg", children: [
+  }, [post.location]), /* @__PURE__ */ jsxDEV9("article", { className: "flex my-2 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg", children: [
     /* @__PURE__ */ jsxDEV9(
       "div",
       {
         className: "md:w-1/3 h-48 md:h-auto bg-cover bg-center ",
         style: {
-          backgroundImage: `url(${event?.image})`
+          backgroundImage: `url(${post?.image})`
         }
       },
       void 0,
@@ -1716,7 +1718,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
     ),
     /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col w-full p-4", children: [
       /* @__PURE__ */ jsxDEV9("div", { className: "flex justify-between items-start", children: [
-        /* @__PURE__ */ jsxDEV9("h2", { className: "text-2xl font-bold max-w-80 text-gray-800 truncate", children: event.title }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV9("h2", { className: "text-2xl font-bold max-w-80 text-gray-800 truncate", children: post.title }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 77,
           columnNumber: 11
@@ -1733,7 +1735,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
       }, this),
       /* @__PURE__ */ jsxDEV9("p", { className: "text-gray-500 mt-1 text-sm", children: [
         "Created by ",
-        event?.creator?.name
+        post?.creator?.name
       ] }, void 0, !0, {
         fileName: "app/components/EventCard.jsx",
         lineNumber: 84,
@@ -1747,7 +1749,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
             columnNumber: 15
           }, this),
           " ",
-          new Date(event.date).toLocaleDateString("en-GB")
+          new Date(post.date).toLocaleDateString("en-GB")
         ] }, void 0, !0, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 89,
@@ -1781,7 +1783,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
           lineNumber: 99,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm text-gray-600 line-clamp-3", children: event.description || "No description provided." }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm text-gray-600 line-clamp-3", children: post.description || "No description provided." }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 100,
           columnNumber: 11
@@ -1794,7 +1796,7 @@ function EventCard({ event, onCityUpdate, apiKey }) {
       /* @__PURE__ */ jsxDEV9("div", { className: "mt-4 flex justify-between items-center", children: [
         /* @__PURE__ */ jsxDEV9("p", { className: "text-sm font-semibold text-gray-700", children: [
           "Likes: ",
-          event.attendees?.length || 0
+          post.attendees?.length || 0
         ] }, void 0, !0, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 105,
@@ -1832,8 +1834,8 @@ async function loader5({ request, params }) {
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, userProfile = await mongoose7.models.User.findById(params.userId).populate("followers", "_id name").populate("following", "_id name");
   if (!userProfile)
     throw new Response("User not found", { status: 404 });
-  let events = await mongoose7.models.Event.find({ creator: userProfile._id });
-  return json3({ userProfile, authUser, events, googleMapsApiKey: googleMapsApiKey2 });
+  let posts = await mongoose7.models.Post.find({ creator: userProfile._id });
+  return json3({ userProfile, authUser, posts, googleMapsApiKey: googleMapsApiKey2 });
 }
 async function action4({ request, params }) {
   let authUser = await authenticator.isAuthenticated(request);
@@ -1850,7 +1852,7 @@ async function action4({ request, params }) {
   ), await authUserDoc.save(), await userToFollow.save()), json3({ success: !0 }, { googleMapsApiKey });
 }
 function UserProfile() {
-  let { userProfile, authUser, events, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData4(), [eventCities, setEventCities] = useState5({}), [followersCount, setFollowersCount] = useState5(
+  let { userProfile, authUser, posts, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData4(), [postCities, setPostCities] = useState5({}), [followersCount, setFollowersCount] = useState5(
     userProfile.followers.length
   ), [isFollowing, setIsFollowing] = useState5(
     authUser.following.some(
@@ -1864,10 +1866,10 @@ function UserProfile() {
       },
       body: new URLSearchParams({ action: actionType })
     })).ok && (actionType === "follow" ? (setFollowersCount((prev) => prev + 1), setIsFollowing(!0)) : actionType === "unfollow" && (setFollowersCount((prev) => prev - 1), setIsFollowing(!1)));
-  }, updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  }, updateCity = (postId, city) => {
+    setPostsCities((prev) => ({
       ...prev,
-      [eventId]: city
+      [postId]: city
     }));
   }, toggleAboutMePopup = () => {
     setShowFullAboutMe(!showFullAboutMe);
@@ -2023,15 +2025,15 @@ function UserProfile() {
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV10("div", { className: "mt-6", children: [
-      /* @__PURE__ */ jsxDEV10("h2", { className: "text-xl font-semibold mb-4", children: "Created Events" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV10("h2", { className: "text-xl font-semibold mb-4", children: "Created Posts" }, void 0, !1, {
         fileName: "app/routes/userProfile.$userId.jsx",
         lineNumber: 186,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV10("div", { className: "", children: events.map((event) => /* @__PURE__ */ jsxDEV10(Link, { to: `/event/${event._id}`, children: /* @__PURE__ */ jsxDEV10(
+      /* @__PURE__ */ jsxDEV10("div", { className: "", children: posts.map((post) => /* @__PURE__ */ jsxDEV10(Link, { to: `/post/${post._id}`, children: /* @__PURE__ */ jsxDEV10(
         EventCard,
         {
-          event,
+          post,
           onCityUpdate: updateCity,
           apiKey: googleMapsApiKey2
         },
@@ -2043,7 +2045,7 @@ function UserProfile() {
           columnNumber: 15
         },
         this
-      ) }, event._id, !1, {
+      ) }, post._id, !1, {
         fileName: "app/routes/userProfile.$userId.jsx",
         lineNumber: 189,
         columnNumber: 13
@@ -2576,7 +2578,7 @@ import { useEffect as useEffect6, useState as useState7 } from "react";
 import axios2 from "axios";
 import { useLoaderData as useLoaderData6 } from "@remix-run/react";
 import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
-function EventCard2({ event }) {
+function EventCard2({ post }) {
   let [city, setCity] = useState7("Fetching..."), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData6(), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${googleMapsApiKey2}`;
     try {
@@ -2595,24 +2597,24 @@ function EventCard2({ event }) {
     }
   };
   return useEffect6(() => {
-    if (event.location) {
-      let [lat, lng] = event.location.split(",").map((coord) => parseFloat(coord.trim()));
-      !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", event.location), setCity("Invalid location data"));
+    if (post.location) {
+      let [lat, lng] = post.location.split(",").map((coord) => parseFloat(coord.trim()));
+      !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", post.location), setCity("Invalid location data"));
     } else
       setCity("No location available");
-  }, [event.location]), event ? /* @__PURE__ */ jsxDEV13("article", { className: "flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden", children: [
+  }, [post.location]), post ? /* @__PURE__ */ jsxDEV13("article", { className: "flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden", children: [
     /* @__PURE__ */ jsxDEV13(
       "img",
       {
         className: "rounded-lg w-full h-48 object-cover",
-        src: event?.image,
-        alt: event?.title || "Event image"
+        src: post?.image,
+        alt: post?.title || "Event image"
       },
       void 0,
       !1,
       {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 68,
+        lineNumber: 67,
         columnNumber: 7
       },
       this
@@ -2621,74 +2623,74 @@ function EventCard2({ event }) {
       /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
         "Organized by:",
         " ",
-        /* @__PURE__ */ jsxDEV13("span", { className: "font-semibold text-gray-800", children: event?.creator?.name || "Unknown" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV13("span", { className: "font-semibold text-gray-800", children: post?.creator?.name || "Unknown" }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
-          lineNumber: 79,
+          lineNumber: 78,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 77,
+        lineNumber: 76,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("h2", { className: "text-xl font-bold text-gray-900", children: event.title }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV13("h2", { className: "text-xl font-bold text-gray-900", children: post.title }, void 0, !1, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 85,
+        lineNumber: 84,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
         "\u{1F4C5} Date:",
         " ",
-        /* @__PURE__ */ jsxDEV13("span", { className: "font-medium", children: new Date(event.date).toLocaleDateString("en-GB") }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV13("span", { className: "font-medium", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
-          lineNumber: 90,
+          lineNumber: 89,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 88,
+        lineNumber: 87,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
         "\u{1F4CD} Location: ",
         /* @__PURE__ */ jsxDEV13("span", { className: "font-medium", children: city }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
-          lineNumber: 97,
+          lineNumber: 96,
           columnNumber: 24
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 96,
+        lineNumber: 95,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-700 line-clamp-3", children: event.description || "No description available." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-700 line-clamp-3", children: post.description || "No description available." }, void 0, !1, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 101,
+        lineNumber: 100,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ jsxDEV13("p", { className: "mt-4 text-sm text-gray-800 font-medium flex items-center", children: [
         "\u2764\uFE0F Likes: ",
-        event.attendees?.length || 0
+        post.attendees?.length || 0
       ] }, void 0, !0, {
         fileName: "app/components/EventListCards.jsx",
-        lineNumber: 106,
+        lineNumber: 105,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/EventListCards.jsx",
-      lineNumber: 75,
+      lineNumber: 74,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV13("button", { className: "mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 rounded-lg", children: "View Details" }, void 0, !1, {
       fileName: "app/components/EventListCards.jsx",
-      lineNumber: 112,
+      lineNumber: 111,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/EventListCards.jsx",
     lineNumber: 66,
     columnNumber: 5
-  }, this) : /* @__PURE__ */ jsxDEV13("p", { children: "No event found." }, void 0, !1, {
+  }, this) : /* @__PURE__ */ jsxDEV13("p", { children: "No post found." }, void 0, !1, {
     fileName: "app/components/EventListCards.jsx",
     lineNumber: 62,
     columnNumber: 12
@@ -2700,17 +2702,17 @@ import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 var meta2 = () => [{ title: "Remix Post App" }], loader6 = async ({ request }) => {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/main-dashboard"
-  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY, googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, mostLikedEvents = await mongoose8.models.Event.find().sort({ attendees: -1 }).limit(3).populate("creator").populate("attendees");
+  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY, googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, mostLikedPosts = await mongoose8.models.Post.find().sort({ attendees: -1 }).limit(3).populate("creator").populate("attendees");
   return json4({
-    mostLikedEvents,
+    mostLikedPosts,
     openWeatherApiKey,
     googleMapsApiKey: googleMapsApiKey2
     // API keys securely passed here
   });
 };
 function Index() {
-  let { mostLikedEvents, openWeatherApiKey, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData7(), [eventCities, setEventCities] = useState8({});
-  if (!mostLikedEvents || mostLikedEvents.length === 0)
+  let { mostLikedPosts, openWeatherApiKey, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData7(), [postCities, setPostCities] = useState8({});
+  if (!mostLikedPosts || mostLikedPosts.length === 0)
     return /* @__PURE__ */ jsxDEV14("div", { className: "page", children: [
       /* @__PURE__ */ jsxDEV14(DashboardData_default, {}, void 0, !1, {
         fileName: "app/routes/dashboard._index.jsx",
@@ -2727,10 +2729,10 @@ function Index() {
       lineNumber: 44,
       columnNumber: 7
     }, this);
-  let updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  let updateCity = (postId, city) => {
+    setPostCities((prev) => ({
       ...prev,
-      [eventId]: city
+      [postId]: city
     }));
   };
   return /* @__PURE__ */ jsxDEV14("div", { className: "page", children: [
@@ -2746,52 +2748,41 @@ function Index() {
         lineNumber: 63,
         columnNumber: 9
       }, this),
-      mostLikedEvents.map((event) => /* @__PURE__ */ jsxDEV14(
-        Link2,
-        {
-          className: "event-link",
-          to: `/event/${event._id}`,
-          children: [
-            /* @__PURE__ */ jsxDEV14("div", { className: "md:hidden w-full flex justify-center", children: /* @__PURE__ */ jsxDEV14(EventCard2, { event }, void 0, !1, {
-              fileName: "app/routes/dashboard._index.jsx",
-              lineNumber: 71,
-              columnNumber: 15
-            }, this) }, void 0, !1, {
-              fileName: "app/routes/dashboard._index.jsx",
-              lineNumber: 70,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ jsxDEV14("div", { className: "hidden md:flex w-full justify-center", children: /* @__PURE__ */ jsxDEV14(
-              EventCard,
-              {
-                event,
-                onCityUpdate: updateCity,
-                apiKey: googleMapsApiKey2
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/dashboard._index.jsx",
-                lineNumber: 74,
-                columnNumber: 15
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/dashboard._index.jsx",
-              lineNumber: 73,
-              columnNumber: 13
-            }, this)
-          ]
-        },
-        event._id,
-        !0,
-        {
+      mostLikedPosts.map((post) => /* @__PURE__ */ jsxDEV14(Link2, { className: "post-link", to: `/post/${post._id}`, children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "md:hidden w-full flex justify-center", children: /* @__PURE__ */ jsxDEV14(EventCard2, { post }, void 0, !1, {
           fileName: "app/routes/dashboard._index.jsx",
-          lineNumber: 65,
-          columnNumber: 11
-        },
-        this
-      ))
+          lineNumber: 67,
+          columnNumber: 15
+        }, this) }, void 0, !1, {
+          fileName: "app/routes/dashboard._index.jsx",
+          lineNumber: 66,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "hidden md:flex w-full justify-center", children: /* @__PURE__ */ jsxDEV14(
+          EventCard,
+          {
+            post,
+            onCityUpdate: updateCity,
+            apiKey: googleMapsApiKey2
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/dashboard._index.jsx",
+            lineNumber: 70,
+            columnNumber: 15
+          },
+          this
+        ) }, void 0, !1, {
+          fileName: "app/routes/dashboard._index.jsx",
+          lineNumber: 69,
+          columnNumber: 13
+        }, this)
+      ] }, post._id, !0, {
+        fileName: "app/routes/dashboard._index.jsx",
+        lineNumber: 65,
+        columnNumber: 11
+      }, this))
     ] }, void 0, !0, {
       fileName: "app/routes/dashboard._index.jsx",
       lineNumber: 62,
@@ -2821,26 +2812,26 @@ async function loader7({ request }) {
     failureRedirect: "/signin"
   }), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, userUpdated = await mongoose9.models.User.findOne({ _id: user._id }).populate("followers", "_id name").populate("following", "_id name").select("name lastname mail avatarUrl aboutMe hobbies").populate("aboutMe");
   console.log(userUpdated.hobbies);
-  let events = await mongoose9.models.Event.find({ creator: user._id }).populate("creator").populate("attendees"), eventsAttending = await mongoose9.models.Event.find({
+  let posts = await mongoose9.models.Post.find({ creator: user._id }).populate("creator").populate("attendees"), postsAttending = await mongoose9.models.Post.find({
     attendees: user._id
   }).populate("creator").populate("attendees");
-  return { user: userUpdated, events, eventsAttending, googleMapsApiKey: googleMapsApiKey2 };
+  return { user: userUpdated, posts, postsAttending, googleMapsApiKey: googleMapsApiKey2 };
 }
 async function action5({ request }) {
   await authenticator.logout(request, { redirectTo: "/signin" });
 }
 function Profile() {
-  let { user, events, eventsAttending } = useLoaderData8(), [cityUpdates, setCityUpdates] = useState9({}), [displayedEventsCount, setDisplayedEventsCount] = useState9(3), [popupList, setPopupList] = useState9({
+  let { user, posts, postsAttending } = useLoaderData8(), [cityUpdates, setCityUpdates] = useState9({}), [displayedPostsCount, setDisplayedPostsCount] = useState9(3), [popupList, setPopupList] = useState9({
     visible: !1,
     users: [],
     type: ""
-  }), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData8(), [aboutMePopup, setAboutMePopup] = useState9(!1), handleCityUpdate = (eventId, cityName) => {
+  }), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData8(), [aboutMePopup, setAboutMePopup] = useState9(!1), handleCityUpdate = (postId, cityName) => {
     setCityUpdates((prev) => ({
       ...prev,
-      [eventId]: cityName
-    })), console.log(`City updated for event ${eventId}: ${cityName}`);
-  }, loadMoreEvents = () => {
-    setDisplayedEventsCount((prev) => prev + 3);
+      [postId]: cityName
+    })), console.log(`City updated for psot ${postId}: ${cityName}`);
+  }, loadMorePosts = () => {
+    setDisplayedPostsCount((prev) => prev + 3);
   }, togglePopup = (type) => {
     setPopupList((prev) => ({
       visible: !prev.visible,
@@ -3242,12 +3233,12 @@ function Profile() {
       lineNumber: 226,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col justify-center w-full", children: eventsAttending && eventsAttending.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
-      eventsAttending.slice(0, displayedEventsCount).map((event) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "event-link", to: `/event/${event._id}`, children: [
+    /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col justify-center w-full", children: postsAttending && postsAttending.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
+      postsAttending.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
         /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(
           EventCard2,
           {
-            event,
+            post,
             onCityUpdate: handleCityUpdate,
             apiKey: googleMapsApiKey2
           },
@@ -3267,7 +3258,7 @@ function Profile() {
         /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(
           EventCard,
           {
-            event,
+            post,
             onCityUpdate: handleCityUpdate,
             apiKey: googleMapsApiKey2
           },
@@ -3288,16 +3279,16 @@ function Profile() {
         fileName: "app/routes/profile.$userId.jsx",
         lineNumber: 234,
         columnNumber: 17
-      }, this) }, event._id, !1, {
+      }, this) }, post._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
         lineNumber: 233,
         columnNumber: 15
       }, this)),
-      eventsAttending.length > displayedEventsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
+      postsAttending.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
         "button",
         {
           className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
-          onClick: loadMoreEvents,
+          onClick: loadMorePosts,
           children: "Load More"
         },
         void 0,
@@ -3332,9 +3323,9 @@ function Profile() {
         lineNumber: 271,
         columnNumber: 9
       }, this),
-      events && events.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
-        events.slice(0, displayedEventsCount).map((event) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "event-link", to: `/event/${event._id}`, children: [
-          /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(EventCard2, { event, apiKey: googleMapsApiKey2 }, void 0, !1, {
+      posts && posts.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
+        posts.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
+          /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(EventCard2, { post, apiKey: googleMapsApiKey2 }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
             lineNumber: 278,
             columnNumber: 21
@@ -3346,7 +3337,7 @@ function Profile() {
           /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(
             EventCard,
             {
-              event,
+              post,
               onCityUpdate: handleCityUpdate,
               apiKey: googleMapsApiKey2
             },
@@ -3367,16 +3358,16 @@ function Profile() {
           fileName: "app/routes/profile.$userId.jsx",
           lineNumber: 276,
           columnNumber: 17
-        }, this) }, event._id, !1, {
+        }, this) }, post._id, !1, {
           fileName: "app/routes/profile.$userId.jsx",
           lineNumber: 275,
           columnNumber: 15
         }, this)),
-        /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: events.length > displayedEventsCount && /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15(
           "button",
           {
             className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
-            onClick: loadMoreEvents,
+            onClick: loadMorePosts,
             children: "Load More"
           },
           void 0,
@@ -3459,47 +3450,111 @@ function Profile() {
   }, this);
 }
 
-// app/routes/event.$eventId.jsx
-var event_eventId_exports = {};
-__export(event_eventId_exports, {
-  action: () => action6,
-  default: () => Event,
+// app/routes/main-dashboard.jsx
+var main_dashboard_exports = {};
+__export(main_dashboard_exports, {
+  default: () => MainDashboard,
   loader: () => loader8,
   meta: () => meta3
 });
-import { Form as Form4, useLoaderData as useLoaderData9 } from "@remix-run/react";
-import { json as json5, redirect as redirect4 } from "@remix-run/node";
+import "react";
+import { NavLink as NavLink3, redirect as redirect4 } from "react-router-dom";
+import { useLoaderData as useLoaderData9 } from "@remix-run/react";
+import { json as json5 } from "@remix-run/node";
+import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
+var meta3 = () => [{ title: "Elevation" }], loader8 = async ({ request }) => {
+  let user = await authenticator.isAuthenticated(request, {
+    Redirect: "/main-dashboard"
+  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
+  return json5({
+    openWeatherApiKey,
+    // API keys securely passed here
+    isAuthenticated: !!user
+    // determine authentication status
+  });
+};
+function MainDashboard() {
+  let { openWeatherApiKey, isAuthenticated } = useLoaderData9();
+  return isAuthenticated ? redirect4("/dashboard") : /* @__PURE__ */ jsxDEV16("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV16("div", { className: "w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10", children: /* @__PURE__ */ jsxDEV16("p", { children: [
+      "Sign in to see more or",
+      /* @__PURE__ */ jsxDEV16(NavLink3, { to: "/signup", className: "text-blue-600", children: [
+        " ",
+        "sign up here"
+      ] }, void 0, !0, {
+        fileName: "app/routes/main-dashboard.jsx",
+        lineNumber: 34,
+        columnNumber: 13
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 32,
+      columnNumber: 11
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 31,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV16("div", { className: "page", children: [
+      /* @__PURE__ */ jsxDEV16(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
+        fileName: "app/routes/main-dashboard.jsx",
+        lineNumber: 41,
+        columnNumber: 11
+      }, this),
+      " "
+    ] }, void 0, !0, {
+      fileName: "app/routes/main-dashboard.jsx",
+      lineNumber: 40,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/main-dashboard.jsx",
+    lineNumber: 30,
+    columnNumber: 7
+  }, this);
+}
+
+// app/routes/post.$postId.jsx
+var post_postId_exports = {};
+__export(post_postId_exports, {
+  action: () => action6,
+  default: () => Post2,
+  loader: () => loader9,
+  meta: () => meta4
+});
+import { Form as Form4, useLoaderData as useLoaderData10 } from "@remix-run/react";
+import { json as json6, redirect as redirect5 } from "@remix-run/node";
 import mongoose10 from "mongoose";
 import { useEffect as useEffect7, useState as useState10, useRef as useRef4 } from "react";
-import { NavLink as NavLink3 } from "react-router-dom";
-import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
+import { NavLink as NavLink4 } from "react-router-dom";
+import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 var MAP_ID2 = "71f267d426ae7773";
-function meta3({ data }) {
+function meta4({ data }) {
   return [
     {
-      title: `Evelation - ${data.event.title || "Event"}`
+      title: `Evelation - ${data.post.title || "Post"}`
     }
   ];
 }
-async function loader8({ request, params }) {
-  let authUser = await authenticator.isAuthenticated(request), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, event = await mongoose10.models.Event.findById(params.eventId).populate("attendees").populate("creator");
-  return json5({ event, authUser, googleMapsApiKey: googleMapsApiKey2 });
+async function loader9({ request, params }) {
+  let authUser = await authenticator.isAuthenticated(request), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, post = await mongoose10.models.Post.findById(params.postId).populate("attendees").populate("creator");
+  return json6({ post, authUser, googleMapsApiKey: googleMapsApiKey2 });
 }
 async function action6({ request, params }) {
   let action11 = new URLSearchParams(await request.text()).get("_action"), authUser = await authenticator.isAuthenticated(request);
   if (!authUser)
     throw new Error("User not authenticated");
-  let eventId = params.eventId, Event2 = mongoose10.models.Event;
-  return action11 === "attend" ? await Event2.findByIdAndUpdate(eventId, {
+  let postId = params.eventId, Post3 = mongoose10.models.Post;
+  return action11 === "attend" ? await Post3.findByIdAndUpdate(postId, {
     $addToSet: { attendees: authUser._id }
-  }) : action11 === "unattend" && await Event2.findByIdAndUpdate(eventId, {
+  }) : action11 === "unattend" && await Post3.findByIdAndUpdate(postId, {
     $pull: { attendees: authUser._id }
-  }), redirect4(`/event/${eventId}`);
+  }), redirect5(`/post/${postId}`);
 }
-function Event() {
-  let { event, authUser, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData9(), [city, setCity] = useState10(null), mapRef = useRef4(null), location = event?.location ? {
-    lat: parseFloat(event.location.split(",")[0]),
-    lng: parseFloat(event.location.split(",")[1])
+function Post2() {
+  let { post, authUser, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData10(), [city, setCity] = useState10(null), mapRef = useRef4(null), location = post?.location ? {
+    lat: parseFloat(post.location.split(",")[0]),
+    lng: parseFloat(post.location.split(",")[1])
   } : null;
   useEffect7(() => {
     if (!googleMapsApiKey2 || !location)
@@ -3517,7 +3572,7 @@ function Event() {
         new window.google.maps.Marker({
           position: location,
           map,
-          title: "Event Location"
+          title: "Post Location"
         });
       }
     };
@@ -3551,21 +3606,21 @@ function Event() {
       }
     })();
   }, [location]);
-  let attending = event?.attendees?.some(
+  let attending = post?.attendees?.some(
     (attendee) => attendee._id === authUser?._id
   );
-  return /* @__PURE__ */ jsxDEV16(
+  return /* @__PURE__ */ jsxDEV17(
     "div",
     {
-      id: "event-page",
+      id: "post-page",
       className: "page max-w-5xl flex flex-col justify-center m-auto p-6",
       children: [
-        /* @__PURE__ */ jsxDEV16(
+        /* @__PURE__ */ jsxDEV17(
           "div",
           {
             className: "h-96 w-full flex rounded-xl",
             style: {
-              backgroundImage: `url(${event?.image})`,
+              backgroundImage: `url(${post?.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center"
             }
@@ -3573,98 +3628,98 @@ function Event() {
           void 0,
           !1,
           {
-            fileName: "app/routes/event.$eventId.jsx",
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 150,
             columnNumber: 7
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV16("div", { className: "my-4", children: [
-          /* @__PURE__ */ jsxDEV16("h1", { className: "text-3xl", children: event.title }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
+        /* @__PURE__ */ jsxDEV17("div", { className: "my-4", children: [
+          /* @__PURE__ */ jsxDEV17("h1", { className: "text-3xl", children: post.title }, void 0, !1, {
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 159,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV16("p", { className: "text-gray-500", children: [
+          /* @__PURE__ */ jsxDEV17("p", { className: "text-gray-500", children: [
             "Post by:",
             " ",
-            /* @__PURE__ */ jsxDEV16(
-              NavLink3,
+            /* @__PURE__ */ jsxDEV17(
+              NavLink4,
               {
-                to: `/userProfile/${event?.creator?._id}`,
+                to: `/userProfile/${post?.creator?._id}`,
                 className: "text-blue-500 hover:underline",
-                children: event?.creator?.name
+                children: post?.creator?.name
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId.jsx",
+                fileName: "app/routes/post.$postId.jsx",
                 lineNumber: 162,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
-            fileName: "app/routes/event.$eventId.jsx",
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 160,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/event.$eventId.jsx",
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 158,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV16("h3", { className: "text-gray-500 font-bold", children: "Description" }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
+        /* @__PURE__ */ jsxDEV17("h3", { className: "text-gray-500 font-bold", children: "Description" }, void 0, !1, {
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 170,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV16("p", { children: event.description }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
+        /* @__PURE__ */ jsxDEV17("p", { children: post.description }, void 0, !1, {
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 171,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV16("div", { className: "flex flex-col my-2", children: [
-          /* @__PURE__ */ jsxDEV16("p", { children: "Date" }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
+        /* @__PURE__ */ jsxDEV17("div", { className: "flex flex-col my-2", children: [
+          /* @__PURE__ */ jsxDEV17("p", { children: "Date" }, void 0, !1, {
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 173,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV16("p", { className: "", children: new Date(event.date).toLocaleDateString("en-GB") }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
+          /* @__PURE__ */ jsxDEV17("p", { className: "", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 174,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/event.$eventId.jsx",
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 172,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV16("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV16("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
+        /* @__PURE__ */ jsxDEV17("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV17("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 177,
           columnNumber: 9
         }, this) }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 176,
           columnNumber: 7
         }, this),
-        location && /* @__PURE__ */ jsxDEV16("div", { ref: mapRef, style: { width: "100%", height: "400px" } }, void 0, !1, {
-          fileName: "app/routes/event.$eventId.jsx",
+        location && /* @__PURE__ */ jsxDEV17("div", { ref: mapRef, style: { width: "100%", height: "400px" } }, void 0, !1, {
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 181,
           columnNumber: 9
         }, this),
-        /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-4 mt-4 justify-between", children: [
-          /* @__PURE__ */ jsxDEV16("div", { className: "flex gap-2 items-center", children: [
-            /* @__PURE__ */ jsxDEV16("p", { children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-4 mt-4 justify-between", children: [
+          /* @__PURE__ */ jsxDEV17("div", { className: "flex gap-2 items-center", children: [
+            /* @__PURE__ */ jsxDEV17("p", { children: [
               "\u{1F499} ",
-              event.attendees.length
+              post.attendees.length
             ] }, void 0, !0, {
-              fileName: "app/routes/event.$eventId.jsx",
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 186,
               columnNumber: 11
             }, this),
-            !attending && authUser ? /* @__PURE__ */ jsxDEV16(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV16(
+            !attending && authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
               "button",
               {
                 type: "submit",
@@ -3676,16 +3731,16 @@ function Event() {
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId.jsx",
+                fileName: "app/routes/post.$postId.jsx",
                 lineNumber: 189,
                 columnNumber: 15
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/event.$eventId.jsx",
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 188,
               columnNumber: 13
-            }, this) : authUser ? /* @__PURE__ */ jsxDEV16(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV16(
+            }, this) : authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
               "button",
               {
                 type: "submit",
@@ -3697,32 +3752,32 @@ function Event() {
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId.jsx",
+                fileName: "app/routes/post.$postId.jsx",
                 lineNumber: 200,
                 columnNumber: 15
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/event.$eventId.jsx",
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 199,
               columnNumber: 13
             }, this) : null
           ] }, void 0, !0, {
-            fileName: "app/routes/event.$eventId.jsx",
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 185,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV16("div", { children: authUser?._id === event?.creator?._id && /* @__PURE__ */ jsxDEV16("div", { className: "flex py-4", children: [
-            /* @__PURE__ */ jsxDEV16(Form4, { action: "update", children: /* @__PURE__ */ jsxDEV16("button", { className: "px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600", children: "Update" }, void 0, !1, {
-              fileName: "app/routes/event.$eventId.jsx",
+          /* @__PURE__ */ jsxDEV17("div", { children: authUser?._id === post?.creator?._id && /* @__PURE__ */ jsxDEV17("div", { className: "flex py-4", children: [
+            /* @__PURE__ */ jsxDEV17(Form4, { action: "update", children: /* @__PURE__ */ jsxDEV17("button", { className: "px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600", children: "Update" }, void 0, !1, {
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 215,
               columnNumber: 17
             }, this) }, void 0, !1, {
-              fileName: "app/routes/event.$eventId.jsx",
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 214,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV16(Form4, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV16(
+            /* @__PURE__ */ jsxDEV17(Form4, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV17(
               "button",
               {
                 className: "ml-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600",
@@ -3736,27 +3791,27 @@ function Event() {
               void 0,
               !1,
               {
-                fileName: "app/routes/event.$eventId.jsx",
+                fileName: "app/routes/post.$postId.jsx",
                 lineNumber: 220,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/event.$eventId.jsx",
+              fileName: "app/routes/post.$postId.jsx",
               lineNumber: 219,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/event.$eventId.jsx",
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 213,
             columnNumber: 13
           }, this) }, void 0, !1, {
-            fileName: "app/routes/event.$eventId.jsx",
+            fileName: "app/routes/post.$postId.jsx",
             lineNumber: 211,
             columnNumber: 9
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/event.$eventId.jsx",
+          fileName: "app/routes/post.$postId.jsx",
           lineNumber: 184,
           columnNumber: 7
         }, this)
@@ -3765,7 +3820,7 @@ function Event() {
     void 0,
     !0,
     {
-      fileName: "app/routes/event.$eventId.jsx",
+      fileName: "app/routes/post.$postId.jsx",
       lineNumber: 146,
       columnNumber: 5
     },
@@ -3773,73 +3828,9 @@ function Event() {
   );
 }
 
-// app/routes/main-dashboard.jsx
-var main_dashboard_exports = {};
-__export(main_dashboard_exports, {
-  default: () => MainDashboard,
-  loader: () => loader9,
-  meta: () => meta4
-});
-import "react";
-import { NavLink as NavLink4, redirect as redirect5 } from "react-router-dom";
-import { useLoaderData as useLoaderData10 } from "@remix-run/react";
-import { json as json6 } from "@remix-run/node";
-import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
-var meta4 = () => [{ title: "Elevation" }], loader9 = async ({ request }) => {
-  let user = await authenticator.isAuthenticated(request, {
-    Redirect: "/main-dashboard"
-  }), openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
-  return json6({
-    openWeatherApiKey,
-    // API keys securely passed here
-    isAuthenticated: !!user
-    // determine authentication status
-  });
-};
-function MainDashboard() {
-  let { openWeatherApiKey, isAuthenticated } = useLoaderData10();
-  return isAuthenticated ? redirect5("/dashboard") : /* @__PURE__ */ jsxDEV17("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV17("div", { className: "w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10", children: /* @__PURE__ */ jsxDEV17("p", { children: [
-      "Sign in to see more or",
-      /* @__PURE__ */ jsxDEV17(NavLink4, { to: "/signup", className: "text-blue-600", children: [
-        " ",
-        "sign up here"
-      ] }, void 0, !0, {
-        fileName: "app/routes/main-dashboard.jsx",
-        lineNumber: 34,
-        columnNumber: 13
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/main-dashboard.jsx",
-      lineNumber: 32,
-      columnNumber: 11
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/main-dashboard.jsx",
-      lineNumber: 31,
-      columnNumber: 9
-    }, this),
-    /* @__PURE__ */ jsxDEV17("div", { className: "page", children: [
-      /* @__PURE__ */ jsxDEV17(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
-        fileName: "app/routes/main-dashboard.jsx",
-        lineNumber: 41,
-        columnNumber: 11
-      }, this),
-      " "
-    ] }, void 0, !0, {
-      fileName: "app/routes/main-dashboard.jsx",
-      lineNumber: 40,
-      columnNumber: 9
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/main-dashboard.jsx",
-    lineNumber: 30,
-    columnNumber: 7
-  }, this);
-}
-
-// app/routes/event._index.jsx
-var event_index_exports = {};
-__export(event_index_exports, {
+// app/routes/post._index.jsx
+var post_index_exports = {};
+__export(post_index_exports, {
   default: () => Index2,
   loader: () => loader10,
   meta: () => meta5
@@ -3854,7 +3845,7 @@ import { useEffect as useEffect8, useState as useState11 } from "react";
 import axios3 from "axios";
 import { useLoaderData as useLoaderData11 } from "@remix-run/react";
 import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
-function EventList({ event, onCityUpdate }) {
+function EventList({ post, onCityUpdate }) {
   let [city, setCity] = useState11(null), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData11(), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${googleMapsApiKey2}`;
     try {
@@ -3865,7 +3856,7 @@ function EventList({ event, onCityUpdate }) {
         )?.long_name || addressComponents.find(
           (component) => component.types.includes("administrative_area_level_2")
         )?.long_name || "Unknown location", normalizedCity = normalizeCityName(nearestCity);
-        setCity(normalizedCity), onCityUpdate(event._id, normalizedCity);
+        setCity(normalizedCity), onCityUpdate(post._id, normalizedCity);
       } else
         setCity("Unknown location");
     } catch (error) {
@@ -3873,17 +3864,17 @@ function EventList({ event, onCityUpdate }) {
     }
   };
   return useEffect8(() => {
-    if (event.location) {
-      let [lat, lng] = event.location.split(",").map((coord) => parseFloat(coord.trim()));
+    if (post.location) {
+      let [lat, lng] = post.location.split(",").map((coord) => parseFloat(coord.trim()));
       !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : setCity("No location available");
     }
-  }, [event.location]), /* @__PURE__ */ jsxDEV18("article", { className: "flex w-full items-center my-2 px-4 py-2 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow", children: [
+  }, [post.location]), /* @__PURE__ */ jsxDEV18("article", { className: "flex w-full items-center my-2 px-4 py-2 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow", children: [
     /* @__PURE__ */ jsxDEV18(
       "div",
       {
         className: "w-16 h-16 rounded-md bg-cover bg-center flex-shrink-0",
         style: {
-          backgroundImage: `url(${event?.image})`
+          backgroundImage: `url(${post?.image})`
         }
       },
       void 0,
@@ -3896,14 +3887,14 @@ function EventList({ event, onCityUpdate }) {
       this
     ),
     /* @__PURE__ */ jsxDEV18("div", { className: "ml-4 flex-1", children: [
-      /* @__PURE__ */ jsxDEV18("h2", { className: "text-sm font-semibold text-gray-800 truncate", children: event.title }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV18("h2", { className: "text-sm font-semibold text-gray-800 truncate", children: post.title }, void 0, !1, {
         fileName: "app/components/EventList.jsx",
         lineNumber: 69,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ jsxDEV18("p", { className: "text-xs text-gray-500", children: [
         "By ",
-        event?.creator?.name,
+        post?.creator?.name,
         " \u2022 ",
         city || "Fetching city..."
       ] }, void 0, !0, {
@@ -3918,7 +3909,7 @@ function EventList({ event, onCityUpdate }) {
           columnNumber: 11
         }, this),
         " ",
-        new Date(event.date).toLocaleDateString("en-GB")
+        new Date(post.date).toLocaleDateString("en-GB")
       ] }, void 0, !0, {
         fileName: "app/components/EventList.jsx",
         lineNumber: 75,
@@ -3931,7 +3922,7 @@ function EventList({ event, onCityUpdate }) {
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: "ml-4 text-right flex-shrink-0", children: /* @__PURE__ */ jsxDEV18("p", { className: "mt-1 text-xs text-gray-500", children: [
       "Likes: ",
-      event.attendees?.length || 0
+      post.attendees?.length || 0
     ] }, void 0, !0, {
       fileName: "app/components/EventList.jsx",
       lineNumber: 81,
@@ -3948,53 +3939,53 @@ function EventList({ event, onCityUpdate }) {
   }, this);
 }
 
-// app/routes/event._index.jsx
+// app/routes/post._index.jsx
 import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
 var meta5 = () => [{ title: "Evelation - Post" }];
 async function loader10({ request }) {
   await authenticator.isAuthenticated(request);
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
   try {
-    let events = await mongoose11.models.Event.find().populate("creator").populate("attendees").sort({ createdAt: -1 });
-    return json7({ events: events || [], googleMapsApiKey: googleMapsApiKey2 });
+    let posts = await mongoose11.models.Post.find().populate("creator").populate("attendees").sort({ createdAt: -1 });
+    return json7({ posts: posts || [], googleMapsApiKey: googleMapsApiKey2 });
   } catch (error) {
-    return console.error("Error fetching events:", error), json7({ googleMapsApiKey: googleMapsApiKey2, events: [] });
+    return console.error("Error fetching posts:", error), json7({ googleMapsApiKey: googleMapsApiKey2, posts: [] });
   }
 }
 function Index2() {
-  let { events, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData12(), [searchTerm, setSearchTerm] = useState12(""), [eventCities, setEventCities] = useState12({}), [displayedEventsCount, setDisplayedEventsCount] = useState12(6), [sortOption, setSortOption] = useState12("newest"), updateCity = (eventId, city) => {
-    setEventCities((prev) => ({
+  let { posts, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData12(), [searchTerm, setSearchTerm] = useState12(""), [postCities, setPostCities] = useState12({}), [displayedPostsCount, setDisplayedPostsCount] = useState12(6), [sortOption, setSortOption] = useState12("newest"), updateCity = (postId, city) => {
+    setPostCities((prev) => ({
       ...prev,
-      [eventId]: city
+      [postId]: city
     }));
-  }, loadMoreEvents = () => {
-    setDisplayedEventsCount((prevCount) => prevCount + 6);
-  }, sortedAndFilteredEvents = events.filter((event) => {
-    let city = (eventCities[event._id] || "").toLowerCase(), searchTermLower = searchTerm.toLowerCase();
-    return Object.values(event).some(
+  }, loadMorePosts = () => {
+    setDisplayedPostsCount((prevCount) => prevCount + 6);
+  }, sortedAndFilteredPosts = posts.filter((post) => {
+    let city = (postCities[post._id] || "").toLowerCase(), searchTermLower = searchTerm.toLowerCase();
+    return Object.values(post).some(
       (value) => value != null && // Ensure value is not null or undefined
       value.toString().toLowerCase().includes(searchTermLower)
     ) || city.includes(searchTermLower);
-  }).sort((a, b) => sortOption === "newest" ? new Date(b.createdAt) - new Date(a.createdAt) : sortOption === "oldest" ? new Date(a.createdAt) - new Date(b.createdAt) : sortOption === "mostLikes" ? (b.attendees?.length || 0) - (a.attendees?.length || 0) : 0).slice(0, displayedEventsCount);
+  }).sort((a, b) => sortOption === "newest" ? new Date(b.createdAt) - new Date(a.createdAt) : sortOption === "oldest" ? new Date(a.createdAt) - new Date(b.createdAt) : sortOption === "mostLikes" ? (b.attendees?.length || 0) - (a.attendees?.length || 0) : 0).slice(0, displayedPostsCount);
   return /* @__PURE__ */ jsxDEV19("div", { className: "page", children: /* @__PURE__ */ jsxDEV19("div", { className: "w-full flex justify-center flex-col", children: [
     /* @__PURE__ */ jsxDEV19("div", { className: " flex  flex-col mx-auto p-6", children: [
       /* @__PURE__ */ jsxDEV19("h2", { className: "font-bold text-4xl text-gray-950", children: "Discover new surfspots" }, void 0, !1, {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 78,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ jsxDEV19("p", { className: "text-gray-700 pb-4", children: "Find spots" }, void 0, !1, {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 81,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ jsxDEV19("h1", { className: "text-2xl font-semibold w-2/3 py-4", children: "All spots" }, void 0, !1, {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 82,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/event._index.jsx",
+      fileName: "app/routes/post._index.jsx",
       lineNumber: 77,
       columnNumber: 9
     }, this),
@@ -4017,7 +4008,7 @@ function Index2() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event._index.jsx",
+              fileName: "app/routes/post._index.jsx",
               lineNumber: 91,
               columnNumber: 15
             },
@@ -4030,7 +4021,7 @@ function Index2() {
               xmlns: "http://www.w3.org/2000/svg",
               viewBox: "0 0 24 24",
               children: /* @__PURE__ */ jsxDEV19("path", { d: "M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 20 22 L 22 20 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z" }, void 0, !1, {
-                fileName: "app/routes/event._index.jsx",
+                fileName: "app/routes/post._index.jsx",
                 lineNumber: 103,
                 columnNumber: 17
               }, this)
@@ -4038,18 +4029,18 @@ function Index2() {
             void 0,
             !1,
             {
-              fileName: "app/routes/event._index.jsx",
+              fileName: "app/routes/post._index.jsx",
               lineNumber: 98,
               columnNumber: 15
             },
             this
           )
         ] }, void 0, !0, {
-          fileName: "app/routes/event._index.jsx",
+          fileName: "app/routes/post._index.jsx",
           lineNumber: 90,
           columnNumber: 13
         }, this) }, void 0, !1, {
-          fileName: "app/routes/event._index.jsx",
+          fileName: "app/routes/post._index.jsx",
           lineNumber: 89,
           columnNumber: 11
         }, this)
@@ -4057,7 +4048,7 @@ function Index2() {
       void 0,
       !1,
       {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 84,
         columnNumber: 9
       },
@@ -4066,7 +4057,7 @@ function Index2() {
     /* @__PURE__ */ jsxDEV19("div", { className: "w-11/12 flex flex-col justify-center mx-auto", children: [
       /* @__PURE__ */ jsxDEV19("div", { className: "flex justify-end items-center gap-x-4 mt-4", children: [
         /* @__PURE__ */ jsxDEV19("label", { htmlFor: "sort", className: "text-gray-700", children: "Sort by:" }, void 0, !1, {
-          fileName: "app/routes/event._index.jsx",
+          fileName: "app/routes/post._index.jsx",
           lineNumber: 112,
           columnNumber: 13
         }, this),
@@ -4079,17 +4070,17 @@ function Index2() {
             onChange: (e) => setSortOption(e.target.value),
             children: [
               /* @__PURE__ */ jsxDEV19("option", { value: "newest", children: "Newest" }, void 0, !1, {
-                fileName: "app/routes/event._index.jsx",
+                fileName: "app/routes/post._index.jsx",
                 lineNumber: 121,
                 columnNumber: 15
               }, this),
               /* @__PURE__ */ jsxDEV19("option", { value: "oldest", children: "Oldest" }, void 0, !1, {
-                fileName: "app/routes/event._index.jsx",
+                fileName: "app/routes/post._index.jsx",
                 lineNumber: 122,
                 columnNumber: 15
               }, this),
               /* @__PURE__ */ jsxDEV19("option", { value: "mostLikes", children: "Most Likes" }, void 0, !1, {
-                fileName: "app/routes/event._index.jsx",
+                fileName: "app/routes/post._index.jsx",
                 lineNumber: 123,
                 columnNumber: 15
               }, this)
@@ -4098,89 +4089,89 @@ function Index2() {
           void 0,
           !0,
           {
-            fileName: "app/routes/event._index.jsx",
+            fileName: "app/routes/post._index.jsx",
             lineNumber: 115,
             columnNumber: 13
           },
           this
         )
       ] }, void 0, !0, {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 111,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ jsxDEV19("div", { className: "flex justify-center w-full flex-col", children: [
-        /* @__PURE__ */ jsxDEV19("section", { className: "grid-cols-1 ", children: sortedAndFilteredEvents.map((event) => /* @__PURE__ */ jsxDEV19(
+        /* @__PURE__ */ jsxDEV19("section", { className: "grid-cols-1 ", children: sortedAndFilteredPosts.map((post) => /* @__PURE__ */ jsxDEV19(
           Link4,
           {
-            className: "event-link",
-            to: `/event/${event._id}`,
+            className: "post-link",
+            to: `/post/${post._id}`,
             children: /* @__PURE__ */ jsxDEV19("div", { className: "flex m-auto", children: /* @__PURE__ */ jsxDEV19(
               EventList,
               {
-                event,
+                post,
                 onCityUpdate: updateCity,
                 apiKey: googleMapsApiKey2
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/event._index.jsx",
+                fileName: "app/routes/post._index.jsx",
                 lineNumber: 136,
                 columnNumber: 21
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/event._index.jsx",
+              fileName: "app/routes/post._index.jsx",
               lineNumber: 135,
               columnNumber: 19
             }, this)
           },
-          event._id,
+          post._id,
           !1,
           {
-            fileName: "app/routes/event._index.jsx",
+            fileName: "app/routes/post._index.jsx",
             lineNumber: 130,
             columnNumber: 17
           },
           this
         )) }, void 0, !1, {
-          fileName: "app/routes/event._index.jsx",
+          fileName: "app/routes/post._index.jsx",
           lineNumber: 128,
           columnNumber: 13
         }, this),
-        events.length > displayedEventsCount && /* @__PURE__ */ jsxDEV19(
+        posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV19(
           "button",
           {
             className: "bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto mt-4",
-            onClick: loadMoreEvents,
+            onClick: loadMorePosts,
             children: "Load More"
           },
           void 0,
           !1,
           {
-            fileName: "app/routes/event._index.jsx",
+            fileName: "app/routes/post._index.jsx",
             lineNumber: 146,
             columnNumber: 15
           },
           this
         )
       ] }, void 0, !0, {
-        fileName: "app/routes/event._index.jsx",
+        fileName: "app/routes/post._index.jsx",
         lineNumber: 127,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/event._index.jsx",
+      fileName: "app/routes/post._index.jsx",
       lineNumber: 110,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/event._index.jsx",
+    fileName: "app/routes/post._index.jsx",
     lineNumber: 76,
     columnNumber: 7
   }, this) }, void 0, !1, {
-    fileName: "app/routes/event._index.jsx",
+    fileName: "app/routes/post._index.jsx",
     lineNumber: 75,
     columnNumber: 5
   }, this);
@@ -4217,10 +4208,10 @@ function AddEvent() {
   ), [location, setLocation] = useState13(null), [center] = useState13({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef5(), navigate = useNavigate3(), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData13(), { isLoaded } = useJsApiLoader2({
     googleMapsApiKey: googleMapsApiKey2
     // Use the key here
-  }), handleMapClick = (event) => {
+  }), handleMapClick = (post) => {
     setLocation({
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng()
+      lat: post.latLng.lat(),
+      lng: post.latLng.lng()
     });
   }, handleCancel = () => navigate("/dashboard");
   return useEffect9(() => {
@@ -4234,7 +4225,7 @@ function AddEvent() {
     /* @__PURE__ */ jsxDEV20(
       Form6,
       {
-        id: "event-form",
+        id: "post-form",
         method: "post",
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
@@ -4480,13 +4471,14 @@ function AddEvent() {
 async function action7({ request }) {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
-  }), formData = await request.formData(), event = Object.fromEntries(formData);
-  return event.creator = user._id, await mongoose12.models.Event.create(event), redirect6("/dashboard");
+  }), formData = await request.formData(), post = Object.fromEntries(formData);
+  return post.creator = user._id, await mongoose12.models.Post.create(post), redirect6("/dashboard");
 }
 
 // app/routes/locations.jsx
 var locations_exports = {};
 __export(locations_exports, {
+  ErrorBoundary: () => ErrorBoundary,
   default: () => LocationsPage,
   loader: () => loader12
 });
@@ -4496,19 +4488,19 @@ import { useLoaderData as useLoaderData14 } from "@remix-run/react";
 import { useEffect as useEffect10, useRef as useRef6, useState as useState14 } from "react";
 import { useJsApiLoader as useJsApiLoader3 } from "@react-google-maps/api";
 import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
-function ShowAllLocations({ events, apiKey }) {
+function ShowAllLocations({ posts, apiKey }) {
   let [locations, setLocations] = useState14([]), mapRef = useRef6(null), infoWindowRef = useRef6(null), geocoderRef = useRef6(null), { isLoaded, loadError } = useJsApiLoader3({
     googleMapsApiKey: apiKey
   });
   return useEffect10(() => {
-    if (events) {
-      let eventLocations = events.map((event) => {
-        let [lat, lng] = event.location.split(",").map(Number);
-        return { lat, lng, title: event.title || "Event Location" };
+    if (posts) {
+      let postLocations = posts.map((post) => {
+        let [lat, lng] = post.location.split(",").map(Number);
+        return { lat, lng, title: post.title || "Post Location" };
       });
-      setLocations(eventLocations);
+      setLocations(postLocations);
     }
-  }, [events]), useEffect10(() => {
+  }, [posts]), useEffect10(() => {
     if (isLoaded && locations.length > 0 && mapRef.current) {
       let map = new window.google.maps.Map(mapRef.current, {
         center: locations[0],
@@ -4573,18 +4565,38 @@ import mongoose13 from "mongoose";
 import { json as json8 } from "@remix-run/node";
 import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
 async function loader12() {
-  let events = await mongoose13.models.Event.find({}), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
-  return json8({ events, googleMapsApiKey: googleMapsApiKey2 });
+  let posts = await mongoose13.models.Post.find({}), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
+  if (!posts || posts.length === 0)
+    throw json8({ message: "No posts available." }, { status: 404 });
+  return json8({ posts, googleMapsApiKey: googleMapsApiKey2 });
 }
 function LocationsPage() {
-  let { events, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData14();
-  return /* @__PURE__ */ jsxDEV22("div", { style: { width: "100%", height: "100vh" }, children: /* @__PURE__ */ jsxDEV22(ShowAllLocations, { events, apiKey: googleMapsApiKey2 }, void 0, !1, {
+  let { posts, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData14();
+  return /* @__PURE__ */ jsxDEV22("div", { style: { width: "100%", height: "100vh" }, children: /* @__PURE__ */ jsxDEV22(ShowAllLocations, { posts, apiKey: googleMapsApiKey2 }, void 0, !1, {
     fileName: "app/routes/locations.jsx",
-    lineNumber: 18,
+    lineNumber: 23,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/locations.jsx",
-    lineNumber: 17,
+    lineNumber: 22,
+    columnNumber: 5
+  }, this);
+}
+function ErrorBoundary({ error }) {
+  return /* @__PURE__ */ jsxDEV22("div", { style: { textAlign: "center", marginTop: "20%" }, children: [
+    /* @__PURE__ */ jsxDEV22("h1", { children: "Oops!" }, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 32,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV22("p", { children: error?.message || "No posts available." }, void 0, !1, {
+      fileName: "app/routes/locations.jsx",
+      lineNumber: 33,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/locations.jsx",
+    lineNumber: 31,
     columnNumber: 5
   }, this);
 }
@@ -5287,7 +5299,7 @@ function Example() {
         lineNumber: 20,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV26("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV26(Link5, { to: "/event", className: "text-sm font-semibold leading-7 ", children: [
+      /* @__PURE__ */ jsxDEV26("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV26(Link5, { to: "/post", className: "text-sm font-semibold leading-7 ", children: [
         /* @__PURE__ */ jsxDEV26("span", { "aria-hidden": "true", children: "\u2190" }, void 0, !1, {
           fileName: "app/routes/error.jsx",
           lineNumber: 25,
@@ -5320,7 +5332,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-GAKETAI6.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-4DDUC4YR.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-NIBVFLTW.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-ZZFGIHCR.js", imports: ["/build/_shared/chunk-7Y7WWHAI.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-XNCNTYHY.js", "/build/_shared/chunk-7LAK5SQQ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-NIUXO7HT.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId": { id: "routes/event.$eventId", parentId: "root", path: "event/:eventId", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId-KDFU2WRY.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId.destroy": { id: "routes/event.$eventId.destroy", parentId: "routes/event.$eventId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId.destroy-IHPZH4G4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event.$eventId_.update": { id: "routes/event.$eventId_.update", parentId: "root", path: "event/:eventId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/event.$eventId_.update-GTZP3OIT.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/event._index": { id: "routes/event._index", parentId: "root", path: "event", index: !0, caseSensitive: void 0, module: "/build/routes/event._index-V62S7QVX.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-ESQVA4YO.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-PRIIJ26Z.js", imports: ["/build/_shared/chunk-7Y7WWHAI.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-HM2VX32K.js", imports: ["/build/_shared/chunk-XNCNTYHY.js", "/build/_shared/chunk-7LAK5SQQ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-C3XTC2KP.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-YWOEDCRV.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-6ZOAERG6.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-7LAK5SQQ.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "b75cdf93", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1736281619852 }, url: "/build/manifest-B75CDF93.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FL56NXSS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-WMP7ZVXR.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-SQXAPPWT.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-H7VEGSE7.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-2FEAP7NO.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EQQOEKGK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-DY4BUE7J.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-PRRMTNMR.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId": { id: "routes/post.$postId", parentId: "root", path: "post/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId-T7MJKSEN.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId.destroy": { id: "routes/post.$postId.destroy", parentId: "routes/post.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId.destroy-3KSGAYW2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId_.update": { id: "routes/post.$postId_.update", parentId: "root", path: "post/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId_.update-ZIMC2IBS.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post._index": { id: "routes/post._index", parentId: "root", path: "post", index: !0, caseSensitive: void 0, module: "/build/routes/post._index-MB2FGHZI.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-ZVNMBAKA.js", imports: ["/build/_shared/chunk-2FEAP7NO.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-TVENGSNV.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-Q5ANUNVF.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-3V47L23U.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-DI3PJ3TT.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "01c0ed32", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1738090947330 }, url: "/build/manifest-01C0ED32.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
@@ -5340,21 +5352,21 @@ var mode = "development", assetsBuildDirectory = "public/build", future = { v3_f
     caseSensitive: void 0,
     module: profile_userId_update_exports
   },
-  "routes/event.$eventId.destroy": {
-    id: "routes/event.$eventId.destroy",
-    parentId: "routes/event.$eventId",
+  "routes/post.$postId.destroy": {
+    id: "routes/post.$postId.destroy",
+    parentId: "routes/post.$postId",
     path: "destroy",
     index: void 0,
     caseSensitive: void 0,
-    module: event_eventId_destroy_exports
+    module: post_postId_destroy_exports
   },
-  "routes/event.$eventId_.update": {
-    id: "routes/event.$eventId_.update",
+  "routes/post.$postId_.update": {
+    id: "routes/post.$postId_.update",
     parentId: "root",
-    path: "event/:eventId/update",
+    path: "post/:postId/update",
     index: void 0,
     caseSensitive: void 0,
-    module: event_eventId_update_exports
+    module: post_postId_update_exports
   },
   "routes/userProfile.$userId": {
     id: "routes/userProfile.$userId",
@@ -5380,14 +5392,6 @@ var mode = "development", assetsBuildDirectory = "public/build", future = { v3_f
     caseSensitive: void 0,
     module: profile_userId_exports
   },
-  "routes/event.$eventId": {
-    id: "routes/event.$eventId",
-    parentId: "root",
-    path: "event/:eventId",
-    index: void 0,
-    caseSensitive: void 0,
-    module: event_eventId_exports
-  },
   "routes/main-dashboard": {
     id: "routes/main-dashboard",
     parentId: "root",
@@ -5396,13 +5400,21 @@ var mode = "development", assetsBuildDirectory = "public/build", future = { v3_f
     caseSensitive: void 0,
     module: main_dashboard_exports
   },
-  "routes/event._index": {
-    id: "routes/event._index",
+  "routes/post.$postId": {
+    id: "routes/post.$postId",
     parentId: "root",
-    path: "event",
+    path: "post/:postId",
+    index: void 0,
+    caseSensitive: void 0,
+    module: post_postId_exports
+  },
+  "routes/post._index": {
+    id: "routes/post._index",
+    parentId: "root",
+    path: "post",
     index: !0,
     caseSensitive: void 0,
-    module: event_index_exports
+    module: post_index_exports
   },
   "routes/add-event": {
     id: "routes/add-event",

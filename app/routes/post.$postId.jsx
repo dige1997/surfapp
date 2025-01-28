@@ -10,7 +10,7 @@ const MAP_ID = "71f267d426ae7773";
 export function meta({ data }) {
   return [
     {
-      title: `Evelation - ${data.event.title || "Event"}`,
+      title: `Evelation - ${data.post.title || "Post"}`,
     },
   ];
 }
@@ -19,10 +19,10 @@ export async function loader({ request, params }) {
   const authUser = await authenticator.isAuthenticated(request);
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 
-  const event = await mongoose.models.Event.findById(params.eventId)
+  const post = await mongoose.models.Post.findById(params.postId)
     .populate("attendees")
     .populate("creator");
-  return json({ event, authUser, googleMapsApiKey });
+  return json({ post, authUser, googleMapsApiKey });
 }
 
 export async function action({ request, params }) {
@@ -34,31 +34,31 @@ export async function action({ request, params }) {
     throw new Error("User not authenticated");
   }
 
-  const eventId = params.eventId;
-  const Event = mongoose.models.Event;
+  const postId = params.eventId;
+  const Post = mongoose.models.Post;
 
   if (action === "attend") {
-    await Event.findByIdAndUpdate(eventId, {
+    await Post.findByIdAndUpdate(postId, {
       $addToSet: { attendees: authUser._id },
     });
   } else if (action === "unattend") {
-    await Event.findByIdAndUpdate(eventId, {
+    await Post.findByIdAndUpdate(postId, {
       $pull: { attendees: authUser._id },
     });
   }
 
-  return redirect(`/event/${eventId}`);
+  return redirect(`/post/${postId}`);
 }
 
-export default function Event() {
-  const { event, authUser, googleMapsApiKey } = useLoaderData();
+export default function Post() {
+  const { post, authUser, googleMapsApiKey } = useLoaderData();
   const [city, setCity] = useState(null);
   const mapRef = useRef(null);
 
-  const location = event?.location
+  const location = post?.location
     ? {
-        lat: parseFloat(event.location.split(",")[0]),
-        lng: parseFloat(event.location.split(",")[1]),
+        lat: parseFloat(post.location.split(",")[0]),
+        lng: parseFloat(post.location.split(",")[1]),
       }
     : null;
 
@@ -85,7 +85,7 @@ export default function Event() {
         new window.google.maps.Marker({
           position: location,
           map,
-          title: "Event Location",
+          title: "Post Location",
         });
       }
     };
@@ -138,40 +138,40 @@ export default function Event() {
     }
   }, [location]);
 
-  const attending = event?.attendees?.some(
+  const attending = post?.attendees?.some(
     (attendee) => attendee._id === authUser?._id
   );
 
   return (
     <div
-      id="event-page"
+      id="post-page"
       className="page max-w-5xl flex flex-col justify-center m-auto p-6"
     >
       <div
         className="h-96 w-full flex rounded-xl"
         style={{
-          backgroundImage: `url(${event?.image})`,
+          backgroundImage: `url(${post?.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       ></div>
       <div className="my-4">
-        <h1 className="text-3xl">{event.title}</h1>
+        <h1 className="text-3xl">{post.title}</h1>
         <p className="text-gray-500">
           Post by:{" "}
           <NavLink
-            to={`/userProfile/${event?.creator?._id}`}
+            to={`/userProfile/${post?.creator?._id}`}
             className="text-blue-500 hover:underline"
           >
-            {event?.creator?.name}
+            {post?.creator?.name}
           </NavLink>
         </p>
       </div>
       <h3 className="text-gray-500 font-bold">Description</h3>
-      <p>{event.description}</p>
+      <p>{post.description}</p>
       <div className="flex flex-col my-2">
         <p>Date</p>
-        <p className="">{new Date(event.date).toLocaleDateString("en-GB")}</p>
+        <p className="">{new Date(post.date).toLocaleDateString("en-GB")}</p>
       </div>
       <div className="flex my-2">
         <p className="">{city || "Fetching location..."}</p>
@@ -183,7 +183,7 @@ export default function Event() {
 
       <div className="flex items-center gap-4 mt-4 justify-between">
         <div className="flex gap-2 items-center">
-          <p>💙 {event.attendees.length}</p>
+          <p>💙 {post.attendees.length}</p>
           {!attending && authUser ? (
             <Form method="post">
               <button
@@ -209,7 +209,7 @@ export default function Event() {
           ) : null}
         </div>
         <div>
-          {authUser?._id === event?.creator?._id && (
+          {authUser?._id === post?.creator?._id && (
             <div className="flex py-4">
               <Form action="update">
                 <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">

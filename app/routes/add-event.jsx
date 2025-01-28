@@ -36,10 +36,10 @@ export default function AddEvent() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey, // Use the key here
   });
-  const handleMapClick = (event) => {
+  const handleMapClick = (post) => {
     setLocation({
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
+      lat: post.latLng.lat(),
+      lng: post.latLng.lng(),
     });
   };
 
@@ -57,7 +57,7 @@ export default function AddEvent() {
         Create New Post
       </h1>
       <Form
-        id="event-form"
+        id="post-form"
         method="post"
         className="rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4"
       >
@@ -171,11 +171,11 @@ export async function action({ request }) {
   });
 
   const formData = await request.formData();
-  const event = Object.fromEntries(formData);
+  const post = Object.fromEntries(formData);
 
-  event.creator = user._id;
+  post.creator = user._id;
 
-  await mongoose.models.Event.create(event);
+  await mongoose.models.Post.create(post);
 
   return redirect("/dashboard");
 }

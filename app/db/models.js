@@ -34,16 +34,16 @@ const userSchema = new mongoose.Schema(
     aboutMe: {
       type: String,
     },
-    eventsCreated: [
+    postsCreated: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Event",
+        ref: "Post",
       },
     ],
-    eventsAttending: [
+    postsAttending: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Event",
+        ref: "Post",
       },
     ],
     following: [
@@ -61,13 +61,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 // Create a method to follow another user
 userSchema.methods.follow = async function (userId) {
   if (!this.following.includes(userId)) {
     this.following.push(userId);
     await this.save();
 
-    const userToFollow = await User.findById(userId);
+    const userToFollow = await mongoose.models.User.findById(userId);
     if (userToFollow && !userToFollow.followers.includes(this._id)) {
       userToFollow.followers.push(this._id);
       await userToFollow.save();
@@ -81,7 +82,7 @@ userSchema.methods.unfollow = async function (userId) {
     this.following.pull(userId);
     await this.save();
 
-    const userToUnfollow = await User.findById(userId);
+    const userToUnfollow = await mongoose.models.User.findById(userId);
     if (userToUnfollow && userToUnfollow.followers.includes(this._id)) {
       userToUnfollow.followers.pull(this._id);
       await userToUnfollow.save();
@@ -91,9 +92,7 @@ userSchema.methods.unfollow = async function (userId) {
 
 const User = mongoose.model("User", userSchema);
 
-mongoose.model("User", userSchema);
-
-const eventSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
   {
     date: {
       type: Date,
@@ -107,15 +106,14 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     location: {
       type: String,
       required: true,
     },
     creator: {
-      required: true,
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     image: {
       type: String,
@@ -131,59 +129,58 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-eventSchema.index({ title: "text", description: "text" });
+// Add a text index for search functionality
+postSchema.index({ title: "text", description: "text" });
 
-mongoose.model("Event", eventSchema);
-
-// pre save password hook
+// Pre-save hook for hashing passwords
 userSchema.pre("save", async function (next) {
-  const user = this; // this refers to the user document
+  const user = this;
 
-  // only hash the password if it has been modified (or is new)
-  if (!user.isModified("password")) {
-    return next(); // continue
-  }
+  if (!user.isModified("password")) return next();
 
-  const salt = await bcrypt.genSalt(10); // generate a salt
-  user.password = await bcrypt.hash(user.password, salt); // hash the password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
 
   user.name = user.name
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-  next(); // continue
+  next();
 });
 
-eventSchema.pre("save", async function (next) {
-  const event = this; // this refers to the user document
+// Pre-save hook for posts
+postSchema.pre("save", async function (next) {
+  const post = this;
 
-  event.title = event.title
+  post.title = post.title
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-  const creator = await User.findById(event.creator);
-  //make sure the user which created the event has the event in their eventsCreated array
-  if (!creator.eventsCreated.includes(event._id)) {
-    creator.eventsCreated.push(event._id);
+
+  const creator = await mongoose.models.User.findById(post.creator);
+  if (creator && !creator.postsCreated.includes(post._id)) {
+    creator.postsCreated.push(post._id);
     await creator.save();
   }
-  next(); // continue
+
+  next();
 });
+
+const Post = mongoose.model("Post", postSchema);
 
 export const models = [
   { name: "User", schema: userSchema, collection: "users" },
-  { name: "Event", schema: eventSchema, collection: "event" },
+  { name: "Post", schema: postSchema, collection: "posts" },
 ];
 
 // ========== initData ========== //
 
 export async function initData() {
-  // check if data exists
   const userCount = await mongoose.models.User.countDocuments();
-  const eventCount = await mongoose.models.Event.countDocuments();
+  const postCount = await mongoose.models.Post.countDocuments();
 
-  if (userCount === 0 || eventCount === 0) {
+  if (userCount === 0 || postCount === 0) {
     await insertData();
   }
 }
@@ -192,52 +189,52 @@ export async function initData() {
 
 async function insertData() {
   const User = mongoose.models.User;
-  const Event = mongoose.models.Event;
+  const Post = mongoose.models.Post;
 
   console.log("Dropping collections...");
+  await Promise.all([
+    mongoose.connection.dropCollection("users").catch(() => {}),
+    mongoose.connection.dropCollection("posts").catch(() => {}),
+  ]);
 
   console.log("Inserting data...");
-  // Insert users
 
   const test = await User.create({
     mail: "test@test.dk",
     name: "Tester",
     lastname: "Testesen",
-    eventsCreated: [],
-    eventsAttending: [],
     password: await hashPassword("1234"),
-    followers: [test2._id],
-    following: [test2._id],
+    followers: [],
+    following: [],
   });
-
-  console.log(test);
 
   const test2 = await User.create({
     mail: "test2@test2.dk",
     name: "Tester",
     lastname: "Testesen",
-    eventsCreated: [],
-    eventsAttending: [],
     password: await hashPassword("1234"),
+    followers: [test._id],
+    following: [test._id],
   });
 
-  const event1 = await Event.create({
-    date: new Date(),
-    title: "Event 1",
-    description: "Description 1",
-    location: "55.676098, 12.568337",
-    creator: test._id,
-    image: "https://source.unsplash.com/random",
-    attendees: [test2._id],
-  });
-
-  const event2 = await Event.create({
-    date: new Date(),
-    title: "Event 2",
-    description: "Description 2",
-    location: "55.676098, 12.568337",
-    creator: test._id,
-    image: "https://source.unsplash.com/random",
-    attendees: [test2._id],
-  });
+  await Post.create([
+    {
+      date: new Date(),
+      title: "Post 1",
+      description: "Description 1",
+      location: "55.676098, 12.568337",
+      creator: test._id,
+      image: "https://source.unsplash.com/random",
+      attendees: [test2._id],
+    },
+    {
+      date: new Date(),
+      title: "Post 2",
+      description: "Description 2",
+      location: "55.676098, 12.568337",
+      creator: test._id,
+      image: "https://source.unsplash.com/random",
+      attendees: [test2._id],
+    },
+  ]);
 }

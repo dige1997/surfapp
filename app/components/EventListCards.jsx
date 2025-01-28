@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLoaderData } from "@remix-run/react";
 
-export default function EventCard({ event }) {
+export default function EventCard({ post }) {
   const [city, setCity] = useState("Fetching...");
   const { googleMapsApiKey } = useLoaderData();
   const normalizeCityName = (cityName) => {
@@ -42,53 +42,52 @@ export default function EventCard({ event }) {
   };
 
   useEffect(() => {
-    if (event.location) {
-      const [lat, lng] = event.location
+    if (post.location) {
+      const [lat, lng] = post.location
         .split(",")
         .map((coord) => parseFloat(coord.trim()));
 
       if (!isNaN(lat) && !isNaN(lng)) {
         fetchCityFromCoordinates(lat, lng);
       } else {
-        console.error("Invalid coordinates:", event.location);
+        console.error("Invalid coordinates:", post.location);
         setCity("Invalid location data");
       }
     } else {
       setCity("No location available");
     }
-  }, [event.location]);
+  }, [post.location]);
 
-  if (!event) {
-    return <p>No event found.</p>;
+  if (!post) {
+    return <p>No post found.</p>;
   }
 
   return (
     <article className="flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden">
-      {/* Event Image */}
       <img
         className="rounded-lg w-full h-48 object-cover"
-        src={event?.image}
-        alt={event?.title || "Event image"}
+        src={post?.image}
+        alt={post?.title || "Event image"}
       />
 
-      {/* Event Details */}
+      {/* Post Details */}
       <div className="mt-4 space-y-2">
         {/* Creator */}
         <p className="text-sm text-gray-600">
           Organized by:{" "}
           <span className="font-semibold text-gray-800">
-            {event?.creator?.name || "Unknown"}
+            {post?.creator?.name || "Unknown"}
           </span>
         </p>
 
         {/* Title */}
-        <h2 className="text-xl font-bold text-gray-900">{event.title}</h2>
+        <h2 className="text-xl font-bold text-gray-900">{post.title}</h2>
 
         {/* Date */}
         <p className="text-sm text-gray-600">
           📅 Date:{" "}
           <span className="font-medium">
-            {new Date(event.date).toLocaleDateString("en-GB")}
+            {new Date(post.date).toLocaleDateString("en-GB")}
           </span>
         </p>
 
@@ -99,12 +98,12 @@ export default function EventCard({ event }) {
 
         {/* Description */}
         <p className="text-sm text-gray-700 line-clamp-3">
-          {event.description || "No description available."}
+          {post.description || "No description available."}
         </p>
 
         {/* Likes */}
         <p className="mt-4 text-sm text-gray-800 font-medium flex items-center">
-          ❤️ Likes: {event.attendees?.length || 0}
+          ❤️ Likes: {post.attendees?.length || 0}
         </p>
       </div>
 

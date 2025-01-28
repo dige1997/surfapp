@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 
-export default function ShowAllLocations({ events, apiKey }) {
+export default function ShowAllLocations({ posts, apiKey }) {
   const [locations, setLocations] = useState([]);
   const mapRef = useRef(null);
   const infoWindowRef = useRef(null); // Reference for the InfoWindow
@@ -12,14 +12,14 @@ export default function ShowAllLocations({ events, apiKey }) {
   });
 
   useEffect(() => {
-    if (events) {
-      const eventLocations = events.map((event) => {
-        const [lat, lng] = event.location.split(",").map(Number);
-        return { lat, lng, title: event.title || "Event Location" };
+    if (posts) {
+      const postLocations = posts.map((post) => {
+        const [lat, lng] = post.location.split(",").map(Number);
+        return { lat, lng, title: post.title || "Post Location" };
       });
-      setLocations(eventLocations);
+      setLocations(postLocations);
     }
-  }, [events]);
+  }, [posts]);
 
   useEffect(() => {
     if (isLoaded && locations.length > 0 && mapRef.current) {

@@ -15,29 +15,29 @@ export async function loader({ request, params }) {
     failureRedirect: "/signin",
   });
 
-  const event = await mongoose.models.Event.findById(params.eventId).populate(
+  const post = await mongoose.models.Post.findById(params.postId).populate(
     "creator"
   );
 
-  if (!event) {
-    throw new Response("Event not found", { status: 404 });
+  if (!post) {
+    throw new Response("Post not found", { status: 404 });
   }
 
-  if (event.creator._id.toString() !== user._id.toString()) {
+  if (post.creator._id.toString() !== user._id.toString()) {
     return redirect("/dashboard");
   }
 
-  return json({ event, googleMapsApiKey });
+  return json({ post, googleMapsApiKey });
 }
 
 export default function UpdateEvent() {
-  const { event, googleMapsApiKey } = useLoaderData();
-  const [image, setImage] = useState(event.image);
+  const { post, googleMapsApiKey } = useLoaderData();
+  const [image, setImage] = useState(post.image);
   const [location, setLocation] = useState(
-    event.location
-      ? Array.isArray(event.location)
-        ? event.location
-        : event.location.split(",").map((coord) => parseFloat(coord.trim()))
+    post.location
+      ? Array.isArray(post.location)
+        ? post.location
+        : post.location.split(",").map((coord) => parseFloat(coord.trim()))
       : null
   );
   const [center, setCenter] = useState(
@@ -98,10 +98,10 @@ export default function UpdateEvent() {
   return (
     <div className="page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8">
       <h1 className="m-auto flex justify-center font-semibold text-2xl mb-6">
-        Update Event
+        Update Post
       </h1>
       <Form
-        id="event-form"
+        id="post-form"
         method="post"
         className="rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4"
       >
@@ -111,7 +111,7 @@ export default function UpdateEvent() {
           id="title"
           name="title"
           type="text"
-          defaultValue={event.title}
+          defaultValue={post.title}
           placeholder="Write a title..."
           className="rounded-xl p-2 border-gray-400 border"
         />
@@ -121,7 +121,7 @@ export default function UpdateEvent() {
           required
           id="description"
           name="description"
-          defaultValue={event.description}
+          defaultValue={post.description}
           placeholder="Write a description..."
           className="rounded-xl p-2 border-gray-400 border"
         />
@@ -132,7 +132,7 @@ export default function UpdateEvent() {
           id="date"
           name="date"
           type="date"
-          defaultValue={event.date.split("T")[0]}
+          defaultValue={post.date.split("T")[0]}
           className="rounded-xl p-2 border-gray-400 border"
         />
 
@@ -170,7 +170,7 @@ export default function UpdateEvent() {
           id="image"
           name="image"
           type="url"
-          defaultValue={event.image}
+          defaultValue={post.image}
           placeholder="Paste an image URL..."
           onChange={(e) => setImage(e.target.value)}
           className="rounded-xl p-2 border-gray-400 border"
@@ -209,22 +209,22 @@ export async function action({ request, params }) {
     failureRedirect: "/signin",
   });
 
-  const eventToUpdate = await mongoose.models.Event.findById(params.eventId);
+  const postToUpdate = await mongoose.models.Post.findById(params.postId);
 
   if (
-    !eventToUpdate ||
-    eventToUpdate.creator.toString() !== authUser._id.toString()
+    !postToUpdate ||
+    postToUpdate.creator.toString() !== authUser._id.toString()
   ) {
     return redirect(`/dashboard`);
   }
 
   const formData = await request.formData();
-  const updatedEvent = Object.fromEntries(formData);
+  const updatedPost = Object.fromEntries(formData);
 
-  Object.assign(eventToUpdate, updatedEvent);
-  eventToUpdate.location = updatedEvent.location;
+  Object.assign(postToUpdate, updatedPost);
+  postToUpdate.location = updatedPost.location;
 
-  await eventToUpdate.save();
+  await postToUpdate.save();
 
-  return redirect(`/event/${params.eventId}`);
+  return redirect(`/post/${params.postId}`);
 }
