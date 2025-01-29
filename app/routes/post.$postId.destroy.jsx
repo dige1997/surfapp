@@ -13,12 +13,12 @@ export async function action({ request, params }) {
     failureRedirect: "/signin",
   });
   // Delete the post
-  await mongoose.models.Event.findByIdAndDelete(params.eventId);
+  await mongoose.models.Post.findByIdAndDelete(params.postId);
 
   return new Response(null, {
     status: 302,
     headers: {
-      location: "/event",
+      location: "/post",
     },
   });
 }

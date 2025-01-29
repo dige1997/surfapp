@@ -146,7 +146,9 @@ export default function Profile() {
                 )}
               </p>
               <p className="mt-auto h-full font-bold">
-                {user?.hobbies.join(", ")}
+                {user?.hobbies?.length > 0
+                  ? user.hobbies.join(", ")
+                  : "No hobbies listed"}
               </p>
             </div>
           </div>
@@ -188,7 +190,11 @@ export default function Profile() {
                   </button>
                 )}
               </p>
-              <p>{user?.hobbies.join(", ")}</p>
+              <p className="mt-auto h-full font-bold">
+                {user?.hobbies?.length > 0
+                  ? user.hobbies.join(", ")
+                  : "No hobbies listed"}
+              </p>
             </div>
           </div>
         </div>

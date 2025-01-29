@@ -48,18 +48,19 @@ export default function UpdateProfile() {
     setDropdownOpen(!dropdownOpen);
   }
 
-  function handleCheckboxChange(event) {
-    const value = event.target.value;
-    setSelectedHobbies((prev) =>
-      prev.includes(value)
-        ? prev.filter((hobby) => hobby !== value)
-        : [...prev, value]
+  function handleCheckboxChange(post) {
+    const value = post.target.value;
+    setSelectedHobbies(
+      (prev) =>
+        prev.includes(value)
+          ? prev.filter((hobby) => hobby !== value) // Remove hobby
+          : [...prev, value] // Add hobby
     );
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (post) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(post.target)) {
         setDropdownOpen(false);
       }
     };
@@ -243,14 +244,14 @@ export async function action({ request }) {
       });
 
       if (response.ok) {
-        return redirect("/signin"); // Redirect to signin page after deletion
+        return redirect("/signin");
       } else {
         console.error("Error deleting user:", response.statusText);
-        return redirect("/error-page"); // Ensure this route is defined
+        return redirect("/error-page");
       }
     } catch (error) {
       console.error("Error deleting user:", error);
-      return redirect("/error-page"); // Ensure this route is defined
+      return redirect("/error-page");
     }
   } else {
     // Handling other form submissions
@@ -259,7 +260,7 @@ export async function action({ request }) {
     const lastName = formData.get("lastName");
     const mail = formData.get("mail");
     const password = formData.get("password");
-    const hobbies = formData.getAll("hobbies");
+    const newHobbies = formData.getAll("hobbies"); // Get updated hobbies
     const avatarUrl = formData.get("avatarUrl");
     const aboutMe = formData.get("aboutMe");
 
@@ -270,18 +271,26 @@ export async function action({ request }) {
 
       if (!userToUpdate) {
         console.error("User not found");
-        return redirect("/error-page"); // Ensure this route is defined
+        return redirect("/error-page");
       }
 
-      // Check if the email is already in use by another user
+      // Ensure the email is not already in use by another user
       const existingUser = await mongoose.models.User.findOne({ mail });
       if (
         existingUser &&
         existingUser._id.toString() !== userToUpdate._id.toString()
       ) {
         console.error("Email already in use");
-        return redirect("/error-page"); // Ensure this route is defined
+        return redirect("/error-page");
       }
+
+      // Merge the old hobbies with the new ones
+      const updatedHobbies = [
+        ...new Set([
+          ...userToUpdate.hobbies, // Preserve existing hobbies
+          ...newHobbies, // Add the new ones
+        ]),
+      ];
 
       // Update user details
       userToUpdate.name = name;
@@ -290,7 +299,7 @@ export async function action({ request }) {
       if (password) {
         userToUpdate.password = await hashPassword(password);
       }
-      userToUpdate.hobbies = hobbies;
+      userToUpdate.hobbies = updatedHobbies; // Update the hobbies list
       userToUpdate.avatarUrl = avatarUrl;
       userToUpdate.aboutMe = aboutMe;
 
@@ -301,7 +310,7 @@ export async function action({ request }) {
       }
     } catch (error) {
       console.error("Error updating user:", error);
-      return redirect("/error-page"); // Ensure this route is defined
+      return redirect("/error-page");
     }
   }
 }

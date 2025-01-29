@@ -209,8 +209,9 @@ export default function Post() {
         <div>
           {authUser?._id === post?.creator?._id && (
             <div className="flex py-4">
-              <Form action="update">
-                <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">
+              <Form action={`/post/${post._id}/update`}>
+                <input type="hidden" name="_action" value="update" />
+                <button className="ml-4 px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">
                   Update
                 </button>
               </Form>

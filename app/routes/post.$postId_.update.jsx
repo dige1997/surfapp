@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { Form } from "@remix-run/react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api"; // Use Marker instead of AdvancedMarkerElement
 import { authenticator } from "../services/auth.server";
 import mongoose from "mongoose";
 import { json, redirect } from "@remix-run/node";
-import { GoogleMapLoader } from "../components/GoogleMapLoader";
 
 const MAP_ID = "71f267d426ae7773";
 
@@ -74,22 +73,31 @@ export default function UpdateEvent() {
     }
   }, [location]);
 
-  // Handle marker creation and update
+  // Create the Marker after map loads
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !window.google) return;
 
-    if (!markerRef.current) {
-      // Create the marker if it doesn't exist
-      markerRef.current = new google.maps.Marker({
-        map: mapRef.current,
-        position: center,
-        title: "Selected Location",
-      });
-    } else {
-      // Update marker position if it exists
+    // Initialize the marker and set the position
+    const marker = new window.google.maps.Marker({
+      map: mapRef.current,
+      position: center,
+      title: "Selected Location",
+    });
+
+    markerRef.current = marker;
+
+    // Update marker position when center changes
+    if (markerRef.current) {
       markerRef.current.setPosition(center);
     }
-  }, [center]); // Trigger when center changes
+
+    return () => {
+      // Cleanup marker on unmount
+      if (markerRef.current) {
+        markerRef.current.setMap(null);
+      }
+    };
+  }, [center]);
 
   const parsedLocation = location
     ? { lat: location[0], lng: location[1] }
@@ -147,7 +155,7 @@ export default function UpdateEvent() {
           className="rounded-xl p-2 border-gray-400 border"
         />
 
-        <GoogleMapLoader apiKey={googleMapsApiKey}>
+        <LoadScript googleMapsApiKey={googleMapsApiKey}>
           <GoogleMap
             mapContainerStyle={{ width: "100%", height: "400px" }}
             center={parsedLocation}
@@ -160,10 +168,10 @@ export default function UpdateEvent() {
               });
             }}
           >
-            {/* Map overlay */}
+            {/* You can use the Marker here */}
+            <Marker position={parsedLocation} title="Selected Location" />
           </GoogleMap>
-        </GoogleMapLoader>
-
+        </LoadScript>
         <label htmlFor="image">Image URL</label>
         <input
           required

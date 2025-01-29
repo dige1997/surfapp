@@ -922,15 +922,16 @@ function UpdateProfile() {
   function toggleDropdown() {
     setDropdownOpen(!dropdownOpen);
   }
-  function handleCheckboxChange(event) {
-    let value = event.target.value;
+  function handleCheckboxChange(post) {
+    let value = post.target.value;
     setSelectedHobbies(
       (prev) => prev.includes(value) ? prev.filter((hobby) => hobby !== value) : [...prev, value]
+      // Add hobby
     );
   }
   useEffect2(() => {
-    let handleClickOutside = (event) => {
-      dropdownRef.current && !dropdownRef.current.contains(event.target) && setDropdownOpen(!1);
+    let handleClickOutside = (post) => {
+      dropdownRef.current && !dropdownRef.current.contains(post.target) && setDropdownOpen(!1);
     };
     return document.addEventListener("mousedown", handleClickOutside), () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -957,7 +958,7 @@ function UpdateProfile() {
   return /* @__PURE__ */ jsxDEV6("div", { className: "w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
     /* @__PURE__ */ jsxDEV6("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Profile" }, void 0, !1, {
       fileName: "app/routes/profile.$userId_.update.jsx",
-      lineNumber: 99,
+      lineNumber: 100,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV6(
@@ -968,7 +969,7 @@ function UpdateProfile() {
         children: [
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "name", children: " Name" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 107,
+            lineNumber: 108,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -985,14 +986,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 108,
+              lineNumber: 109,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 116,
+            lineNumber: 117,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1010,14 +1011,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 117,
+              lineNumber: 118,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "mail", children: "Mail" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 126,
+            lineNumber: 127,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1034,14 +1035,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 127,
+              lineNumber: 128,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "password", children: "New Password" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 135,
+            lineNumber: 136,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1057,14 +1058,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 136,
+              lineNumber: 137,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "aboutMe", children: "About Me" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 143,
+            lineNumber: 144,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1081,14 +1082,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 144,
+              lineNumber: 145,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "avatarUrl", children: "Avatar URL" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 152,
+            lineNumber: 153,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1106,14 +1107,14 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 153,
+              lineNumber: 154,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 162,
+            lineNumber: 163,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1130,20 +1131,20 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 163,
+              lineNumber: 164,
               columnNumber: 9
             },
             this
           ),
           /* @__PURE__ */ jsxDEV6("label", { children: "Select your hobbies:" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 171,
+            lineNumber: 172,
             columnNumber: 9
           }, this),
           selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV6("div", { className: "mb-2", children: [
             /* @__PURE__ */ jsxDEV6("span", { children: "Selected hobbies:" }, void 0, !1, {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 174,
+              lineNumber: 175,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ jsxDEV6("ul", { className: "list-inline", children: selectedHobbies.map((hobby) => /* @__PURE__ */ jsxDEV6(
@@ -1156,18 +1157,18 @@ function UpdateProfile() {
               !1,
               {
                 fileName: "app/routes/profile.$userId_.update.jsx",
-                lineNumber: 177,
+                lineNumber: 178,
                 columnNumber: 17
               },
               this
             )) }, void 0, !1, {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 175,
+              lineNumber: 176,
               columnNumber: 13
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 173,
+            lineNumber: 174,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ jsxDEV6("div", { className: "relative", ref: dropdownRef, children: [
@@ -1183,7 +1184,7 @@ function UpdateProfile() {
               !1,
               {
                 fileName: "app/routes/profile.$userId_.update.jsx",
-                lineNumber: 188,
+                lineNumber: 189,
                 columnNumber: 11
               },
               this
@@ -1202,7 +1203,7 @@ function UpdateProfile() {
                 !1,
                 {
                   fileName: "app/routes/profile.$userId_.update.jsx",
-                  lineNumber: 199,
+                  lineNumber: 200,
                   columnNumber: 19
                 },
                 this
@@ -1210,21 +1211,21 @@ function UpdateProfile() {
               sport
             ] }, sport, !0, {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 198,
+              lineNumber: 199,
               columnNumber: 17
             }, this)) }, void 0, !1, {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 196,
+              lineNumber: 197,
               columnNumber: 13
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 187,
+            lineNumber: 188,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6("button", { className: "bg-accent hover:bg-primary hover:text-background p-2 rounded-lg mt-4", children: "Update" }, void 0, !1, {
             fileName: "app/routes/profile.$userId_.update.jsx",
-            lineNumber: 212,
+            lineNumber: 213,
             columnNumber: 9
           }, this),
           /* @__PURE__ */ jsxDEV6(
@@ -1239,7 +1240,7 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 215,
+              lineNumber: 216,
               columnNumber: 9
             },
             this
@@ -1256,7 +1257,7 @@ function UpdateProfile() {
             !1,
             {
               fileName: "app/routes/profile.$userId_.update.jsx",
-              lineNumber: 222,
+              lineNumber: 223,
               columnNumber: 9
             },
             this
@@ -1267,14 +1268,14 @@ function UpdateProfile() {
       !0,
       {
         fileName: "app/routes/profile.$userId_.update.jsx",
-        lineNumber: 103,
+        lineNumber: 104,
         columnNumber: 7
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/profile.$userId_.update.jsx",
-    lineNumber: 98,
+    lineNumber: 99,
     columnNumber: 5
   }, this);
 }
@@ -1292,7 +1293,7 @@ async function action({ request }) {
       return console.error("Error deleting user:", error), redirect("/error-page");
     }
   else {
-    let formData = new URLSearchParams(await request.text()), name = formData.get("name"), lastName = formData.get("lastName"), mail = formData.get("mail"), password = formData.get("password"), hobbies = formData.getAll("hobbies"), avatarUrl = formData.get("avatarUrl"), aboutMe = formData.get("aboutMe");
+    let formData = new URLSearchParams(await request.text()), name = formData.get("name"), lastName = formData.get("lastName"), mail = formData.get("mail"), password = formData.get("password"), newHobbies = formData.getAll("hobbies"), avatarUrl = formData.get("avatarUrl"), aboutMe = formData.get("aboutMe");
     try {
       let userToUpdate = await mongoose4.models.User.findOne({
         _id: authUser._id
@@ -1302,7 +1303,15 @@ async function action({ request }) {
       let existingUser = await mongoose4.models.User.findOne({ mail });
       if (existingUser && existingUser._id.toString() !== userToUpdate._id.toString())
         return console.error("Email already in use"), redirect("/error-page");
-      userToUpdate.name = name, userToUpdate.lastname = lastName, userToUpdate.mail = mail, password && (userToUpdate.password = await hashPassword(password)), userToUpdate.hobbies = hobbies, userToUpdate.avatarUrl = avatarUrl, userToUpdate.aboutMe = aboutMe;
+      let updatedHobbies = [
+        .../* @__PURE__ */ new Set([
+          ...userToUpdate.hobbies,
+          // Preserve existing hobbies
+          ...newHobbies
+          // Add the new ones
+        ])
+      ];
+      userToUpdate.name = name, userToUpdate.lastname = lastName, userToUpdate.mail = mail, password && (userToUpdate.password = await hashPassword(password)), userToUpdate.hobbies = updatedHobbies, userToUpdate.avatarUrl = avatarUrl, userToUpdate.aboutMe = aboutMe;
       let updatedUser = await userToUpdate.save();
       if (updatedUser)
         return redirect(`/profile/${updatedUser._id}`);
@@ -1327,10 +1336,10 @@ async function loader3({ request }) {
 async function action2({ request, params }) {
   return await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
-  }), await mongoose5.models.Event.findByIdAndDelete(params.eventId), new Response(null, {
+  }), await mongoose5.models.Post.findByIdAndDelete(params.postId), new Response(null, {
     status: 302,
     headers: {
-      location: "/event"
+      location: "/post"
     }
   });
 }
@@ -1345,31 +1354,10 @@ __export(post_postId_update_exports, {
 import { useEffect as useEffect3, useRef as useRef3, useState as useState3 } from "react";
 import { useLoaderData as useLoaderData3, useNavigate as useNavigate2 } from "@remix-run/react";
 import { Form as Form2 } from "@remix-run/react";
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import mongoose6 from "mongoose";
 import { json as json2, redirect as redirect2 } from "@remix-run/node";
-
-// app/components/GoogleMapLoader.jsx
-import { useJsApiLoader } from "@react-google-maps/api";
 import { jsxDEV as jsxDEV7 } from "react/jsx-dev-runtime";
-var GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
-function GoogleMapLoader({ children }) {
-  let { isLoaded, loadError } = useJsApiLoader({
-    apiKey: GOOGLE_MAPS_API_KEY
-  });
-  return loadError ? /* @__PURE__ */ jsxDEV7("div", { children: "Error loading Google Maps" }, void 0, !1, {
-    fileName: "app/components/GoogleMapLoader.jsx",
-    lineNumber: 11,
-    columnNumber: 12
-  }, this) : isLoaded ? children : /* @__PURE__ */ jsxDEV7("div", { children: "Loading Google Maps..." }, void 0, !1, {
-    fileName: "app/components/GoogleMapLoader.jsx",
-    lineNumber: 15,
-    columnNumber: 12
-  }, this);
-}
-
-// app/routes/post.$postId_.update.jsx
-import { jsxDEV as jsxDEV8 } from "react/jsx-dev-runtime";
 var MAP_ID = "71f267d426ae7773";
 async function loader4({ request, params }) {
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY, user = await authenticator.isAuthenticated(request, {
@@ -1396,32 +1384,37 @@ function UpdateEvent() {
       typeof lat == "number" && typeof lng == "number" ? mapRef.current.panTo({ lat, lng }) : console.error("Invalid location:", location);
     }
   }, [location]), useEffect3(() => {
-    mapRef.current && (markerRef.current ? markerRef.current.setPosition(center) : markerRef.current = new google.maps.Marker({
+    if (!mapRef.current || !window.google)
+      return;
+    let marker = new window.google.maps.Marker({
       map: mapRef.current,
       position: center,
       title: "Selected Location"
-    }));
+    });
+    return markerRef.current = marker, markerRef.current && markerRef.current.setPosition(center), () => {
+      markerRef.current && markerRef.current.setMap(null);
+    };
   }, [center]);
   let parsedLocation = location ? { lat: location[0], lng: location[1] } : { lat: 41.0082, lng: 28.9784 };
-  return /* @__PURE__ */ jsxDEV8("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
-    /* @__PURE__ */ jsxDEV8("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Post" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV7("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
+    /* @__PURE__ */ jsxDEV7("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Update Post" }, void 0, !1, {
       fileName: "app/routes/post.$postId_.update.jsx",
-      lineNumber: 100,
+      lineNumber: 108,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV8(
+    /* @__PURE__ */ jsxDEV7(
       Form2,
       {
         id: "post-form",
         method: "post",
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 108,
+            lineNumber: 116,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "input",
             {
               required: !0,
@@ -1436,17 +1429,17 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 109,
+              lineNumber: 117,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 119,
+            lineNumber: 127,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "textarea",
             {
               required: !0,
@@ -1460,17 +1453,17 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 120,
+              lineNumber: 128,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 129,
+            lineNumber: 137,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "input",
             {
               required: !0,
@@ -1484,17 +1477,17 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 130,
+              lineNumber: 138,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 139,
+            lineNumber: 147,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "input",
             {
               id: "location",
@@ -1509,12 +1502,12 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 140,
+              lineNumber: 148,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8(GoogleMapLoader, { apiKey: googleMapsApiKey2, children: /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(LoadScript, { googleMapsApiKey: googleMapsApiKey2, children: /* @__PURE__ */ jsxDEV7(
             GoogleMap,
             {
               mapContainerStyle: { width: "100%", height: "400px" },
@@ -1525,27 +1518,32 @@ function UpdateEvent() {
                 mapRef.current = map, map.setOptions({
                   mapId: MAP_ID
                 });
-              }
+              },
+              children: /* @__PURE__ */ jsxDEV7(Marker, { position: parsedLocation, title: "Selected Location" }, void 0, !1, {
+                fileName: "app/routes/post.$postId_.update.jsx",
+                lineNumber: 172,
+                columnNumber: 13
+              }, this)
             },
             void 0,
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 151,
+              lineNumber: 159,
               columnNumber: 11
             },
             this
           ) }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 150,
+            lineNumber: 158,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 167,
+            lineNumber: 175,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "input",
             {
               required: !0,
@@ -1561,17 +1559,17 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 168,
+              lineNumber: 176,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV7("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 179,
+            lineNumber: 187,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7(
             "img",
             {
               id: "image-preview",
@@ -1583,13 +1581,13 @@ function UpdateEvent() {
             !1,
             {
               fileName: "app/routes/post.$postId_.update.jsx",
-              lineNumber: 180,
+              lineNumber: 188,
               columnNumber: 9
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between", children: [
-            /* @__PURE__ */ jsxDEV8(
+          /* @__PURE__ */ jsxDEV7("div", { className: "flex justify-between", children: [
+            /* @__PURE__ */ jsxDEV7(
               "button",
               {
                 type: "submit",
@@ -1600,12 +1598,12 @@ function UpdateEvent() {
               !1,
               {
                 fileName: "app/routes/post.$postId_.update.jsx",
-                lineNumber: 188,
+                lineNumber: 196,
                 columnNumber: 11
               },
               this
             ),
-            /* @__PURE__ */ jsxDEV8(
+            /* @__PURE__ */ jsxDEV7(
               "button",
               {
                 type: "button",
@@ -1617,14 +1615,14 @@ function UpdateEvent() {
               !1,
               {
                 fileName: "app/routes/post.$postId_.update.jsx",
-                lineNumber: 194,
+                lineNumber: 202,
                 columnNumber: 11
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/post.$postId_.update.jsx",
-            lineNumber: 187,
+            lineNumber: 195,
             columnNumber: 9
           }, this)
         ]
@@ -1633,14 +1631,14 @@ function UpdateEvent() {
       !0,
       {
         fileName: "app/routes/post.$postId_.update.jsx",
-        lineNumber: 103,
+        lineNumber: 111,
         columnNumber: 7
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/post.$postId_.update.jsx",
-    lineNumber: 99,
+    lineNumber: 107,
     columnNumber: 5
   }, this);
 }
@@ -1669,7 +1667,7 @@ import mongoose7 from "mongoose";
 // app/components/EventCard.jsx
 import { useEffect as useEffect4, useState as useState4 } from "react";
 import axios from "axios";
-import { jsxDEV as jsxDEV9 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV8 } from "react/jsx-dev-runtime";
 function EventCard({ post, onCityUpdate, apiKey }) {
   let [city, setCity] = useState4("Fetching..."), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     if (!apiKey) {
@@ -1698,8 +1696,8 @@ function EventCard({ post, onCityUpdate, apiKey }) {
       !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", post.location), setCity("Invalid location data"));
     } else
       setCity("No location available");
-  }, [post.location]), /* @__PURE__ */ jsxDEV9("article", { className: "flex my-2 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg", children: [
-    /* @__PURE__ */ jsxDEV9(
+  }, [post.location]), /* @__PURE__ */ jsxDEV8("article", { className: "flex my-2 flex-col md:flex-row w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg", children: [
+    /* @__PURE__ */ jsxDEV8(
       "div",
       {
         className: "md:w-1/3 h-48 md:h-auto bg-cover bg-center ",
@@ -1716,14 +1714,14 @@ function EventCard({ post, onCityUpdate, apiKey }) {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col w-full p-4", children: [
-      /* @__PURE__ */ jsxDEV9("div", { className: "flex justify-between items-start", children: [
-        /* @__PURE__ */ jsxDEV9("h2", { className: "text-2xl font-bold max-w-80 text-gray-800 truncate", children: post.title }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV8("div", { className: "flex flex-col w-full p-4", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-start", children: [
+        /* @__PURE__ */ jsxDEV8("h2", { className: "text-2xl font-bold max-w-80 text-gray-800 truncate", children: post.title }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 77,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV9("span", { className: "text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded", children: city }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV8("span", { className: "text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded", children: city }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 80,
           columnNumber: 11
@@ -1733,7 +1731,7 @@ function EventCard({ post, onCityUpdate, apiKey }) {
         lineNumber: 76,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV9("p", { className: "text-gray-500 mt-1 text-sm", children: [
+      /* @__PURE__ */ jsxDEV8("p", { className: "text-gray-500 mt-1 text-sm", children: [
         "Created by ",
         post?.creator?.name
       ] }, void 0, !0, {
@@ -1741,9 +1739,9 @@ function EventCard({ post, onCityUpdate, apiKey }) {
         lineNumber: 84,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV9("div", { className: "flex flex-col md:flex-row justify-between items-start md:items-center mt-4", children: /* @__PURE__ */ jsxDEV9("div", { children: [
-        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm text-gray-600", children: [
-          /* @__PURE__ */ jsxDEV9("span", { className: "font-semibold", children: "Date:" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex flex-col md:flex-row justify-between items-start md:items-center mt-4", children: /* @__PURE__ */ jsxDEV8("div", { children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-sm text-gray-600", children: [
+          /* @__PURE__ */ jsxDEV8("span", { className: "font-semibold", children: "Date:" }, void 0, !1, {
             fileName: "app/components/EventCard.jsx",
             lineNumber: 90,
             columnNumber: 15
@@ -1755,8 +1753,8 @@ function EventCard({ post, onCityUpdate, apiKey }) {
           lineNumber: 89,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm text-gray-600 mt-1", children: [
-          /* @__PURE__ */ jsxDEV9("span", { className: "font-semibold", children: "Location:" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-sm text-gray-600 mt-1", children: [
+          /* @__PURE__ */ jsxDEV8("span", { className: "font-semibold", children: "Location:" }, void 0, !1, {
             fileName: "app/components/EventCard.jsx",
             lineNumber: 94,
             columnNumber: 15
@@ -1777,13 +1775,13 @@ function EventCard({ post, onCityUpdate, apiKey }) {
         lineNumber: 87,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV9("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsxDEV9("h3", { className: "font-semibold text-gray-700 mb-1", children: "Description:" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV8("div", { className: "mt-4", children: [
+        /* @__PURE__ */ jsxDEV8("h3", { className: "font-semibold text-gray-700 mb-1", children: "Description:" }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 99,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm text-gray-600 line-clamp-3", children: post.description || "No description provided." }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-sm text-gray-600 line-clamp-3", children: post.description || "No description provided." }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 100,
           columnNumber: 11
@@ -1793,8 +1791,8 @@ function EventCard({ post, onCityUpdate, apiKey }) {
         lineNumber: 98,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV9("div", { className: "mt-4 flex justify-between items-center", children: [
-        /* @__PURE__ */ jsxDEV9("p", { className: "text-sm font-semibold text-gray-700", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: "mt-4 flex justify-between items-center", children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-sm font-semibold text-gray-700", children: [
           "Likes: ",
           post.likes?.length || 0
         ] }, void 0, !0, {
@@ -1802,7 +1800,7 @@ function EventCard({ post, onCityUpdate, apiKey }) {
           lineNumber: 105,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV9("button", { className: "text-sm text-blue-500 hover:underline", children: "View Details" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV8("button", { className: "text-sm text-blue-500 hover:underline", children: "View Details" }, void 0, !1, {
           fileName: "app/components/EventCard.jsx",
           lineNumber: 108,
           columnNumber: 11
@@ -1826,7 +1824,7 @@ function EventCard({ post, onCityUpdate, apiKey }) {
 
 // app/routes/userProfile.$userId.jsx
 import { Link } from "react-router-dom";
-import { Fragment, jsxDEV as jsxDEV10 } from "react/jsx-dev-runtime";
+import { Fragment, jsxDEV as jsxDEV9 } from "react/jsx-dev-runtime";
 async function loader5({ request, params }) {
   let authUser = await authenticator.isAuthenticated(request);
   if (!authUser)
@@ -1874,10 +1872,10 @@ function UserProfile() {
   }, toggleAboutMePopup = () => {
     setShowFullAboutMe(!showFullAboutMe);
   };
-  return /* @__PURE__ */ jsxDEV10("div", { className: "container mx-auto p-6", children: [
-    /* @__PURE__ */ jsxDEV10("div", { className: "bg-white shadow-md rounded-lg p-8", children: [
-      /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center space-x-4 mb-6", children: [
-        /* @__PURE__ */ jsxDEV10(
+  return /* @__PURE__ */ jsxDEV9("div", { className: "container mx-auto p-6", children: [
+    /* @__PURE__ */ jsxDEV9("div", { className: "bg-white shadow-md rounded-lg p-8", children: [
+      /* @__PURE__ */ jsxDEV9("div", { className: "flex items-center space-x-4 mb-6", children: [
+        /* @__PURE__ */ jsxDEV9(
           "div",
           {
             className: "w-20 h-20 rounded-full bg-gray-300",
@@ -1895,7 +1893,7 @@ function UserProfile() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV10("div", { children: /* @__PURE__ */ jsxDEV10("h1", { className: "text-2xl font-semibold", children: userProfile.name }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV9("div", { children: /* @__PURE__ */ jsxDEV9("h1", { className: "text-2xl font-semibold", children: userProfile.name }, void 0, !1, {
           fileName: "app/routes/userProfile.$userId.jsx",
           lineNumber: 125,
           columnNumber: 13
@@ -1909,11 +1907,11 @@ function UserProfile() {
         lineNumber: 116,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV10("div", { className: "flex justify-between mb-6", children: [
-        /* @__PURE__ */ jsxDEV10("p", { className: "text-lg", children: [
+      /* @__PURE__ */ jsxDEV9("div", { className: "flex justify-between mb-6", children: [
+        /* @__PURE__ */ jsxDEV9("p", { className: "text-lg", children: [
           followersCount,
           " ",
-          /* @__PURE__ */ jsxDEV10("span", { className: "text-gray-500", children: "Followers" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV9("span", { className: "text-gray-500", children: "Followers" }, void 0, !1, {
             fileName: "app/routes/userProfile.$userId.jsx",
             lineNumber: 131,
             columnNumber: 30
@@ -1923,10 +1921,10 @@ function UserProfile() {
           lineNumber: 130,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV10("p", { className: "text-lg", children: [
+        /* @__PURE__ */ jsxDEV9("p", { className: "text-lg", children: [
           userProfile.following.length,
           " ",
-          /* @__PURE__ */ jsxDEV10("span", { className: "text-gray-500", children: "Following" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV9("span", { className: "text-gray-500", children: "Following" }, void 0, !1, {
             fileName: "app/routes/userProfile.$userId.jsx",
             lineNumber: 135,
             columnNumber: 13
@@ -1941,15 +1939,15 @@ function UserProfile() {
         lineNumber: 129,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV10("div", { children: [
-        /* @__PURE__ */ jsxDEV10("p", { className: "text-lg font-semibold", children: "About Me" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV9("div", { children: [
+        /* @__PURE__ */ jsxDEV9("p", { className: "text-lg font-semibold", children: "About Me" }, void 0, !1, {
           fileName: "app/routes/userProfile.$userId.jsx",
           lineNumber: 139,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV10("p", { children: userProfile.aboutMe ? /* @__PURE__ */ jsxDEV10(Fragment, { children: [
+        /* @__PURE__ */ jsxDEV9("p", { children: userProfile.aboutMe ? /* @__PURE__ */ jsxDEV9(Fragment, { children: [
           showFullAboutMe ? userProfile.aboutMe : `${userProfile.aboutMe.slice(0, 200)} `,
-          /* @__PURE__ */ jsxDEV10(
+          /* @__PURE__ */ jsxDEV9(
             "button",
             {
               onClick: toggleAboutMePopup,
@@ -1974,7 +1972,7 @@ function UserProfile() {
           lineNumber: 140,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV10("p", { className: "mt-auto h-full font-bold", children: authUser?.hobbies?.join(", ") }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV9("p", { className: "mt-auto h-full font-bold", children: authUser?.hobbies?.join(", ") }, void 0, !1, {
           fileName: "app/routes/userProfile.$userId.jsx",
           lineNumber: 159,
           columnNumber: 11
@@ -1984,7 +1982,7 @@ function UserProfile() {
         lineNumber: 138,
         columnNumber: 9
       }, this),
-      authUser && authUser._id !== userProfile._id && /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center space-x-4", children: isFollowing ? /* @__PURE__ */ jsxDEV10(
+      authUser && authUser._id !== userProfile._id && /* @__PURE__ */ jsxDEV9("div", { className: "flex items-center space-x-4", children: isFollowing ? /* @__PURE__ */ jsxDEV9(
         "button",
         {
           onClick: () => handleFollowAction("unfollow"),
@@ -1999,7 +1997,7 @@ function UserProfile() {
           columnNumber: 15
         },
         this
-      ) : /* @__PURE__ */ jsxDEV10(
+      ) : /* @__PURE__ */ jsxDEV9(
         "button",
         {
           onClick: () => handleFollowAction("follow"),
@@ -2024,13 +2022,13 @@ function UserProfile() {
       lineNumber: 115,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV10("div", { className: "mt-6", children: [
-      /* @__PURE__ */ jsxDEV10("h2", { className: "text-xl font-semibold mb-4", children: "Created Posts" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV9("div", { className: "mt-6", children: [
+      /* @__PURE__ */ jsxDEV9("h2", { className: "text-xl font-semibold mb-4", children: "Created Posts" }, void 0, !1, {
         fileName: "app/routes/userProfile.$userId.jsx",
         lineNumber: 186,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV10("div", { className: "", children: posts.map((post) => /* @__PURE__ */ jsxDEV10(Link, { to: `/post/${post._id}`, children: /* @__PURE__ */ jsxDEV10(
+      /* @__PURE__ */ jsxDEV9("div", { className: "", children: posts.map((post) => /* @__PURE__ */ jsxDEV9(Link, { to: `/post/${post._id}`, children: /* @__PURE__ */ jsxDEV9(
         EventCard,
         {
           post,
@@ -2083,14 +2081,14 @@ import { useEffect as useEffect5, useState as useState6 } from "react";
 
 // app/components/IframeDisplay.jsx
 import "react";
-import { Fragment as Fragment2, jsxDEV as jsxDEV11 } from "react/jsx-dev-runtime";
+import { Fragment as Fragment2, jsxDEV as jsxDEV10 } from "react/jsx-dev-runtime";
 function IframeDisplay({ activeTab, weatherData }) {
-  return /* @__PURE__ */ jsxDEV11(Fragment2, { children: [
-    activeTab === "wind" && weatherData && /* @__PURE__ */ jsxDEV11(
+  return /* @__PURE__ */ jsxDEV10(Fragment2, { children: [
+    activeTab === "wind" && weatherData && /* @__PURE__ */ jsxDEV10(
       "iframe",
       {
         title: "Windy Map",
-        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
+        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=10&overlay=wind&metricTemp=\xB0C&metricWind=m/s`,
         className: "w-full rounded-md  h-96",
         frameBorder: "0"
       },
@@ -2103,11 +2101,11 @@ function IframeDisplay({ activeTab, weatherData }) {
       },
       this
     ),
-    activeTab === "swell" && weatherData && /* @__PURE__ */ jsxDEV11(
+    activeTab === "swell" && weatherData && /* @__PURE__ */ jsxDEV10(
       "iframe",
       {
         title: "Swell Map",
-        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=swell1&product=ecmwfWaves&level=surface`,
+        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=10&overlay=swell1&product=ecmwfWaves&level=surface`,
         className: "w-full  rounded-md r h-96",
         frameBorder: "0"
       },
@@ -2120,11 +2118,11 @@ function IframeDisplay({ activeTab, weatherData }) {
       },
       this
     ),
-    activeTab === "temp" && weatherData && /* @__PURE__ */ jsxDEV11(
+    activeTab === "temp" && weatherData && /* @__PURE__ */ jsxDEV10(
       "iframe",
       {
         title: "Sea Temperature",
-        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=5&overlay=sst&product=ecmwfAnalysis&level=surface`,
+        src: `https://embed.windy.com/embed.html?lat=${weatherData.city.coord.lat}&lon=${weatherData.city.coord.lon}&zoom=10&overlay=sst&product=ecmwfAnalysis&level=surface`,
         className: "w-full  rounded-md  h-96",
         frameBorder: "0"
       },
@@ -2146,7 +2144,7 @@ function IframeDisplay({ activeTab, weatherData }) {
 
 // app/components/DashboardData.jsx
 import "@remix-run/react";
-import { jsxDEV as jsxDEV12 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV11 } from "react/jsx-dev-runtime";
 var DashboardData = ({ apiKey }) => {
   let [weatherData, setWeatherData] = useState6(null), [city, setCity] = useState6("Loading..."), [country, setCountry] = useState6(""), [inputCity, setInputCity] = useState6(""), [error, setError] = useState6(""), [loading, setLoading] = useState6(!0), [activeTab, setActiveTab] = useState6("wind"), [isOffline, setIsOffline] = useState6(!1);
   useEffect5(() => {
@@ -2232,13 +2230,13 @@ var DashboardData = ({ apiKey }) => {
     if (degrees >= 292.5 && degrees < 337.5)
       return "NW";
   };
-  return /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-col p-4", children: [
-    isOffline && /* @__PURE__ */ jsxDEV12("div", { className: "bg-yellow-200 text-yellow-800 p-4 mb-4 rounded-lg", children: "\u26A0\uFE0F You are offline. Displayed data may be outdated." }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-col p-4", children: [
+    isOffline && /* @__PURE__ */ jsxDEV11("div", { className: "bg-yellow-200 text-yellow-800 p-4 mb-4 rounded-lg", children: "\u26A0\uFE0F You are offline. Displayed data may be outdated." }, void 0, !1, {
       fileName: "app/components/DashboardData.jsx",
       lineNumber: 161,
       columnNumber: 9
     }, this),
-    loading ? /* @__PURE__ */ jsxDEV12("div", { className: "loader-container", children: /* @__PURE__ */ jsxDEV12("div", { className: "spinner" }, void 0, !1, {
+    loading ? /* @__PURE__ */ jsxDEV11("div", { className: "loader-container", children: /* @__PURE__ */ jsxDEV11("div", { className: "spinner" }, void 0, !1, {
       fileName: "app/components/DashboardData.jsx",
       lineNumber: 168,
       columnNumber: 11
@@ -2246,9 +2244,9 @@ var DashboardData = ({ apiKey }) => {
       fileName: "app/components/DashboardData.jsx",
       lineNumber: 167,
       columnNumber: 9
-    }, this) : /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-col md:p-4", id: "outer-container", children: [
-      /* @__PURE__ */ jsxDEV12("form", { className: "flex justify-center mt-10", onSubmit: handleSearch, children: [
-        /* @__PURE__ */ jsxDEV12(
+    }, this) : /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-col md:p-4", id: "outer-container", children: [
+      /* @__PURE__ */ jsxDEV11("form", { className: "flex justify-center mt-10", onSubmit: handleSearch, children: [
+        /* @__PURE__ */ jsxDEV11(
           "input",
           {
             type: "text",
@@ -2266,7 +2264,7 @@ var DashboardData = ({ apiKey }) => {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV12("button", { className: "bg-slate-50 rounded-r-2xl p-2", type: "submit", children: /* @__PURE__ */ jsxDEV12(
+        /* @__PURE__ */ jsxDEV11("button", { className: "bg-slate-50 rounded-r-2xl p-2", type: "submit", children: /* @__PURE__ */ jsxDEV11(
           "svg",
           {
             className: "h-4 w-4",
@@ -2280,12 +2278,12 @@ var DashboardData = ({ apiKey }) => {
             strokeLinecap: "round",
             strokeLinejoin: "round",
             children: [
-              /* @__PURE__ */ jsxDEV12("circle", { cx: "11", cy: "11", r: "8" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("circle", { cx: "11", cy: "11", r: "8" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 193,
                 columnNumber: 17
               }, this),
-              /* @__PURE__ */ jsxDEV12("line", { x1: "21", y1: "21", x2: "16.65", y2: "16.65" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("line", { x1: "21", y1: "21", x2: "16.65", y2: "16.65" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 194,
                 columnNumber: 17
@@ -2310,10 +2308,10 @@ var DashboardData = ({ apiKey }) => {
         lineNumber: 172,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV12("div", { className: "mt-10 p-4 flex flex-col justify-between items-center rounded-xl shadow-md h-full", children: [
-        /* @__PURE__ */ jsxDEV12("div", { className: "flex gap-10 pb-8 px-8 md:w-3/5 md:justify-between md:flex-row flex-col", children: [
-          /* @__PURE__ */ jsxDEV12("div", { children: [
-            /* @__PURE__ */ jsxDEV12("h1", { className: "text-5xl font-semibold mb-6 text-gray-800", children: [
+      /* @__PURE__ */ jsxDEV11("div", { className: "mt-10 p-4 flex flex-col justify-between items-center rounded-xl shadow-md h-full", children: [
+        /* @__PURE__ */ jsxDEV11("div", { className: "flex gap-10 pb-8 px-8 md:w-3/5 md:justify-between md:flex-row flex-col", children: [
+          /* @__PURE__ */ jsxDEV11("div", { children: [
+            /* @__PURE__ */ jsxDEV11("h1", { className: "text-5xl font-semibold mb-6 text-gray-800", children: [
               city,
               ", ",
               country
@@ -2322,8 +2320,8 @@ var DashboardData = ({ apiKey }) => {
               lineNumber: 201,
               columnNumber: 17
             }, this),
-            /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-row items-center ", children: [
-              /* @__PURE__ */ jsxDEV12("p", { className: "text-6xl", children: weatherData && ((description) => {
+            /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-row items-center ", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "text-6xl", children: weatherData && ((description) => {
                 let lowerCaseDescription = description.toLowerCase();
                 return lowerCaseDescription.includes("clear") ? "\u2600\uFE0F" : lowerCaseDescription.includes("clouds") ? "\u2601\uFE0F" : lowerCaseDescription.includes("rain") ? "\u{1F327}\uFE0F" : lowerCaseDescription.includes("thunderstorm") ? "\u26C8\uFE0F" : lowerCaseDescription.includes("snow") ? "\u2744\uFE0F" : lowerCaseDescription.includes("mist") || lowerCaseDescription.includes("fog") ? "\u{1F32B}\uFE0F" : "\u{1F324}\uFE0F";
               })(
@@ -2333,7 +2331,7 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 205,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("h2", { className: "text-5xl ml-4 font-bold", children: [
+              /* @__PURE__ */ jsxDEV11("h2", { className: "text-5xl ml-4 font-bold", children: [
                 weatherData && Math.round(weatherData.list[0].main.temp),
                 "\xB0C"
               ] }, void 0, !0, {
@@ -2341,14 +2339,14 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 211,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("div", { className: "pl-2 leading-5 items-center", children: [
-                /* @__PURE__ */ jsxDEV12("div", { className: "flex-row flex gap-1", children: [
-                  /* @__PURE__ */ jsxDEV12("p", { children: "Min: " }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("div", { className: "pl-2 leading-5 items-center", children: [
+                /* @__PURE__ */ jsxDEV11("div", { className: "flex-row flex gap-1", children: [
+                  /* @__PURE__ */ jsxDEV11("p", { children: "Min: " }, void 0, !1, {
                     fileName: "app/components/DashboardData.jsx",
                     lineNumber: 216,
                     columnNumber: 23
                   }, this),
-                  /* @__PURE__ */ jsxDEV12("p", { children: [
+                  /* @__PURE__ */ jsxDEV11("p", { children: [
                     weatherData && Math.round(weatherData.list[0].main.temp_min),
                     "\xB0C"
                   ] }, void 0, !0, {
@@ -2361,13 +2359,13 @@ var DashboardData = ({ apiKey }) => {
                   lineNumber: 215,
                   columnNumber: 21
                 }, this),
-                /* @__PURE__ */ jsxDEV12("div", { className: "flex-row flex gap-1", children: [
-                  /* @__PURE__ */ jsxDEV12("p", { children: "Max: " }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV11("div", { className: "flex-row flex gap-1", children: [
+                  /* @__PURE__ */ jsxDEV11("p", { children: "Max: " }, void 0, !1, {
                     fileName: "app/components/DashboardData.jsx",
                     lineNumber: 224,
                     columnNumber: 23
                   }, this),
-                  /* @__PURE__ */ jsxDEV12("p", { children: [
+                  /* @__PURE__ */ jsxDEV11("p", { children: [
                     weatherData && Math.round(weatherData.list[0].main.temp_max),
                     "\xB0C"
                   ] }, void 0, !0, {
@@ -2390,7 +2388,7 @@ var DashboardData = ({ apiKey }) => {
               lineNumber: 204,
               columnNumber: 17
             }, this),
-            /* @__PURE__ */ jsxDEV12("p", { className: "text-xl text-gray-600", children: weatherData && weatherData.list[0].weather[0].description.toUpperCase() }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV11("p", { className: "text-xl text-gray-600", children: weatherData && weatherData.list[0].weather[0].description.toUpperCase() }, void 0, !1, {
               fileName: "app/components/DashboardData.jsx",
               lineNumber: 233,
               columnNumber: 17
@@ -2400,14 +2398,14 @@ var DashboardData = ({ apiKey }) => {
             lineNumber: 200,
             columnNumber: 15
           }, this),
-          /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-row gap-20 justify-center md:flex-row md:gap-4 text-center ", children: [
-            /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-col items-center", children: [
-              /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: "Wind" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-row gap-20 justify-center md:flex-row md:gap-4 text-center ", children: [
+            /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-col items-center", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "text-sm text-gray-600", children: "Wind" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 240,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "font-bold", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "font-bold", children: [
                 weatherData && Math.round(weatherData.list[0].wind.speed),
                 " ",
                 "m/s"
@@ -2416,12 +2414,12 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 241,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: "Gust" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("p", { className: "text-sm text-gray-600", children: "Gust" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 245,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "font-bold", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "font-bold", children: [
                 weatherData && Math.round(weatherData.list[0].wind.gust),
                 " ",
                 "m/s"
@@ -2430,9 +2428,9 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 246,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { "text-sm": !0, "text-gray-600": !0, children: [
+              /* @__PURE__ */ jsxDEV11("p", { "text-sm": !0, "text-gray-600": !0, children: [
                 "Wind ",
-                /* @__PURE__ */ jsxDEV12("br", {}, void 0, !1, {
+                /* @__PURE__ */ jsxDEV11("br", {}, void 0, !1, {
                   fileName: "app/components/DashboardData.jsx",
                   lineNumber: 251,
                   columnNumber: 26
@@ -2443,7 +2441,7 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 250,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "font-bold", children: weatherData && getWindDirection(weatherData.list[0].wind.deg) }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("p", { className: "font-bold", children: weatherData && getWindDirection(weatherData.list[0].wind.deg) }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 254,
                 columnNumber: 19
@@ -2453,13 +2451,13 @@ var DashboardData = ({ apiKey }) => {
               lineNumber: 239,
               columnNumber: 17
             }, this),
-            /* @__PURE__ */ jsxDEV12("div", { className: "flex flex-col items-center", children: [
-              /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: "Humidity" }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-col items-center", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "text-sm text-gray-600", children: "Humidity" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 260,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "font-bold", children: [
+              /* @__PURE__ */ jsxDEV11("p", { className: "font-bold", children: [
                 weatherData && weatherData.list[0].main.humidity,
                 "%"
               ] }, void 0, !0, {
@@ -2467,12 +2465,12 @@ var DashboardData = ({ apiKey }) => {
                 lineNumber: 261,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: "Sea level" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("p", { className: "text-sm text-gray-600", children: "Sea level" }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 264,
                 columnNumber: 19
               }, this),
-              /* @__PURE__ */ jsxDEV12("p", { className: "font-bold", children: weatherData && weatherData.list[0].main.sea_level }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV11("p", { className: "font-bold", children: weatherData && weatherData.list[0].main.sea_level }, void 0, !1, {
                 fileName: "app/components/DashboardData.jsx",
                 lineNumber: 265,
                 columnNumber: 19
@@ -2492,8 +2490,8 @@ var DashboardData = ({ apiKey }) => {
           lineNumber: 199,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV12("div", { className: "mt-10", children: [
-          /* @__PURE__ */ jsxDEV12(
+        /* @__PURE__ */ jsxDEV11("div", { className: "mt-10", children: [
+          /* @__PURE__ */ jsxDEV11(
             "button",
             {
               className: `${activeTab === "wind" ? "bg-blue-700" : "bg-blue-500"} text-white p-2 rounded-t-lg`,
@@ -2509,7 +2507,7 @@ var DashboardData = ({ apiKey }) => {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV12(
+          /* @__PURE__ */ jsxDEV11(
             "button",
             {
               className: `${activeTab === "swell" ? "bg-blue-700" : "bg-blue-500"} text-white p-2 rounded-t-lg`,
@@ -2525,7 +2523,7 @@ var DashboardData = ({ apiKey }) => {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV12(
+          /* @__PURE__ */ jsxDEV11(
             "button",
             {
               className: `${activeTab === "temp" ? "bg-blue-700" : "bg-blue-500"} text-white p-2 rounded-t-lg`,
@@ -2546,7 +2544,7 @@ var DashboardData = ({ apiKey }) => {
           lineNumber: 271,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV12(IframeDisplay, { activeTab, weatherData }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV11(IframeDisplay, { activeTab, weatherData }, void 0, !1, {
           fileName: "app/components/DashboardData.jsx",
           lineNumber: 297,
           columnNumber: 13
@@ -2561,7 +2559,7 @@ var DashboardData = ({ apiKey }) => {
       lineNumber: 171,
       columnNumber: 9
     }, this),
-    error && /* @__PURE__ */ jsxDEV12("p", { className: "text-red-600 mt-4", children: error }, void 0, !1, {
+    error && /* @__PURE__ */ jsxDEV11("p", { className: "text-red-600 mt-4", children: error }, void 0, !1, {
       fileName: "app/components/DashboardData.jsx",
       lineNumber: 301,
       columnNumber: 17
@@ -2577,7 +2575,7 @@ var DashboardData = ({ apiKey }) => {
 import { useEffect as useEffect6, useState as useState7 } from "react";
 import axios2 from "axios";
 import { useLoaderData as useLoaderData6 } from "@remix-run/react";
-import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV12 } from "react/jsx-dev-runtime";
 function EventCard2({ post }) {
   let [city, setCity] = useState7("Fetching..."), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData6(), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${googleMapsApiKey2}`;
@@ -2602,8 +2600,8 @@ function EventCard2({ post }) {
       !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : (console.error("Invalid coordinates:", post.location), setCity("Invalid location data"));
     } else
       setCity("No location available");
-  }, [post.location]), post ? /* @__PURE__ */ jsxDEV13("article", { className: "flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden", children: [
-    /* @__PURE__ */ jsxDEV13(
+  }, [post.location]), post ? /* @__PURE__ */ jsxDEV12("article", { className: "flex flex-col my-2 p-4 rounded-lg shadow-md w-full bg-white overflow-hidden", children: [
+    /* @__PURE__ */ jsxDEV12(
       "img",
       {
         className: "rounded-lg w-full h-48 object-cover",
@@ -2619,11 +2617,11 @@ function EventCard2({ post }) {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV13("div", { className: "mt-4 space-y-2", children: [
-      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
+    /* @__PURE__ */ jsxDEV12("div", { className: "mt-4 space-y-2", children: [
+      /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: [
         "Organized by:",
         " ",
-        /* @__PURE__ */ jsxDEV13("span", { className: "font-semibold text-gray-800", children: post?.creator?.name || "Unknown" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV12("span", { className: "font-semibold text-gray-800", children: post?.creator?.name || "Unknown" }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
           lineNumber: 78,
           columnNumber: 11
@@ -2633,15 +2631,15 @@ function EventCard2({ post }) {
         lineNumber: 76,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("h2", { className: "text-xl font-bold text-gray-900", children: post.title }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV12("h2", { className: "text-xl font-bold text-gray-900", children: post.title }, void 0, !1, {
         fileName: "app/components/EventListCards.jsx",
         lineNumber: 84,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
+      /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: [
         "\u{1F4C5} Date:",
         " ",
-        /* @__PURE__ */ jsxDEV13("span", { className: "font-medium", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV12("span", { className: "font-medium", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
           lineNumber: 89,
           columnNumber: 11
@@ -2651,9 +2649,9 @@ function EventCard2({ post }) {
         lineNumber: 87,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-600", children: [
+      /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-600", children: [
         "\u{1F4CD} Location: ",
-        /* @__PURE__ */ jsxDEV13("span", { className: "font-medium", children: city }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV12("span", { className: "font-medium", children: city }, void 0, !1, {
           fileName: "app/components/EventListCards.jsx",
           lineNumber: 96,
           columnNumber: 24
@@ -2663,12 +2661,12 @@ function EventCard2({ post }) {
         lineNumber: 95,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("p", { className: "text-sm text-gray-700 line-clamp-3", children: post.description || "No description available." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV12("p", { className: "text-sm text-gray-700 line-clamp-3", children: post.description || "No description available." }, void 0, !1, {
         fileName: "app/components/EventListCards.jsx",
         lineNumber: 100,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV13("p", { className: "mt-4 text-sm text-gray-800 font-medium flex items-center", children: [
+      /* @__PURE__ */ jsxDEV12("p", { className: "mt-4 text-sm text-gray-800 font-medium flex items-center", children: [
         "\u2764\uFE0F Likes: ",
         post.likes?.length || 0
       ] }, void 0, !0, {
@@ -2681,7 +2679,7 @@ function EventCard2({ post }) {
       lineNumber: 74,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV13("button", { className: "mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 rounded-lg", children: "View Details" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV12("button", { className: "mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 rounded-lg", children: "View Details" }, void 0, !1, {
       fileName: "app/components/EventListCards.jsx",
       lineNumber: 111,
       columnNumber: 7
@@ -2690,7 +2688,7 @@ function EventCard2({ post }) {
     fileName: "app/components/EventListCards.jsx",
     lineNumber: 66,
     columnNumber: 5
-  }, this) : /* @__PURE__ */ jsxDEV13("p", { children: "No post found." }, void 0, !1, {
+  }, this) : /* @__PURE__ */ jsxDEV12("p", { children: "No post found." }, void 0, !1, {
     fileName: "app/components/EventListCards.jsx",
     lineNumber: 62,
     columnNumber: 12
@@ -2698,7 +2696,7 @@ function EventCard2({ post }) {
 }
 
 // app/routes/dashboard._index.jsx
-import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
 var meta2 = () => [{ title: "Remix Post App" }], loader6 = async ({ request }) => {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/main-dashboard"
@@ -2713,13 +2711,13 @@ var meta2 = () => [{ title: "Remix Post App" }], loader6 = async ({ request }) =
 function Index() {
   let { mostLikedPosts, openWeatherApiKey, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData7(), [postCities, setPostCities] = useState8({});
   if (!mostLikedPosts || mostLikedPosts.length === 0)
-    return /* @__PURE__ */ jsxDEV14("div", { className: "page", children: [
-      /* @__PURE__ */ jsxDEV14(DashboardData_default, {}, void 0, !1, {
+    return /* @__PURE__ */ jsxDEV13("div", { className: "page", children: [
+      /* @__PURE__ */ jsxDEV13(DashboardData_default, {}, void 0, !1, {
         fileName: "app/routes/dashboard._index.jsx",
         lineNumber: 45,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV14("p", { children: "Signup to see posts." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV13("p", { children: "Signup to see posts." }, void 0, !1, {
         fileName: "app/routes/dashboard._index.jsx",
         lineNumber: 46,
         columnNumber: 9
@@ -2735,21 +2733,21 @@ function Index() {
       [postId]: city
     }));
   };
-  return /* @__PURE__ */ jsxDEV14("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV14(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV13("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV13(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
       fileName: "app/routes/dashboard._index.jsx",
       lineNumber: 61,
       columnNumber: 7
     }, this),
     " ",
-    /* @__PURE__ */ jsxDEV14("div", { className: "md:p-8 p-4", children: [
-      /* @__PURE__ */ jsxDEV14("h2", { className: "font-bold text-2xl", children: "Most liked posts" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV13("div", { className: "md:p-8 p-4", children: [
+      /* @__PURE__ */ jsxDEV13("h2", { className: "font-bold text-2xl", children: "Most liked posts" }, void 0, !1, {
         fileName: "app/routes/dashboard._index.jsx",
         lineNumber: 63,
         columnNumber: 9
       }, this),
-      mostLikedPosts.map((post) => /* @__PURE__ */ jsxDEV14(Link2, { className: "post-link", to: `/post/${post._id}`, children: [
-        /* @__PURE__ */ jsxDEV14("div", { className: "md:hidden w-full flex justify-center", children: /* @__PURE__ */ jsxDEV14(EventCard2, { post }, void 0, !1, {
+      mostLikedPosts.map((post) => /* @__PURE__ */ jsxDEV13(Link2, { className: "post-link", to: `/post/${post._id}`, children: [
+        /* @__PURE__ */ jsxDEV13("div", { className: "md:hidden w-full flex justify-center", children: /* @__PURE__ */ jsxDEV13(EventCard2, { post }, void 0, !1, {
           fileName: "app/routes/dashboard._index.jsx",
           lineNumber: 67,
           columnNumber: 15
@@ -2758,7 +2756,7 @@ function Index() {
           lineNumber: 66,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV14("div", { className: "hidden md:flex w-full justify-center", children: /* @__PURE__ */ jsxDEV14(
+        /* @__PURE__ */ jsxDEV13("div", { className: "hidden md:flex w-full justify-center", children: /* @__PURE__ */ jsxDEV13(
           EventCard,
           {
             post,
@@ -2806,7 +2804,7 @@ import { Form as Form3, useLoaderData as useLoaderData8 } from "@remix-run/react
 import mongoose9 from "mongoose";
 import { Link as Link3 } from "react-router-dom";
 import { useState as useState9 } from "react";
-import { Fragment as Fragment3, jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
+import { Fragment as Fragment3, jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 async function loader7({ request }) {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/signin"
@@ -2839,15 +2837,15 @@ function Profile() {
       type
     }));
   };
-  return /* @__PURE__ */ jsxDEV15("div", { className: "page flex flex-col justify-center m-auto p-4 md:w-4/6", children: [
-    /* @__PURE__ */ jsxDEV15("div", { className: "w-full flex flex-col justify-center m-auto my-8", children: [
-      /* @__PURE__ */ jsxDEV15("div", { className: "flex justify-between", children: [
-        /* @__PURE__ */ jsxDEV15("h1", { className: "font-semibold text-xl", children: "Profile" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV14("div", { className: "page flex flex-col justify-center m-auto p-4 md:w-4/6", children: [
+    /* @__PURE__ */ jsxDEV14("div", { className: "w-full flex flex-col justify-center m-auto my-8", children: [
+      /* @__PURE__ */ jsxDEV14("div", { className: "flex justify-between", children: [
+        /* @__PURE__ */ jsxDEV14("h1", { className: "font-semibold text-xl", children: "Profile" }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
           lineNumber: 72,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV15(Form3, { children: /* @__PURE__ */ jsxDEV15(Link3, { to: `/profile/${user._id}/update`, children: /* @__PURE__ */ jsxDEV15("button", { children: /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14(Form3, { children: /* @__PURE__ */ jsxDEV14(Link3, { to: `/profile/${user._id}/update`, children: /* @__PURE__ */ jsxDEV14("button", { children: /* @__PURE__ */ jsxDEV14(
           "svg",
           {
             width: "30px",
@@ -2855,8 +2853,8 @@ function Profile() {
             className: "hover:stroke-gray-400 stroke-black",
             viewBox: "0 0 24 24",
             xmlns: "http://www.w3.org/2000/svg",
-            children: /* @__PURE__ */ jsxDEV15("g", { id: "Complete", children: /* @__PURE__ */ jsxDEV15("g", { id: "edit", children: /* @__PURE__ */ jsxDEV15("g", { children: [
-              /* @__PURE__ */ jsxDEV15(
+            children: /* @__PURE__ */ jsxDEV14("g", { id: "Complete", children: /* @__PURE__ */ jsxDEV14("g", { id: "edit", children: /* @__PURE__ */ jsxDEV14("g", { children: [
+              /* @__PURE__ */ jsxDEV14(
                 "path",
                 {
                   d: "M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8",
@@ -2874,7 +2872,7 @@ function Profile() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV15(
+              /* @__PURE__ */ jsxDEV14(
                 "polygon",
                 {
                   fill: "none",
@@ -2932,9 +2930,9 @@ function Profile() {
         lineNumber: 71,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-row gap-4 md:justify-between justify-center", children: [
-        /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col", children: [
-          /* @__PURE__ */ jsxDEV15(
+      /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-row gap-4 md:justify-between justify-center", children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-col", children: [
+          /* @__PURE__ */ jsxDEV14(
             "div",
             {
               style: {
@@ -2952,13 +2950,13 @@ function Profile() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV15("div", { className: "py-2", children: [
-            /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: " " }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14("div", { className: "py-2", children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: " " }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 118,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV15("p", { children: user?.name }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV14("p", { children: user?.name }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 119,
               columnNumber: 15
@@ -2968,13 +2966,13 @@ function Profile() {
             lineNumber: 117,
             columnNumber: 13
           }, this),
-          /* @__PURE__ */ jsxDEV15("div", { children: [
-            /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: " " }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14("div", { children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: " " }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 122,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV15("p", { children: user?.lastname }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV14("p", { children: user?.lastname }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 123,
               columnNumber: 15
@@ -2984,13 +2982,13 @@ function Profile() {
             lineNumber: 121,
             columnNumber: 13
           }, this),
-          /* @__PURE__ */ jsxDEV15("div", { className: "py-2", children: [
-            /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: " " }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14("div", { className: "py-2", children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: " " }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 126,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV15("p", { children: user?.mail }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV14("p", { children: user?.mail }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
               lineNumber: 127,
               columnNumber: 15
@@ -3005,15 +3003,15 @@ function Profile() {
           lineNumber: 109,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV15("div", { className: "md:flex hidden flex-col w-full ", children: /* @__PURE__ */ jsxDEV15("div", { className: " md:flex hidden flex-col p-2", children: [
-          /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "About Me: " }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV14("div", { className: "md:flex hidden flex-col w-full ", children: /* @__PURE__ */ jsxDEV14("div", { className: " md:flex hidden flex-col p-2", children: [
+          /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: "About Me: " }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
             lineNumber: 132,
             columnNumber: 15
           }, this),
-          /* @__PURE__ */ jsxDEV15("p", { className: "", children: [
+          /* @__PURE__ */ jsxDEV14("p", { className: "", children: [
             user?.aboutMe ? user?.aboutMe.length > 100 ? `${user.aboutMe.slice(0, 100)}...` : user.aboutMe : "No about me information",
-            user?.aboutMe && user?.aboutMe.length > 100 && /* @__PURE__ */ jsxDEV15(
+            user?.aboutMe && user?.aboutMe.length > 100 && /* @__PURE__ */ jsxDEV14(
               "button",
               {
                 className: "text-blue-500 underline ml-2",
@@ -3034,7 +3032,7 @@ function Profile() {
             lineNumber: 133,
             columnNumber: 15
           }, this),
-          /* @__PURE__ */ jsxDEV15("p", { className: "mt-auto h-full font-bold", children: user?.hobbies.join(", ") }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14("p", { className: "mt-auto h-full font-bold", children: user?.hobbies?.length > 0 ? user.hobbies.join(", ") : "No hobbies listed" }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
             lineNumber: 148,
             columnNumber: 15
@@ -3048,22 +3046,22 @@ function Profile() {
           lineNumber: 130,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col", children: [
-          /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-row", children: [
-            /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-col", children: [
+          /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-row", children: [
+            /* @__PURE__ */ jsxDEV14(
               "div",
               {
                 className: "py-2 cursor-pointer",
                 onClick: () => togglePopup("followers"),
                 children: [
-                  /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "Followers " }, void 0, !1, {
+                  /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: "Followers " }, void 0, !1, {
                     fileName: "app/routes/profile.$userId.jsx",
-                    lineNumber: 159,
+                    lineNumber: 161,
                     columnNumber: 17
                   }, this),
-                  /* @__PURE__ */ jsxDEV15("p", { className: "flex justify-center", children: user.followers ? user.followers.length : 0 }, void 0, !1, {
+                  /* @__PURE__ */ jsxDEV14("p", { className: "flex justify-center", children: user.followers ? user.followers.length : 0 }, void 0, !1, {
                     fileName: "app/routes/profile.$userId.jsx",
-                    lineNumber: 160,
+                    lineNumber: 162,
                     columnNumber: 17
                   }, this)
                 ]
@@ -3072,25 +3070,25 @@ function Profile() {
               !0,
               {
                 fileName: "app/routes/profile.$userId.jsx",
-                lineNumber: 155,
+                lineNumber: 157,
                 columnNumber: 15
               },
               this
             ),
-            /* @__PURE__ */ jsxDEV15(
+            /* @__PURE__ */ jsxDEV14(
               "div",
               {
                 className: "p-2 cursor-pointer",
                 onClick: () => togglePopup("following"),
                 children: [
-                  /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "Following " }, void 0, !1, {
+                  /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: "Following " }, void 0, !1, {
                     fileName: "app/routes/profile.$userId.jsx",
-                    lineNumber: 168,
+                    lineNumber: 170,
                     columnNumber: 17
                   }, this),
-                  /* @__PURE__ */ jsxDEV15("p", { className: "flex justify-center", children: user.following ? user.following.length : 0 }, void 0, !1, {
+                  /* @__PURE__ */ jsxDEV14("p", { className: "flex justify-center", children: user.following ? user.following.length : 0 }, void 0, !1, {
                     fileName: "app/routes/profile.$userId.jsx",
-                    lineNumber: 169,
+                    lineNumber: 171,
                     columnNumber: 17
                   }, this)
                 ]
@@ -3099,25 +3097,25 @@ function Profile() {
               !0,
               {
                 fileName: "app/routes/profile.$userId.jsx",
-                lineNumber: 164,
+                lineNumber: 166,
                 columnNumber: 15
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 154,
+            lineNumber: 156,
             columnNumber: 13
           }, this),
-          /* @__PURE__ */ jsxDEV15("div", { className: " md:hidden flex flex-col ", children: [
-            /* @__PURE__ */ jsxDEV15("p", { className: "font-semibold", children: "About Me: " }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV14("div", { className: " md:hidden flex flex-col ", children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: "font-semibold", children: "About Me: " }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 175,
+              lineNumber: 177,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV15("p", { children: [
+            /* @__PURE__ */ jsxDEV14("p", { children: [
               user?.aboutMe ? user?.aboutMe.length > 100 ? `${user.aboutMe.slice(0, 100)}...` : user.aboutMe : "No about me information",
-              user?.aboutMe && user?.aboutMe.length > 100 && /* @__PURE__ */ jsxDEV15(
+              user?.aboutMe && user?.aboutMe.length > 100 && /* @__PURE__ */ jsxDEV14(
                 "button",
                 {
                   className: "text-blue-500 underline ml-2",
@@ -3128,29 +3126,29 @@ function Profile() {
                 !1,
                 {
                   fileName: "app/routes/profile.$userId.jsx",
-                  lineNumber: 183,
+                  lineNumber: 185,
                   columnNumber: 19
                 },
                 this
               )
             ] }, void 0, !0, {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 176,
+              lineNumber: 178,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV15("p", { children: user?.hobbies.join(", ") }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV14("p", { className: "mt-auto h-full font-bold", children: user?.hobbies?.length > 0 ? user.hobbies.join(", ") : "No hobbies listed" }, void 0, !1, {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 191,
+              lineNumber: 193,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 174,
+            lineNumber: 176,
             columnNumber: 13
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 153,
+          lineNumber: 155,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
@@ -3158,18 +3156,18 @@ function Profile() {
         lineNumber: 108,
         columnNumber: 9
       }, this),
-      aboutMePopup && /* @__PURE__ */ jsxDEV15("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50", children: /* @__PURE__ */ jsxDEV15("div", { className: "bg-white shadow-lg p-4 rounded-lg w-96 relative", children: [
-        /* @__PURE__ */ jsxDEV15("h3", { className: "text-lg font-semibold", children: "About Me" }, void 0, !1, {
+      aboutMePopup && /* @__PURE__ */ jsxDEV14("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50", children: /* @__PURE__ */ jsxDEV14("div", { className: "bg-white shadow-lg p-4 rounded-lg w-96 relative", children: [
+        /* @__PURE__ */ jsxDEV14("h3", { className: "text-lg font-semibold", children: "About Me" }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 198,
+          lineNumber: 204,
           columnNumber: 15
         }, this),
-        /* @__PURE__ */ jsxDEV15("p", { className: "mt-2", children: user.aboutMe }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV14("p", { className: "mt-2", children: user.aboutMe }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 199,
+          lineNumber: 205,
           columnNumber: 15
         }, this),
-        /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14(
           "button",
           {
             className: "absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded",
@@ -3180,21 +3178,21 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 200,
+            lineNumber: 206,
             columnNumber: 15
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 197,
+        lineNumber: 203,
         columnNumber: 13
       }, this) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 196,
+        lineNumber: 202,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV15(
+      /* @__PURE__ */ jsxDEV14(
         Form3,
         {
           method: "post",
@@ -3204,9 +3202,9 @@ function Profile() {
               "Are you sure you want to log out?"
             ) || e.preventDefault();
           },
-          children: /* @__PURE__ */ jsxDEV15("button", { className: "text-cancel flex flex-row font-semibold w-full justify-center", children: "Logout" }, void 0, !1, {
+          children: /* @__PURE__ */ jsxDEV14("button", { className: "text-cancel flex flex-row font-semibold w-full justify-center", children: "Logout" }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 221,
+            lineNumber: 227,
             columnNumber: 11
           }, this)
         },
@@ -3214,7 +3212,7 @@ function Profile() {
         !1,
         {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 209,
+          lineNumber: 215,
           columnNumber: 9
         },
         this
@@ -3224,18 +3222,18 @@ function Profile() {
       lineNumber: 70,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV15("div", { className: "py-6", children: /* @__PURE__ */ jsxDEV15("h2", { className: "text-2xl font-semibold", children: "Liked posts" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV14("div", { className: "py-6", children: /* @__PURE__ */ jsxDEV14("h2", { className: "text-2xl font-semibold", children: "Liked posts" }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 227,
+      lineNumber: 233,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 226,
+      lineNumber: 232,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col justify-center w-full", children: postsLiked && postsLiked.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
-      postsLiked.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
-        /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(
+    /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-col justify-center w-full", children: postsLiked && postsLiked.length > 0 ? /* @__PURE__ */ jsxDEV14(Fragment3, { children: [
+      postsLiked.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV14("div", { children: /* @__PURE__ */ jsxDEV14(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV14(
           EventCard2,
           {
             post,
@@ -3246,16 +3244,16 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 236,
+            lineNumber: 242,
             columnNumber: 21
           },
           this
         ) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 235,
+          lineNumber: 241,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV14(
           EventCard,
           {
             post,
@@ -3266,25 +3264,25 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 243,
+            lineNumber: 249,
             columnNumber: 21
           },
           this
         ) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 242,
+          lineNumber: 248,
           columnNumber: 19
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 234,
+        lineNumber: 240,
         columnNumber: 17
       }, this) }, post._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 233,
+        lineNumber: 239,
         columnNumber: 15
       }, this)),
-      postsLiked.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV15(
+      postsLiked.length > displayedPostsCount && /* @__PURE__ */ jsxDEV14("div", { className: "flex w-full", children: /* @__PURE__ */ jsxDEV14(
         "button",
         {
           className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
@@ -3295,46 +3293,46 @@ function Profile() {
         !1,
         {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 254,
+          lineNumber: 260,
           columnNumber: 17
         },
         this
       ) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 253,
+        lineNumber: 259,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 231,
+      lineNumber: 237,
       columnNumber: 11
-    }, this) : /* @__PURE__ */ jsxDEV15("div", { className: "text-center text-2xl font-medium mt-4 text-gray-500", children: "No liked posts" }, void 0, !1, {
+    }, this) : /* @__PURE__ */ jsxDEV14("div", { className: "text-center text-2xl font-medium mt-4 text-gray-500", children: "No liked posts" }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 264,
+      lineNumber: 270,
       columnNumber: 11
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 229,
+      lineNumber: 235,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV15("div", { className: "mb-16", children: [
-      /* @__PURE__ */ jsxDEV15("h2", { className: "text-lg font-medium pt-6", children: "Posts by me" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV14("div", { className: "mb-16", children: [
+      /* @__PURE__ */ jsxDEV14("h2", { className: "text-lg font-medium pt-6", children: "Posts by me" }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 271,
+        lineNumber: 277,
         columnNumber: 9
       }, this),
-      posts && posts.length > 0 ? /* @__PURE__ */ jsxDEV15(Fragment3, { children: [
-        posts.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV15("div", { children: /* @__PURE__ */ jsxDEV15(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
-          /* @__PURE__ */ jsxDEV15("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV15(EventCard2, { post, apiKey: googleMapsApiKey2 }, void 0, !1, {
+      posts && posts.length > 0 ? /* @__PURE__ */ jsxDEV14(Fragment3, { children: [
+        posts.slice(0, displayedPostsCount).map((post) => /* @__PURE__ */ jsxDEV14("div", { children: /* @__PURE__ */ jsxDEV14(Link3, { className: "post-link", to: `/post/${post._id}`, children: [
+          /* @__PURE__ */ jsxDEV14("div", { className: "md:hidden", children: /* @__PURE__ */ jsxDEV14(EventCard2, { post, apiKey: googleMapsApiKey2 }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 278,
+            lineNumber: 284,
             columnNumber: 21
           }, this) }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 277,
+            lineNumber: 283,
             columnNumber: 19
           }, this),
-          /* @__PURE__ */ jsxDEV15("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV15(
+          /* @__PURE__ */ jsxDEV14("div", { className: "hidden md:block", children: /* @__PURE__ */ jsxDEV14(
             EventCard,
             {
               post,
@@ -3345,25 +3343,25 @@ function Profile() {
             !1,
             {
               fileName: "app/routes/profile.$userId.jsx",
-              lineNumber: 281,
+              lineNumber: 287,
               columnNumber: 21
             },
             this
           ) }, void 0, !1, {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 280,
+            lineNumber: 286,
             columnNumber: 19
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 276,
+          lineNumber: 282,
           columnNumber: 17
         }, this) }, post._id, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 275,
+          lineNumber: 281,
           columnNumber: 15
         }, this)),
-        /* @__PURE__ */ jsxDEV15("div", { className: "flex w-full", children: posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex w-full", children: posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV14(
           "button",
           {
             className: "bg-slate-500 justify-center mt-4 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto",
@@ -3374,37 +3372,37 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 292,
+            lineNumber: 298,
             columnNumber: 17
           },
           this
         ) }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 290,
+          lineNumber: 296,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 273,
+        lineNumber: 279,
         columnNumber: 11
-      }, this) : /* @__PURE__ */ jsxDEV15("div", { className: "text-center mt-4 text-2xl font-medium text-gray-500", children: "No posts by me" }, void 0, !1, {
+      }, this) : /* @__PURE__ */ jsxDEV14("div", { className: "text-center mt-4 text-2xl font-medium text-gray-500", children: "No posts by me" }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 302,
+        lineNumber: 308,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 270,
+      lineNumber: 276,
       columnNumber: 7
     }, this),
-    popupList.visible && /* @__PURE__ */ jsxDEV15("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm shadow-lg p-4 z-50", children: /* @__PURE__ */ jsxDEV15("div", { className: "w-96 bg-white shadow-lg p-4 rounded-lg relative max-h-96 overflow-hidden", children: [
-      /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-row justify-between", children: [
-        /* @__PURE__ */ jsxDEV15("h3", { className: "text-xl font-semibold ", children: popupList.type === "followers" ? "Followers" : "Following" }, void 0, !1, {
+    popupList.visible && /* @__PURE__ */ jsxDEV14("div", { className: "fixed inset-0 flex items-center justify-center backdrop-blur-sm shadow-lg p-4 z-50", children: /* @__PURE__ */ jsxDEV14("div", { className: "w-96 bg-white shadow-lg p-4 rounded-lg relative max-h-96 overflow-hidden", children: [
+      /* @__PURE__ */ jsxDEV14("div", { className: "flex flex-row justify-between", children: [
+        /* @__PURE__ */ jsxDEV14("h3", { className: "text-xl font-semibold ", children: popupList.type === "followers" ? "Followers" : "Following" }, void 0, !1, {
           fileName: "app/routes/profile.$userId.jsx",
-          lineNumber: 312,
+          lineNumber: 318,
           columnNumber: 15
         }, this),
-        /* @__PURE__ */ jsxDEV15(
+        /* @__PURE__ */ jsxDEV14(
           "button",
           {
             onClick: () => setPopupList((prev) => ({ ...prev, visible: !1 })),
@@ -3415,32 +3413,32 @@ function Profile() {
           !1,
           {
             fileName: "app/routes/profile.$userId.jsx",
-            lineNumber: 315,
+            lineNumber: 321,
             columnNumber: 15
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 311,
+        lineNumber: 317,
         columnNumber: 13
       }, this),
-      /* @__PURE__ */ jsxDEV15("ul", { className: "list-disc ml-6", children: popupList.users.map((user2) => /* @__PURE__ */ jsxDEV15("li", { children: user2.name }, user2._id, !1, {
+      /* @__PURE__ */ jsxDEV14("ul", { className: "list-disc ml-6", children: popupList.users.map((user2) => /* @__PURE__ */ jsxDEV14("li", { children: user2.name }, user2._id, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 326,
+        lineNumber: 332,
         columnNumber: 17
       }, this)) }, void 0, !1, {
         fileName: "app/routes/profile.$userId.jsx",
-        lineNumber: 324,
+        lineNumber: 330,
         columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 310,
+      lineNumber: 316,
       columnNumber: 11
     }, this) }, void 0, !1, {
       fileName: "app/routes/profile.$userId.jsx",
-      lineNumber: 309,
+      lineNumber: 315,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
@@ -3461,7 +3459,7 @@ import "react";
 import { NavLink as NavLink3, redirect as redirect4 } from "react-router-dom";
 import { useLoaderData as useLoaderData9 } from "@remix-run/react";
 import { json as json5 } from "@remix-run/node";
-import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
 var meta3 = () => [{ title: "Elevation" }], loader8 = async ({ request }) => {
   let user = await authenticator.isAuthenticated(request, {
     Redirect: "/main-dashboard"
@@ -3475,10 +3473,10 @@ var meta3 = () => [{ title: "Elevation" }], loader8 = async ({ request }) => {
 };
 function MainDashboard() {
   let { openWeatherApiKey, isAuthenticated } = useLoaderData9();
-  return isAuthenticated ? redirect4("/dashboard") : /* @__PURE__ */ jsxDEV16("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV16("div", { className: "w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10", children: /* @__PURE__ */ jsxDEV16("p", { children: [
+  return isAuthenticated ? redirect4("/dashboard") : /* @__PURE__ */ jsxDEV15("div", { className: "page", children: [
+    /* @__PURE__ */ jsxDEV15("div", { className: "w-full top-0 bg-slate-200 h-14 flex justify-center items-center font-bold shadow-sm animate-slideDown z-10", children: /* @__PURE__ */ jsxDEV15("p", { children: [
       "Sign in to see more or",
-      /* @__PURE__ */ jsxDEV16(NavLink3, { to: "/signup", className: "text-blue-600", children: [
+      /* @__PURE__ */ jsxDEV15(NavLink3, { to: "/signup", className: "text-blue-600", children: [
         " ",
         "sign up here"
       ] }, void 0, !0, {
@@ -3495,8 +3493,8 @@ function MainDashboard() {
       lineNumber: 31,
       columnNumber: 9
     }, this),
-    /* @__PURE__ */ jsxDEV16("div", { className: "page", children: [
-      /* @__PURE__ */ jsxDEV16(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV15("div", { className: "page", children: [
+      /* @__PURE__ */ jsxDEV15(DashboardData_default, { apiKey: openWeatherApiKey }, void 0, !1, {
         fileName: "app/routes/main-dashboard.jsx",
         lineNumber: 41,
         columnNumber: 11
@@ -3527,7 +3525,7 @@ import { json as json6, redirect as redirect5 } from "@remix-run/node";
 import mongoose10 from "mongoose";
 import { useEffect as useEffect7, useState as useState10, useRef as useRef4 } from "react";
 import { NavLink as NavLink4 } from "react-router-dom";
-import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
 var MAP_ID2 = "71f267d426ae7773";
 function meta4({ data }) {
   return [
@@ -3541,13 +3539,13 @@ async function loader9({ request, params }) {
   return json6({ post, authUser, googleMapsApiKey: googleMapsApiKey2 });
 }
 async function action6({ request, params }) {
-  let action11 = new URLSearchParams(await request.text()).get("_action"), authUser = await authenticator.isAuthenticated(request);
+  let action10 = new URLSearchParams(await request.text()).get("_action"), authUser = await authenticator.isAuthenticated(request);
   if (!authUser)
     throw new Error("User not authenticated");
   let postId = params.postId, Post3 = mongoose10.models.Post;
-  return action11 === "like" ? await Post3.findByIdAndUpdate(postId, {
+  return action10 === "like" ? await Post3.findByIdAndUpdate(postId, {
     $addToSet: { likes: authUser._id }
-  }) : action11 === "unlike" && await Post3.findByIdAndUpdate(postId, {
+  }) : action10 === "unlike" && await Post3.findByIdAndUpdate(postId, {
     $pull: { likes: authUser._id }
   }), redirect5(`/post/${postId}`);
 }
@@ -3607,13 +3605,13 @@ function Post2() {
     })();
   }, [location]);
   let liked = post?.likes?.some((userLike) => userLike._id === authUser?._id);
-  return /* @__PURE__ */ jsxDEV17(
+  return /* @__PURE__ */ jsxDEV16(
     "div",
     {
       id: "post-page",
       className: "page max-w-5xl flex flex-col justify-center m-auto p-6",
       children: [
-        /* @__PURE__ */ jsxDEV17(
+        /* @__PURE__ */ jsxDEV16(
           "div",
           {
             className: "h-96 w-full flex rounded-xl",
@@ -3632,16 +3630,16 @@ function Post2() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV17("div", { className: "my-4", children: [
-          /* @__PURE__ */ jsxDEV17("h1", { className: "text-3xl", children: post.title }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV16("div", { className: "my-4", children: [
+          /* @__PURE__ */ jsxDEV16("h1", { className: "text-3xl", children: post.title }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
             lineNumber: 157,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV17("p", { className: "text-gray-500", children: [
+          /* @__PURE__ */ jsxDEV16("p", { className: "text-gray-500", children: [
             "Post by:",
             " ",
-            /* @__PURE__ */ jsxDEV17(
+            /* @__PURE__ */ jsxDEV16(
               NavLink4,
               {
                 to: `/userProfile/${post?.creator?._id}`,
@@ -3667,23 +3665,23 @@ function Post2() {
           lineNumber: 156,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV17("h3", { className: "text-gray-500 font-bold", children: "Description" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV16("h3", { className: "text-gray-500 font-bold", children: "Description" }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
           lineNumber: 168,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV17("p", { children: post.description }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV16("p", { children: post.description }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
           lineNumber: 169,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV17("div", { className: "flex flex-col my-2", children: [
-          /* @__PURE__ */ jsxDEV17("p", { children: "Date" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV16("div", { className: "flex flex-col my-2", children: [
+          /* @__PURE__ */ jsxDEV16("p", { children: "Date" }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
             lineNumber: 171,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV17("p", { className: "", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV16("p", { className: "", children: new Date(post.date).toLocaleDateString("en-GB") }, void 0, !1, {
             fileName: "app/routes/post.$postId.jsx",
             lineNumber: 172,
             columnNumber: 9
@@ -3693,7 +3691,7 @@ function Post2() {
           lineNumber: 170,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV17("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV17("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV16("div", { className: "flex my-2", children: /* @__PURE__ */ jsxDEV16("p", { className: "", children: city || "Fetching location..." }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
           lineNumber: 175,
           columnNumber: 9
@@ -3702,14 +3700,14 @@ function Post2() {
           lineNumber: 174,
           columnNumber: 7
         }, this),
-        location && /* @__PURE__ */ jsxDEV17("div", { ref: mapRef, style: { width: "100%", height: "400px" } }, void 0, !1, {
+        location && /* @__PURE__ */ jsxDEV16("div", { ref: mapRef, style: { width: "100%", height: "400px" } }, void 0, !1, {
           fileName: "app/routes/post.$postId.jsx",
           lineNumber: 179,
           columnNumber: 9
         }, this),
-        /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-4 mt-4 justify-between", children: [
-          /* @__PURE__ */ jsxDEV17("div", { className: "flex gap-2 items-center", children: [
-            /* @__PURE__ */ jsxDEV17("p", { children: [
+        /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-4 mt-4 justify-between", children: [
+          /* @__PURE__ */ jsxDEV16("div", { className: "flex gap-2 items-center", children: [
+            /* @__PURE__ */ jsxDEV16("p", { children: [
               "\u{1F499} ",
               post.likes.length
             ] }, void 0, !0, {
@@ -3717,7 +3715,7 @@ function Post2() {
               lineNumber: 184,
               columnNumber: 11
             }, this),
-            !liked && authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
+            !liked && authUser ? /* @__PURE__ */ jsxDEV16(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV16(
               "button",
               {
                 type: "submit",
@@ -3738,7 +3736,7 @@ function Post2() {
               fileName: "app/routes/post.$postId.jsx",
               lineNumber: 186,
               columnNumber: 13
-            }, this) : authUser ? /* @__PURE__ */ jsxDEV17(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV17(
+            }, this) : authUser ? /* @__PURE__ */ jsxDEV16(Form4, { method: "post", children: /* @__PURE__ */ jsxDEV16(
               "button",
               {
                 type: "submit",
@@ -3765,17 +3763,24 @@ function Post2() {
             lineNumber: 183,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV17("div", { children: authUser?._id === post?.creator?._id && /* @__PURE__ */ jsxDEV17("div", { className: "flex py-4", children: [
-            /* @__PURE__ */ jsxDEV17(Form4, { action: "update", children: /* @__PURE__ */ jsxDEV17("button", { className: "px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600", children: "Update" }, void 0, !1, {
-              fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 213,
-              columnNumber: 17
-            }, this) }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV16("div", { children: authUser?._id === post?.creator?._id && /* @__PURE__ */ jsxDEV16("div", { className: "flex py-4", children: [
+            /* @__PURE__ */ jsxDEV16(Form4, { action: `/post/${post._id}/update`, children: [
+              /* @__PURE__ */ jsxDEV16("input", { type: "hidden", name: "_action", value: "update" }, void 0, !1, {
+                fileName: "app/routes/post.$postId.jsx",
+                lineNumber: 213,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV16("button", { className: "ml-4 px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600", children: "Update" }, void 0, !1, {
+                fileName: "app/routes/post.$postId.jsx",
+                lineNumber: 214,
+                columnNumber: 17
+              }, this)
+            ] }, void 0, !0, {
               fileName: "app/routes/post.$postId.jsx",
               lineNumber: 212,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ jsxDEV17(Form4, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV17(
+            /* @__PURE__ */ jsxDEV16(Form4, { action: "destroy", method: "post", children: /* @__PURE__ */ jsxDEV16(
               "button",
               {
                 className: "ml-4 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600",
@@ -3790,13 +3795,13 @@ function Post2() {
               !1,
               {
                 fileName: "app/routes/post.$postId.jsx",
-                lineNumber: 218,
+                lineNumber: 219,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
               fileName: "app/routes/post.$postId.jsx",
-              lineNumber: 217,
+              lineNumber: 218,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
@@ -3842,7 +3847,7 @@ import { useState as useState12 } from "react";
 import { useEffect as useEffect8, useState as useState11 } from "react";
 import axios3 from "axios";
 import { useLoaderData as useLoaderData11 } from "@remix-run/react";
-import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 function EventList({ post, onCityUpdate }) {
   let [city, setCity] = useState11(null), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData11(), normalizeCityName = (cityName) => cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), fetchCityFromCoordinates = async (lat, lng) => {
     let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${googleMapsApiKey2}`;
@@ -3866,8 +3871,8 @@ function EventList({ post, onCityUpdate }) {
       let [lat, lng] = post.location.split(",").map((coord) => parseFloat(coord.trim()));
       !isNaN(lat) && !isNaN(lng) ? fetchCityFromCoordinates(lat, lng) : setCity("No location available");
     }
-  }, [post.location]), /* @__PURE__ */ jsxDEV18("article", { className: "flex w-full items-center my-2 px-4 py-2 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow", children: [
-    /* @__PURE__ */ jsxDEV18(
+  }, [post.location]), /* @__PURE__ */ jsxDEV17("article", { className: "flex w-full items-center my-2 px-4 py-2 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow", children: [
+    /* @__PURE__ */ jsxDEV17(
       "div",
       {
         className: "w-16 h-16 rounded-md bg-cover bg-center flex-shrink-0",
@@ -3884,13 +3889,13 @@ function EventList({ post, onCityUpdate }) {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV18("div", { className: "ml-4 flex-1", children: [
-      /* @__PURE__ */ jsxDEV18("h2", { className: "text-sm font-semibold text-gray-800 truncate", children: post.title }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV17("div", { className: "ml-4 flex-1", children: [
+      /* @__PURE__ */ jsxDEV17("h2", { className: "text-sm font-semibold text-gray-800 truncate", children: post.title }, void 0, !1, {
         fileName: "app/components/EventList.jsx",
         lineNumber: 69,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV18("p", { className: "text-xs text-gray-500", children: [
+      /* @__PURE__ */ jsxDEV17("p", { className: "text-xs text-gray-500", children: [
         "By ",
         post?.creator?.name,
         " \u2022 ",
@@ -3900,8 +3905,8 @@ function EventList({ post, onCityUpdate }) {
         lineNumber: 72,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV18("p", { className: "text-xs text-gray-600 mt-1", children: [
-        /* @__PURE__ */ jsxDEV18("span", { className: "font-medium", children: "Date:" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV17("p", { className: "text-xs text-gray-600 mt-1", children: [
+        /* @__PURE__ */ jsxDEV17("span", { className: "font-medium", children: "Date:" }, void 0, !1, {
           fileName: "app/components/EventList.jsx",
           lineNumber: 76,
           columnNumber: 11
@@ -3918,7 +3923,7 @@ function EventList({ post, onCityUpdate }) {
       lineNumber: 68,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV18("div", { className: "ml-4 text-right flex-shrink-0", children: /* @__PURE__ */ jsxDEV18("p", { className: "mt-1 text-xs text-gray-500", children: [
+    /* @__PURE__ */ jsxDEV17("div", { className: "ml-4 text-right flex-shrink-0", children: /* @__PURE__ */ jsxDEV17("p", { className: "mt-1 text-xs text-gray-500", children: [
       "Likes: ",
       post.likes?.length || 0
     ] }, void 0, !0, {
@@ -3938,7 +3943,7 @@ function EventList({ post, onCityUpdate }) {
 }
 
 // app/routes/post._index.jsx
-import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
 var meta5 = () => [{ title: "Evelation - Post" }];
 async function loader10({ request }) {
   await authenticator.isAuthenticated(request);
@@ -3965,19 +3970,19 @@ function Index2() {
       value.toString().toLowerCase().includes(searchTermLower)
     ) || city.includes(searchTermLower);
   }).sort((a, b) => sortOption === "newest" ? new Date(b.createdAt) - new Date(a.createdAt) : sortOption === "oldest" ? new Date(a.createdAt) - new Date(b.createdAt) : sortOption === "mostLikes" ? (b.likes?.length || 0) - (a.likes?.length || 0) : 0).slice(0, displayedPostsCount);
-  return /* @__PURE__ */ jsxDEV19("div", { className: "page", children: /* @__PURE__ */ jsxDEV19("div", { className: "w-full flex justify-center flex-col", children: [
-    /* @__PURE__ */ jsxDEV19("div", { className: " flex  flex-col mx-auto p-6", children: [
-      /* @__PURE__ */ jsxDEV19("h2", { className: "font-bold text-4xl text-gray-950", children: "Discover new surfspots" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV18("div", { className: "page", children: /* @__PURE__ */ jsxDEV18("div", { className: "w-full flex justify-center flex-col", children: [
+    /* @__PURE__ */ jsxDEV18("div", { className: " flex  flex-col mx-auto p-6", children: [
+      /* @__PURE__ */ jsxDEV18("h2", { className: "font-bold text-4xl text-gray-950", children: "Discover new surfspots" }, void 0, !1, {
         fileName: "app/routes/post._index.jsx",
         lineNumber: 78,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV19("p", { className: "text-gray-700 pb-4", children: "Find spots" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV18("p", { className: "text-gray-700 pb-4", children: "Find spots" }, void 0, !1, {
         fileName: "app/routes/post._index.jsx",
         lineNumber: 81,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV19("h1", { className: "text-2xl font-semibold w-2/3 py-4", children: "All spots" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV18("h1", { className: "text-2xl font-semibold w-2/3 py-4", children: "All spots" }, void 0, !1, {
         fileName: "app/routes/post._index.jsx",
         lineNumber: 82,
         columnNumber: 11
@@ -3987,14 +3992,14 @@ function Index2() {
       lineNumber: 77,
       columnNumber: 9
     }, this),
-    /* @__PURE__ */ jsxDEV19(
+    /* @__PURE__ */ jsxDEV18(
       Form5,
       {
         className: "h-12 bg-background flex items-center gap-x-4 rounded-2xl my-2",
         id: "search-form",
         role: "search",
-        children: /* @__PURE__ */ jsxDEV19("div", { className: "w-full flex justify-center", children: /* @__PURE__ */ jsxDEV19("div", { className: "flex w-64 bg-slate-50 rounded-2xl items-center p-2 justify-between", children: [
-          /* @__PURE__ */ jsxDEV19(
+        children: /* @__PURE__ */ jsxDEV18("div", { className: "w-full flex justify-center", children: /* @__PURE__ */ jsxDEV18("div", { className: "flex w-64 bg-slate-50 rounded-2xl items-center p-2 justify-between", children: [
+          /* @__PURE__ */ jsxDEV18(
             "input",
             {
               className: "bg-slate-50 flex",
@@ -4012,13 +4017,13 @@ function Index2() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV19(
+          /* @__PURE__ */ jsxDEV18(
             "svg",
             {
               className: "h-4 w-4",
               xmlns: "http://www.w3.org/2000/svg",
               viewBox: "0 0 24 24",
-              children: /* @__PURE__ */ jsxDEV19("path", { d: "M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 20 22 L 22 20 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z" }, void 0, !1, {
+              children: /* @__PURE__ */ jsxDEV18("path", { d: "M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 20 22 L 22 20 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z" }, void 0, !1, {
                 fileName: "app/routes/post._index.jsx",
                 lineNumber: 103,
                 columnNumber: 17
@@ -4052,14 +4057,14 @@ function Index2() {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV19("div", { className: "w-11/12 flex flex-col justify-center mx-auto", children: [
-      /* @__PURE__ */ jsxDEV19("div", { className: "flex justify-end items-center gap-x-4 mt-4", children: [
-        /* @__PURE__ */ jsxDEV19("label", { htmlFor: "sort", className: "text-gray-700", children: "Sort by:" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV18("div", { className: "w-11/12 flex flex-col justify-center mx-auto", children: [
+      /* @__PURE__ */ jsxDEV18("div", { className: "flex justify-end items-center gap-x-4 mt-4", children: [
+        /* @__PURE__ */ jsxDEV18("label", { htmlFor: "sort", className: "text-gray-700", children: "Sort by:" }, void 0, !1, {
           fileName: "app/routes/post._index.jsx",
           lineNumber: 112,
           columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV19(
+        /* @__PURE__ */ jsxDEV18(
           "select",
           {
             id: "sort",
@@ -4067,17 +4072,17 @@ function Index2() {
             value: sortOption,
             onChange: (e) => setSortOption(e.target.value),
             children: [
-              /* @__PURE__ */ jsxDEV19("option", { value: "newest", children: "Newest" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV18("option", { value: "newest", children: "Newest" }, void 0, !1, {
                 fileName: "app/routes/post._index.jsx",
                 lineNumber: 121,
                 columnNumber: 15
               }, this),
-              /* @__PURE__ */ jsxDEV19("option", { value: "oldest", children: "Oldest" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV18("option", { value: "oldest", children: "Oldest" }, void 0, !1, {
                 fileName: "app/routes/post._index.jsx",
                 lineNumber: 122,
                 columnNumber: 15
               }, this),
-              /* @__PURE__ */ jsxDEV19("option", { value: "mostLikes", children: "Most Likes" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV18("option", { value: "mostLikes", children: "Most Likes" }, void 0, !1, {
                 fileName: "app/routes/post._index.jsx",
                 lineNumber: 123,
                 columnNumber: 15
@@ -4098,13 +4103,13 @@ function Index2() {
         lineNumber: 111,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV19("div", { className: "flex justify-center w-full flex-col", children: [
-        /* @__PURE__ */ jsxDEV19("section", { className: "grid-cols-1 ", children: sortedAndFilteredPosts.map((post) => /* @__PURE__ */ jsxDEV19(
+      /* @__PURE__ */ jsxDEV18("div", { className: "flex justify-center w-full flex-col", children: [
+        /* @__PURE__ */ jsxDEV18("section", { className: "grid-cols-1 ", children: sortedAndFilteredPosts.map((post) => /* @__PURE__ */ jsxDEV18(
           Link4,
           {
             className: "post-link",
             to: `/post/${post._id}`,
-            children: /* @__PURE__ */ jsxDEV19("div", { className: "flex m-auto", children: /* @__PURE__ */ jsxDEV19(
+            children: /* @__PURE__ */ jsxDEV18("div", { className: "flex m-auto", children: /* @__PURE__ */ jsxDEV18(
               EventList,
               {
                 post,
@@ -4138,7 +4143,7 @@ function Index2() {
           lineNumber: 128,
           columnNumber: 13
         }, this),
-        posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV19(
+        posts.length > displayedPostsCount && /* @__PURE__ */ jsxDEV18(
           "button",
           {
             className: "bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md cursor-pointer m-auto mt-4",
@@ -4185,11 +4190,11 @@ __export(add_event_exports, {
 import { useEffect as useEffect9, useRef as useRef5, useState as useState13 } from "react";
 import { useNavigate as useNavigate3 } from "@remix-run/react";
 import { Form as Form6 } from "@remix-run/react";
-import { GoogleMap as GoogleMap2, Marker, useJsApiLoader as useJsApiLoader2 } from "@react-google-maps/api";
+import { GoogleMap as GoogleMap2, Marker as Marker2, useJsApiLoader } from "@react-google-maps/api";
 import mongoose12 from "mongoose";
 import { redirect as redirect6 } from "@remix-run/node";
 import { useLoaderData as useLoaderData13 } from "@remix-run/react";
-import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
 var MAP_ID3 = "71f267d426ae7773";
 async function loader11({ request }) {
   let googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
@@ -4203,7 +4208,7 @@ async function loader11({ request }) {
 function AddEvent() {
   let [image, setImage] = useState13(
     "https://placehold.co/600x400?text=Add+your+amazing+image"
-  ), [location, setLocation] = useState13(null), [center] = useState13({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef5(), navigate = useNavigate3(), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData13(), { isLoaded } = useJsApiLoader2({
+  ), [location, setLocation] = useState13(null), [center] = useState13({ lat: 41.0082, lng: 28.9784 }), mapRef = useRef5(), navigate = useNavigate3(), { googleMapsApiKey: googleMapsApiKey2 } = useLoaderData13(), { isLoaded } = useJsApiLoader({
     googleMapsApiKey: googleMapsApiKey2
     // Use the key here
   }), handleMapClick = (post) => {
@@ -4214,25 +4219,25 @@ function AddEvent() {
   }, handleCancel = () => navigate("/dashboard");
   return useEffect9(() => {
     location && mapRef.current && mapRef.current.panTo(location);
-  }, [location]), /* @__PURE__ */ jsxDEV20("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
-    /* @__PURE__ */ jsxDEV20("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Create New Post" }, void 0, !1, {
+  }, [location]), /* @__PURE__ */ jsxDEV19("div", { className: "page w-full flex-col gap-y-4 justify-center mt-4 mb-4 p-8", children: [
+    /* @__PURE__ */ jsxDEV19("h1", { className: "m-auto flex justify-center font-semibold text-2xl mb-6", children: "Create New Post" }, void 0, !1, {
       fileName: "app/routes/add-event.jsx",
       lineNumber: 56,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV20(
+    /* @__PURE__ */ jsxDEV19(
       Form6,
       {
         id: "post-form",
         method: "post",
         className: "rounded-lg font-semibold max-w-lg justify-center m-auto flex flex-col gap-y-4 p-4",
         children: [
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "title", children: "Post Title" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 64,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "input",
             {
               required: !0,
@@ -4251,12 +4256,12 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "description", children: "Description" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 74,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "textarea",
             {
               required: !0,
@@ -4274,12 +4279,12 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "date", children: "Date" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 83,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "input",
             {
               required: !0,
@@ -4297,12 +4302,12 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "location", children: "Location" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 92,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "input",
             {
               id: "location",
@@ -4322,7 +4327,7 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("div", { children: /* @__PURE__ */ jsxDEV20("p", { children: "Click on the map to select a location." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("div", { children: /* @__PURE__ */ jsxDEV19("p", { children: "Click on the map to select a location." }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 104,
             columnNumber: 11
@@ -4331,7 +4336,7 @@ function AddEvent() {
             lineNumber: 103,
             columnNumber: 9
           }, this),
-          isLoaded ? /* @__PURE__ */ jsxDEV20(
+          isLoaded ? /* @__PURE__ */ jsxDEV19(
             GoogleMap2,
             {
               apiKey: googleMapsApiKey2,
@@ -4344,7 +4349,7 @@ function AddEvent() {
                   mapId: MAP_ID3
                 });
               },
-              children: location && /* @__PURE__ */ jsxDEV20(Marker, { position: location, title: "Selected Location" }, void 0, !1, {
+              children: location && /* @__PURE__ */ jsxDEV19(Marker2, { position: location, title: "Selected Location" }, void 0, !1, {
                 fileName: "app/routes/add-event.jsx",
                 lineNumber: 122,
                 columnNumber: 15
@@ -4358,17 +4363,17 @@ function AddEvent() {
               columnNumber: 11
             },
             this
-          ) : /* @__PURE__ */ jsxDEV20("p", { children: "Loading map..." }, void 0, !1, {
+          ) : /* @__PURE__ */ jsxDEV19("p", { children: "Loading map..." }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 126,
             columnNumber: 11
           }, this),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 129,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "input",
             {
               required: !0,
@@ -4388,12 +4393,12 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV19("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
             fileName: "app/routes/add-event.jsx",
             lineNumber: 140,
             columnNumber: 9
           }, this),
-          /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19(
             "img",
             {
               id: "image-preview",
@@ -4410,8 +4415,8 @@ function AddEvent() {
             },
             this
           ),
-          /* @__PURE__ */ jsxDEV20("div", { className: "flex justify-between", children: [
-            /* @__PURE__ */ jsxDEV20(
+          /* @__PURE__ */ jsxDEV19("div", { className: "flex justify-between", children: [
+            /* @__PURE__ */ jsxDEV19(
               "button",
               {
                 type: "submit",
@@ -4427,7 +4432,7 @@ function AddEvent() {
               },
               this
             ),
-            /* @__PURE__ */ jsxDEV20(
+            /* @__PURE__ */ jsxDEV19(
               "button",
               {
                 type: "button",
@@ -4484,10 +4489,10 @@ import { useLoaderData as useLoaderData14 } from "@remix-run/react";
 
 // app/components/ShowAllLocations.jsx
 import { useEffect as useEffect10, useRef as useRef6, useState as useState14 } from "react";
-import { useJsApiLoader as useJsApiLoader3 } from "@react-google-maps/api";
-import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
+import { useJsApiLoader as useJsApiLoader2 } from "@react-google-maps/api";
+import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
 function ShowAllLocations({ posts, apiKey }) {
-  let [locations, setLocations] = useState14([]), mapRef = useRef6(null), infoWindowRef = useRef6(null), geocoderRef = useRef6(null), { isLoaded, loadError } = useJsApiLoader3({
+  let [locations, setLocations] = useState14([]), mapRef = useRef6(null), infoWindowRef = useRef6(null), geocoderRef = useRef6(null), { isLoaded, loadError } = useJsApiLoader2({
     googleMapsApiKey: apiKey
   });
   return useEffect10(() => {
@@ -4543,15 +4548,15 @@ function ShowAllLocations({ posts, apiKey }) {
         });
       });
     }
-  }, [isLoaded, locations]), loadError ? /* @__PURE__ */ jsxDEV21("div", { children: "Error loading Google Maps" }, void 0, !1, {
+  }, [isLoaded, locations]), loadError ? /* @__PURE__ */ jsxDEV20("div", { children: "Error loading Google Maps" }, void 0, !1, {
     fileName: "app/components/ShowAllLocations.jsx",
     lineNumber: 83,
     columnNumber: 25
-  }, this) : isLoaded ? /* @__PURE__ */ jsxDEV21("div", { ref: mapRef, style: { width: "100%", height: "100vh" } }, void 0, !1, {
+  }, this) : isLoaded ? /* @__PURE__ */ jsxDEV20("div", { ref: mapRef, style: { width: "100%", height: "100vh" } }, void 0, !1, {
     fileName: "app/components/ShowAllLocations.jsx",
     lineNumber: 86,
     columnNumber: 10
-  }, this) : /* @__PURE__ */ jsxDEV21("div", { children: "Loading Google Maps..." }, void 0, !1, {
+  }, this) : /* @__PURE__ */ jsxDEV20("div", { children: "Loading Google Maps..." }, void 0, !1, {
     fileName: "app/components/ShowAllLocations.jsx",
     lineNumber: 84,
     columnNumber: 25
@@ -4561,7 +4566,7 @@ function ShowAllLocations({ posts, apiKey }) {
 // app/routes/locations.jsx
 import mongoose13 from "mongoose";
 import { json as json8 } from "@remix-run/node";
-import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
 async function loader12() {
   let posts = await mongoose13.models.Post.find({}), googleMapsApiKey2 = process.env.GOOGLE_MAPS_API_KEY;
   if (!posts || posts.length === 0)
@@ -4570,7 +4575,7 @@ async function loader12() {
 }
 function LocationsPage() {
   let { posts, googleMapsApiKey: googleMapsApiKey2 } = useLoaderData14();
-  return /* @__PURE__ */ jsxDEV22("div", { style: { width: "100%", height: "100vh" }, children: /* @__PURE__ */ jsxDEV22(ShowAllLocations, { posts, apiKey: googleMapsApiKey2 }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV21("div", { style: { width: "100%", height: "100vh" }, children: /* @__PURE__ */ jsxDEV21(ShowAllLocations, { posts, apiKey: googleMapsApiKey2 }, void 0, !1, {
     fileName: "app/routes/locations.jsx",
     lineNumber: 23,
     columnNumber: 7
@@ -4581,13 +4586,13 @@ function LocationsPage() {
   }, this);
 }
 function ErrorBoundary({ error }) {
-  return /* @__PURE__ */ jsxDEV22("div", { style: { textAlign: "center", marginTop: "20%" }, children: [
-    /* @__PURE__ */ jsxDEV22("h1", { children: "Oops!" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV21("div", { style: { textAlign: "center", marginTop: "20%" }, children: [
+    /* @__PURE__ */ jsxDEV21("h1", { children: "Oops!" }, void 0, !1, {
       fileName: "app/routes/locations.jsx",
       lineNumber: 32,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ jsxDEV22("p", { children: error?.message || "No posts available." }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV21("p", { children: error?.message || "No posts available." }, void 0, !1, {
       fileName: "app/routes/locations.jsx",
       lineNumber: 33,
       columnNumber: 7
@@ -4599,124 +4604,14 @@ function ErrorBoundary({ error }) {
   }, this);
 }
 
-// app/routes/add-post.jsx
-var add_post_exports = {};
-__export(add_post_exports, {
-  action: () => action8,
-  default: () => AddPost,
-  loader: () => loader13,
-  meta: () => meta6
-});
-import { redirect as redirect7 } from "@remix-run/node";
-import { Form as Form7, useNavigate as useNavigate4 } from "@remix-run/react";
-import mongoose14 from "mongoose";
-import { useState as useState15 } from "react";
-import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
-var meta6 = () => [{ title: "Remix Post App - Add New Post" }];
-async function loader13({ request }) {
-  return await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin"
-  });
-}
-function AddPost() {
-  let [image, setImage] = useState15("https://placehold.co/600x400?text=Add+your+amazing+image"), navigate = useNavigate4();
-  function handleCancel() {
-    navigate(-1);
-  }
-  return /* @__PURE__ */ jsxDEV23("div", { className: "page", children: [
-    /* @__PURE__ */ jsxDEV23("h1", { children: "Add a Post" }, void 0, !1, {
-      fileName: "app/routes/add-post.jsx",
-      lineNumber: 27,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ jsxDEV23(Form7, { id: "post-form", method: "post", children: [
-      /* @__PURE__ */ jsxDEV23("label", { htmlFor: "caption", children: "Caption" }, void 0, !1, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 29,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV23("input", { id: "caption", name: "caption", type: "text", "aria-label": "caption", placeholder: "Write a caption..." }, void 0, !1, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 30,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV23("label", { htmlFor: "image", children: "Image URL" }, void 0, !1, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 32,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV23("input", { name: "image", type: "url", onChange: (e) => setImage(e.target.value), placeholder: "Paste an image URL..." }, void 0, !1, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 33,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV23("label", { htmlFor: "image-preview", children: "Image Preview" }, void 0, !1, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 35,
-        columnNumber: 9
-      }, this),
-      /* @__PURE__ */ jsxDEV23(
-        "img",
-        {
-          id: "image-preview",
-          className: "image-preview",
-          src: image || "https://placehold.co/600x400?text=Paste+an+image+URL",
-          alt: "Choose",
-          onError: (e) => e.target.src = "https://placehold.co/600x400?text=Error+loading+image"
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/add-post.jsx",
-          lineNumber: 36,
-          columnNumber: 9
-        },
-        this
-      ),
-      /* @__PURE__ */ jsxDEV23("div", { className: "btns", children: [
-        /* @__PURE__ */ jsxDEV23("button", { children: "Save" }, void 0, !1, {
-          fileName: "app/routes/add-post.jsx",
-          lineNumber: 45,
-          columnNumber: 11
-        }, this),
-        /* @__PURE__ */ jsxDEV23("button", { type: "button", className: "btn-cancel", onClick: handleCancel, children: "Cancel" }, void 0, !1, {
-          fileName: "app/routes/add-post.jsx",
-          lineNumber: 46,
-          columnNumber: 11
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/add-post.jsx",
-        lineNumber: 44,
-        columnNumber: 9
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/add-post.jsx",
-      lineNumber: 28,
-      columnNumber: 7
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/add-post.jsx",
-    lineNumber: 26,
-    columnNumber: 5
-  }, this);
-}
-async function action8({ request }) {
-  let user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin"
-  });
-  console.log(user);
-  let formData = await request.formData(), post = Object.fromEntries(formData);
-  return post.user = user._id, await mongoose14.models.Post.create(post), redirect7("/posts");
-}
-
 // app/routes/_index.jsx
 var index_exports = {};
 __export(index_exports, {
-  loader: () => loader14,
-  meta: () => meta7
+  loader: () => loader13,
+  meta: () => meta6
 });
-var meta7 = () => [{ title: "Elevation" }];
-async function loader14({ request }) {
+var meta6 = () => [{ title: "Elevation" }];
+async function loader13({ request }) {
   return await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
     failureRedirect: "/main-dashboard"
@@ -4726,14 +4621,14 @@ async function loader14({ request }) {
 // app/routes/signin.jsx
 var signin_exports = {};
 __export(signin_exports, {
-  action: () => action9,
+  action: () => action8,
   default: () => SignIn,
-  loader: () => loader15
+  loader: () => loader14
 });
 import { json as json9 } from "@remix-run/node";
-import { Form as Form8, NavLink as NavLink5, useLoaderData as useLoaderData15 } from "@remix-run/react";
-import { jsxDEV as jsxDEV24 } from "react/jsx-dev-runtime";
-async function loader15({ request }) {
+import { Form as Form7, NavLink as NavLink5, useLoaderData as useLoaderData15 } from "@remix-run/react";
+import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+async function loader14({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
   });
@@ -4748,30 +4643,30 @@ async function loader15({ request }) {
 }
 function SignIn() {
   let loaderData = useLoaderData15();
-  return /* @__PURE__ */ jsxDEV24(
+  return /* @__PURE__ */ jsxDEV22(
     "div",
     {
       id: "sign-in-page",
       className: " flex flex-col justify-center items-center rounded-lg h-auto w-80 ml-auto mr-auto mt-24 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV24("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV22("h1", { className: "text-2xl w-auto", children: "Sign In" }, void 0, !1, {
           fileName: "app/routes/signin.jsx",
           lineNumber: 35,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV24(
-          Form8,
+        /* @__PURE__ */ jsxDEV22(
+          Form7,
           {
             id: "sign-in-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV22("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 41,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV22(
                 "input",
                 {
                   id: "mail",
@@ -4791,12 +4686,12 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV22("label", { htmlFor: "password", className: "", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 52,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV24(
+              /* @__PURE__ */ jsxDEV22(
                 "input",
                 {
                   id: "password",
@@ -4816,7 +4711,7 @@ function SignIn() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV24("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV24("button", { children: "Sign In" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV22("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV22("button", { children: "Sign In" }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 65,
                 columnNumber: 11
@@ -4825,7 +4720,7 @@ function SignIn() {
                 lineNumber: 64,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV24("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV24("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV22("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV22("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signin.jsx",
                 lineNumber: 70,
                 columnNumber: 13
@@ -4845,10 +4740,10 @@ function SignIn() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV24("p", { className: "flex", children: [
+        /* @__PURE__ */ jsxDEV22("p", { className: "flex", children: [
           "No account?",
           " ",
-          /* @__PURE__ */ jsxDEV24(NavLink5, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV22(NavLink5, { to: "/signup", className: "text-sky-500", children: "Sign up here." }, void 0, !1, {
             fileName: "app/routes/signin.jsx",
             lineNumber: 76,
             columnNumber: 9
@@ -4870,7 +4765,7 @@ function SignIn() {
     this
   );
 }
-async function action9({ request }) {
+async function action8({ request }) {
   return await authenticator.authenticate("user-pass", request, {
     successRedirect: "/dashboard",
     failureRedirect: "/signin"
@@ -4880,16 +4775,16 @@ async function action9({ request }) {
 // app/routes/signup.jsx
 var signup_exports = {};
 __export(signup_exports, {
-  action: () => action10,
+  action: () => action9,
   default: () => SignUp,
-  loader: () => loader16
+  loader: () => loader15
 });
-import { json as json10, redirect as redirect8 } from "@remix-run/node";
-import { Form as Form9, NavLink as NavLink6, useLoaderData as useLoaderData16 } from "@remix-run/react";
-import mongoose15 from "mongoose";
-import { useState as useState16, useRef as useRef7, useEffect as useEffect11 } from "react";
-import { jsxDEV as jsxDEV25 } from "react/jsx-dev-runtime";
-async function loader16({ request }) {
+import { json as json10, redirect as redirect7 } from "@remix-run/node";
+import { Form as Form8, NavLink as NavLink6, useLoaderData as useLoaderData16 } from "@remix-run/react";
+import mongoose14 from "mongoose";
+import { useState as useState15, useRef as useRef7, useEffect as useEffect11 } from "react";
+import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+async function loader15({ request }) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard"
   });
@@ -4903,7 +4798,7 @@ async function loader16({ request }) {
   return json10({ error }, { headers });
 }
 function SignUp() {
-  let loaderData = useLoaderData16(), [selectedHobbies, setSelectedHobbies] = useState16([]), [dropdownOpen, setDropdownOpen] = useState16(!1), [avatarPreview, setAvatarPreview] = useState16(""), dropdownRef = useRef7(null), sportsOptions = [
+  let loaderData = useLoaderData16(), [selectedHobbies, setSelectedHobbies] = useState15([]), [dropdownOpen, setDropdownOpen] = useState15(!1), [avatarPreview, setAvatarPreview] = useState15(""), dropdownRef = useRef7(null), sportsOptions = [
     "Surfing",
     "Snowboarding",
     "Kiteboarding",
@@ -4928,30 +4823,30 @@ function SignUp() {
     return document.addEventListener("mousedown", handleClickOutside), () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]), /* @__PURE__ */ jsxDEV25(
+  }, [dropdownRef]), /* @__PURE__ */ jsxDEV23(
     "div",
     {
       id: "sign-up-page",
       className: "flex flex-col justify-center items-center rounded-lg h-auto w-80 ml-auto mr-auto mt-24 mb-32 p-4 gap-3",
       children: [
-        /* @__PURE__ */ jsxDEV25("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV23("h1", { className: "text-2xl w-auto", children: "Sign Up" }, void 0, !1, {
           fileName: "app/routes/signup.jsx",
           lineNumber: 77,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ jsxDEV25(
-          Form9,
+        /* @__PURE__ */ jsxDEV23(
+          Form8,
           {
             id: "sign-up-form",
             method: "post",
             className: "flex items-center flex-col gap-1 w-full",
             children: [
-              /* @__PURE__ */ jsxDEV25("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "mail", children: "Email" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 83,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   id: "mail",
@@ -4972,12 +4867,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV25("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "password", children: "Password" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 95,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   id: "password",
@@ -4997,12 +4892,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV25("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "firstName", children: "First name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 106,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   id: "firstName",
@@ -5021,12 +4916,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV25("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "lastName", children: "Last name" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 116,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   id: "lastName",
@@ -5045,12 +4940,12 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV25("label", { htmlFor: "avatarUrl", children: "Avatar URL" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { htmlFor: "avatarUrl", children: "Avatar URL" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 126,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   id: "avatarUrl",
@@ -5070,7 +4965,7 @@ function SignUp() {
                 },
                 this
               ),
-              avatarPreview && /* @__PURE__ */ jsxDEV25("div", { className: "mt-2", children: /* @__PURE__ */ jsxDEV25(
+              avatarPreview && /* @__PURE__ */ jsxDEV23("div", { className: "mt-2", children: /* @__PURE__ */ jsxDEV23(
                 "img",
                 {
                   src: avatarPreview,
@@ -5090,13 +4985,13 @@ function SignUp() {
                 lineNumber: 139,
                 columnNumber: 11
               }, this),
-              /* @__PURE__ */ jsxDEV25("label", { children: "Select your hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("label", { children: "Select your hobbies:" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 148,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25("div", { className: "relative", ref: dropdownRef, children: [
-                /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23("div", { className: "relative", ref: dropdownRef, children: [
+                /* @__PURE__ */ jsxDEV23(
                   "button",
                   {
                     type: "button",
@@ -5113,8 +5008,8 @@ function SignUp() {
                   },
                   this
                 ),
-                dropdownOpen && /* @__PURE__ */ jsxDEV25("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV25("label", { className: "block p-2", children: [
-                  /* @__PURE__ */ jsxDEV25(
+                dropdownOpen && /* @__PURE__ */ jsxDEV23("div", { className: "absolute top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10", children: sportsOptions.map((sport) => /* @__PURE__ */ jsxDEV23("label", { className: "block p-2", children: [
+                  /* @__PURE__ */ jsxDEV23(
                     "input",
                     {
                       type: "checkbox",
@@ -5146,13 +5041,13 @@ function SignUp() {
                 lineNumber: 149,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV25("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
-                /* @__PURE__ */ jsxDEV25("strong", { children: "Selected Hobbies:" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("div", { className: "mt-2", children: selectedHobbies.length > 0 && /* @__PURE__ */ jsxDEV23("div", { className: "p-2 bg-gray-100 border rounded-lg", children: [
+                /* @__PURE__ */ jsxDEV23("strong", { children: "Selected Hobbies:" }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 178,
                   columnNumber: 15
                 }, this),
-                /* @__PURE__ */ jsxDEV25("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV23("p", { children: selectedHobbies.join(", ") }, void 0, !1, {
                   fileName: "app/routes/signup.jsx",
                   lineNumber: 179,
                   columnNumber: 15
@@ -5166,7 +5061,7 @@ function SignUp() {
                 lineNumber: 175,
                 columnNumber: 9
               }, this),
-              /* @__PURE__ */ jsxDEV25(
+              /* @__PURE__ */ jsxDEV23(
                 "input",
                 {
                   type: "hidden",
@@ -5182,7 +5077,7 @@ function SignUp() {
                 },
                 this
               ),
-              /* @__PURE__ */ jsxDEV25("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV25("button", { children: "Sign Up" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV23("div", { className: "bg-sky-500 text-white hover:bg-sky-600 transition-colors p-2 rounded-xl mt-2 w-32 flex justify-center", children: /* @__PURE__ */ jsxDEV23("button", { children: "Sign Up" }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 191,
                 columnNumber: 11
@@ -5191,7 +5086,7 @@ function SignUp() {
                 lineNumber: 190,
                 columnNumber: 9
               }, this),
-              loaderData?.error ? /* @__PURE__ */ jsxDEV25("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV25("p", { children: loaderData?.error?.message }, void 0, !1, {
+              loaderData?.error ? /* @__PURE__ */ jsxDEV23("div", { className: "error-message", children: /* @__PURE__ */ jsxDEV23("p", { children: loaderData?.error?.message }, void 0, !1, {
                 fileName: "app/routes/signup.jsx",
                 lineNumber: 196,
                 columnNumber: 13
@@ -5211,10 +5106,10 @@ function SignUp() {
           },
           this
         ),
-        /* @__PURE__ */ jsxDEV25("p", { children: [
+        /* @__PURE__ */ jsxDEV23("p", { children: [
           "Already have an account?",
           " ",
-          /* @__PURE__ */ jsxDEV25(NavLink6, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV23(NavLink6, { to: "/signin", className: "text-sky-500", children: "Sign in here." }, void 0, !1, {
             fileName: "app/routes/signup.jsx",
             lineNumber: 202,
             columnNumber: 9
@@ -5236,19 +5131,19 @@ function SignUp() {
     this
   );
 }
-async function action10({ request }) {
+async function action9({ request }) {
   try {
     let formData = await request.formData(), newUser = Object.fromEntries(formData);
-    return newUser.selectedHobbies = JSON.parse(newUser.selectedHobbies || "[]"), await mongoose15.models.User.create({
+    return newUser.selectedHobbies = JSON.parse(newUser.selectedHobbies || "[]"), await mongoose14.models.User.create({
       mail: newUser.mail,
       password: newUser.password,
       name: newUser.name,
       lastname: newUser.lastName,
       avatarUrl: newUser.avatarUrl,
       hobbies: newUser.selectedHobbies
-    }), redirect8("/signin");
+    }), redirect7("/signin");
   } catch (error) {
-    return console.log(error), redirect8("/signup");
+    return console.log(error), redirect7("/signup");
   }
 }
 
@@ -5258,10 +5153,10 @@ __export(error_exports, {
   default: () => Example
 });
 import { Link as Link5 } from "react-router-dom";
-import { Fragment as Fragment4, jsxDEV as jsxDEV26 } from "react/jsx-dev-runtime";
+import { Fragment as Fragment4, jsxDEV as jsxDEV24 } from "react/jsx-dev-runtime";
 function Example() {
-  return /* @__PURE__ */ jsxDEV26(Fragment4, { children: /* @__PURE__ */ jsxDEV26("main", { className: "relative isolate min-h-full", children: [
-    /* @__PURE__ */ jsxDEV26(
+  return /* @__PURE__ */ jsxDEV24(Fragment4, { children: /* @__PURE__ */ jsxDEV24("main", { className: "relative isolate min-h-full", children: [
+    /* @__PURE__ */ jsxDEV24(
       "img",
       {
         src: "https://cdn.pixabay.com/photo/2017/08/10/01/11/field-2616740_1280.jpg",
@@ -5281,24 +5176,24 @@ function Example() {
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV26("div", { className: "mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8 text-gray-50", children: [
-      /* @__PURE__ */ jsxDEV26("p", { className: "text-base font-semibold leading-8 text-white", children: "404" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV24("div", { className: "mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8 text-gray-50", children: [
+      /* @__PURE__ */ jsxDEV24("p", { className: "text-base font-semibold leading-8 text-white", children: "404" }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 16,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV26("h1", { className: "mt-4 text-3xl font-bold tracking-tight  sm:text-5xl", children: "Page not found" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("h1", { className: "mt-4 text-3xl font-bold tracking-tight  sm:text-5xl", children: "Page not found" }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 17,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV26("p", { className: "mt-4 text-base  sm:mt-6", children: "Sorry, we couldn\u2019t find the page you\u2019re looking for." }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("p", { className: "mt-4 text-base  sm:mt-6", children: "Sorry, we couldn\u2019t find the page you\u2019re looking for." }, void 0, !1, {
         fileName: "app/routes/error.jsx",
         lineNumber: 20,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ jsxDEV26("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV26(Link5, { to: "/post", className: "text-sm font-semibold leading-7 ", children: [
-        /* @__PURE__ */ jsxDEV26("span", { "aria-hidden": "true", children: "\u2190" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV24("div", { className: "mt-10 flex justify-center", children: /* @__PURE__ */ jsxDEV24(Link5, { to: "/post", className: "text-sm font-semibold leading-7 ", children: [
+        /* @__PURE__ */ jsxDEV24("span", { "aria-hidden": "true", children: "\u2190" }, void 0, !1, {
           fileName: "app/routes/error.jsx",
           lineNumber: 25,
           columnNumber: 15
@@ -5330,7 +5225,7 @@ function Example() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FL56NXSS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-WMP7ZVXR.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-post": { id: "routes/add-post", parentId: "root", path: "add-post", index: void 0, caseSensitive: void 0, module: "/build/routes/add-post-SQXAPPWT.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-OFE57LLE.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EQQOEKGK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-DY4BUE7J.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-PRRMTNMR.js", imports: ["/build/_shared/chunk-RTR2VNY7.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId": { id: "routes/post.$postId", parentId: "root", path: "post/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId-N4GVIY2A.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId.destroy": { id: "routes/post.$postId.destroy", parentId: "routes/post.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId.destroy-3KSGAYW2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId_.update": { id: "routes/post.$postId_.update", parentId: "root", path: "post/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId_.update-A2NKZ7CZ.js", imports: ["/build/_shared/chunk-SDEB5LWC.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post._index": { id: "routes/post._index", parentId: "root", path: "post", index: !0, caseSensitive: void 0, module: "/build/routes/post._index-WNE63U7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-VVBIWGB7.js", imports: ["/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-TVENGSNV.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-Q5ANUNVF.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-ANUWXBKX.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "c65f54c7", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1738093685327 }, url: "/build/manifest-C65F54C7.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-4IXEBM3M.js", imports: ["/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-X5P7ZZ2U.js", "/build/_shared/chunk-LMGUNZ3X.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-YSFSRWXX.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FL56NXSS.js", imports: ["/build/_shared/chunk-SARLQUTN.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-WF7DN4SY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/add-event": { id: "routes/add-event", parentId: "root", path: "add-event", index: void 0, caseSensitive: void 0, module: "/build/routes/add-event-PH4JKASP.js", imports: ["/build/_shared/chunk-TMDLVXZI.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/dashboard._index": { id: "routes/dashboard._index", parentId: "root", path: "dashboard", index: !0, caseSensitive: void 0, module: "/build/routes/dashboard._index-XYT5PW7P.js", imports: ["/build/_shared/chunk-K5ELJRZJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/error": { id: "routes/error", parentId: "root", path: "error", index: void 0, caseSensitive: void 0, module: "/build/routes/error-EQQOEKGK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/locations": { id: "routes/locations", parentId: "root", path: "locations", index: void 0, caseSensitive: void 0, module: "/build/routes/locations-7DYTZKMQ.js", imports: ["/build/_shared/chunk-TMDLVXZI.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/main-dashboard": { id: "routes/main-dashboard", parentId: "root", path: "main-dashboard", index: void 0, caseSensitive: void 0, module: "/build/routes/main-dashboard-E4RTWZOU.js", imports: ["/build/_shared/chunk-K5ELJRZJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId": { id: "routes/post.$postId", parentId: "root", path: "post/:postId", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId-Y5DYWZDA.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId.destroy": { id: "routes/post.$postId.destroy", parentId: "routes/post.$postId", path: "destroy", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId.destroy-3KSGAYW2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post.$postId_.update": { id: "routes/post.$postId_.update", parentId: "root", path: "post/:postId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/post.$postId_.update-TVD4HHAS.js", imports: ["/build/_shared/chunk-TMDLVXZI.js", "/build/_shared/chunk-NMZL6IDN.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/post._index": { id: "routes/post._index", parentId: "root", path: "post", index: !0, caseSensitive: void 0, module: "/build/routes/post._index-WNE63U7H.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId": { id: "routes/profile.$userId", parentId: "root", path: "profile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId-CCAVH5NL.js", imports: ["/build/_shared/chunk-5QTOMFYD.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/profile.$userId_.update": { id: "routes/profile.$userId_.update", parentId: "root", path: "profile/:userId/update", index: void 0, caseSensitive: void 0, module: "/build/routes/profile.$userId_.update-3EHUTOFU.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signin": { id: "routes/signin", parentId: "root", path: "signin", index: void 0, caseSensitive: void 0, module: "/build/routes/signin-LT6QYJEK.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/signup": { id: "routes/signup", parentId: "root", path: "signup", index: void 0, caseSensitive: void 0, module: "/build/routes/signup-Q5ANUNVF.js", imports: ["/build/_shared/chunk-QUYRSHBJ.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/userProfile.$userId": { id: "routes/userProfile.$userId", parentId: "root", path: "userProfile/:userId", index: void 0, caseSensitive: void 0, module: "/build/routes/userProfile.$userId-ANUWXBKX.js", imports: ["/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-V3MZCQ5A.js", "/build/_shared/chunk-4HUAJPKT.js", "/build/_shared/chunk-4NQDUYEK.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "e338e3fe", hmr: { runtime: "/build/_shared/chunk-YSFSRWXX.js", timestamp: 1738149310188 }, url: "/build/manifest-E338E3FE.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
@@ -5429,14 +5324,6 @@ var mode = "development", assetsBuildDirectory = "public/build", future = { v3_f
     index: void 0,
     caseSensitive: void 0,
     module: locations_exports
-  },
-  "routes/add-post": {
-    id: "routes/add-post",
-    parentId: "root",
-    path: "add-post",
-    index: void 0,
-    caseSensitive: void 0,
-    module: add_post_exports
   },
   "routes/_index": {
     id: "routes/_index",
